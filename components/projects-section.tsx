@@ -154,7 +154,7 @@ export default function ProjectsSection() {
           {projects.map((project) => (
             <Dialog key={project.id}>
               <DialogTrigger asChild>
-                <Card className="group cursor-pointer hover:shadow-xl transition-all duration-300 px-0 hover:-translate-y-1">
+                <Card className="group cursor-pointer hover:shadow-xl transition-all duration-300 py-0 hover:-translate-y-1">
                   <div className="aspect-video overflow-hidden rounded-t-lg">
                     <img
                       src={project.mainImage || "/placeholder.svg"}

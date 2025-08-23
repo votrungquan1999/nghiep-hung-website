@@ -49,7 +49,7 @@ export default function ProductsSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product, index) => (
-            <Card key={index} className="group hover:shadow-xl transition-all duration-300 px-0 hover:-translate-y-1">
+            <Card key={index} className="group hover:shadow-xl transition-all duration-300 py-0 hover:-translate-y-1">
               <div className="aspect-video overflow-hidden rounded-t-lg px-0">
                 <img
                   src={product.image || "/placeholder.svg"}
