@@ -2,12 +2,9 @@
 
 import { motion } from "framer-motion"
 
-interface SplashScreenProps {
-  isVisible: boolean
-}
 
-export default function SplashScreen({ isVisible }: SplashScreenProps) {
-  if (!isVisible) return null
+export default function SplashScreen() {
+  
 
   return (
     <motion.div

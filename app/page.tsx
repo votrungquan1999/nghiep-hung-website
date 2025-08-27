@@ -21,10 +21,22 @@ export default function HomePage() {
     return () => clearTimeout(timer)
   }, [])
 
+  useEffect(() => {
+    if (!showSplash && window.location.hash) {
+      const hash = window.location.hash
+      setTimeout(() => {
+        const element = document.querySelector(hash)
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" })
+        }
+      }, 100) // Small delay to ensure page is rendered
+    }
+  }, [showSplash])
+
   return (
     <>
       {showSplash && <SplashScreen />}
-      <div className="min-h-screen">
+      {!showSplash && <div className="min-h-screen">
         <Header />
         <main>
           <HeroSection />
@@ -34,7 +46,7 @@ export default function HomePage() {
           <ContactSection />
         </main>
         <Footer />
-      </div>
+      </div>}
     </>
   )
 }

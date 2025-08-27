@@ -1,18 +1,21 @@
 "use client"
 
 import { useState } from "react"
+import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Menu, X, Phone, Mail } from "lucide-react"
+import Link from "next/link"
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const pathname = usePathname()
 
   const navigation = [
-    { name: "Trang chủ", href: "#home" },
-    { name: "Giới thiệu", href: "#about" },
-    { name: "Sản phẩm", href: "#products" },
-    { name: "Dự án", href: "#projects" },
-    { name: "Liên hệ", href: "#contact" },
+    { name: "Trang chủ", href: "/" },
+    { name: "Giới thiệu", href: pathname === "/" ? "#about" : "/#about" },
+    { name: "Sản phẩm", href: "/products" },
+    { name: "Dự án", href: pathname === "/" ? "#projects" : "/#projects" },
+    { name: "Liên hệ", href: pathname === "/" ? "#contact" : "/#contact" },
   ]
 
   return (
@@ -20,24 +23,36 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <img
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/nghiep_hung_logo_full-Hlzmr0SbXEK1C9s89xeDb4h165W4Nk.svg"
-              alt="Nghiệp Hưng"
-              className="h-10 w-auto"
-            />
+            <Link href="/">
+              <img
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/nghiep_hung_logo_full-Hlzmr0SbXEK1C9s89xeDb4h165W4Nk.svg"
+                alt="Nghiệp Hưng"
+                className="h-10 w-auto cursor-pointer"
+              />
+            </Link>
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
-              >
-                {item.name}
-              </a>
-            ))}
+            {navigation.map((item) =>
+              item.href.startsWith("/") ? (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+                >
+                  {item.name}
+                </a>
+              ),
+            )}
           </nav>
 
           {/* Contact Info */}
@@ -62,16 +77,27 @@ export default function Header() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <nav className="flex flex-col space-y-2">
-              {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-foreground hover:text-primary transition-colors duration-200 py-2 px-4 rounded-md hover:bg-accent"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </a>
-              ))}
+              {navigation.map((item) =>
+                item.href.startsWith("/") ? (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="text-foreground hover:text-primary transition-colors duration-200 py-2 px-4 rounded-md hover:bg-accent"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ) : (
+                  <a
+                    key={item.name}
+                    href={item.href}
+                    className="text-foreground hover:text-primary transition-colors duration-200 py-2 px-4 rounded-md hover:bg-accent"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.name}
+                  </a>
+                ),
+              )}
             </nav>
           </div>
         )}
