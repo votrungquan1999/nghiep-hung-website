@@ -12,10 +12,10 @@ export default function Header() {
 
   const navigation = [
     { name: "Trang chủ", href: "/" },
-    { name: "Giới thiệu", href: pathname === "/" ? "#about" : "/#about" },
+    { name: "Giới thiệu", href: pathname === "/" ? "#about" : "/about" },
     { name: "Sản phẩm", href: "/products" },
-    { name: "Dự án", href: pathname === "/" ? "#projects" : "/#projects" },
-    { name: "Liên hệ", href: pathname === "/" ? "#contact" : "/#contact" },
+    { name: "Dự án", href: pathname === "/" ? "#projects" : "/projects" },
+    { name: "Liên hệ", href: pathname === "/" ? "#contact" : "/contact" },
   ]
 
   return (
@@ -34,25 +34,15 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            {navigation.map((item) =>
-              item.href.startsWith("/") ? (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
-                >
-                  {item.name}
-                </Link>
-              ) : (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
-                >
-                  {item.name}
-                </a>
-              ),
-            )}
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
+              >
+                {item.name}
+              </Link>
+            ))}
           </nav>
 
           {/* Contact Info */}
@@ -77,27 +67,16 @@ export default function Header() {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-border">
             <nav className="flex flex-col space-y-2">
-              {navigation.map((item) =>
-                item.href.startsWith("/") ? (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="text-foreground hover:text-primary transition-colors duration-200 py-2 px-4 rounded-md hover:bg-accent"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ) : (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="text-foreground hover:text-primary transition-colors duration-200 py-2 px-4 rounded-md hover:bg-accent"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </a>
-                ),
-              )}
+              {navigation.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="text-foreground hover:text-primary transition-colors duration-200 py-2 px-4 rounded-md hover:bg-accent"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
             </nav>
           </div>
         )}
