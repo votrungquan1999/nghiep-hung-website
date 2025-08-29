@@ -22,7 +22,7 @@ export default function SplashScreen() {
           <img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/nghiep_hung_logo_bg-T8322MemfFo82wE4Lyl1TRt5fZ5AVe.svg"
             alt="Nghiệp Hưng Logo"
-            className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto relative z-10 drop-shadow-2xl"
+            className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 mx-auto relative z-10 drop-shadow-2xl"
           />
         </motion.div>
 
@@ -36,30 +36,7 @@ export default function SplashScreen() {
           <p className="text-xl md:text-2xl font-sans font-medium text-white/90 tracking-wide">{"Công ty TNHH"}</p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 1.0, ease: "easeInOut" }}
-          className="mt-16"
-        >
-          <div className="flex justify-center space-x-2">
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2.0, repeat: Number.POSITIVE_INFINITY, delay: 0, ease: "easeInOut" }}
-              className="w-2 h-2 bg-white/70 rounded-full"
-            ></motion.div>
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2.0, repeat: Number.POSITIVE_INFINITY, delay: 0.3, ease: "easeInOut" }}
-              className="w-2 h-2 bg-white/70 rounded-full"
-            ></motion.div>
-            <motion.div
-              animate={{ scale: [1, 1.1, 1] }}
-              transition={{ duration: 2.0, repeat: Number.POSITIVE_INFINITY, delay: 0.6, ease: "easeInOut" }}
-              className="w-2 h-2 bg-white/70 rounded-full"
-            ></motion.div>
-          </div>
-        </motion.div>
+
       </div>
     </motion.div>
   )
