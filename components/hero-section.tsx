@@ -17,13 +17,13 @@ export default function HeroSection() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <a href="#products" className="inline-block">
+              <a href="/products" className="inline-block">
                 <Button size="lg" className="text-lg px-8 w-full">
                   {"Xem sản phẩm"}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </a>
-              <a href="#contact" className="inline-block">
+              <a href="/contact" className="inline-block">
                 <Button variant="outline" size="lg" className="text-lg px-8 bg-transparent w-full">
                   {"Liên hệ tư vấn"}
                 </Button>

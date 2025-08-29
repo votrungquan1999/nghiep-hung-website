@@ -22,7 +22,7 @@ export default function SplashScreen() {
           <img
             src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/nghiep_hung_logo_bg-T8322MemfFo82wE4Lyl1TRt5fZ5AVe.svg"
             alt="Nghiệp Hưng Logo"
-            className="w-96 h-96 mx-auto relative z-10 drop-shadow-2xl"
+            className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 mx-auto relative z-10 drop-shadow-2xl"
           />
         </motion.div>
 

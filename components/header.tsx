@@ -12,10 +12,10 @@ export default function Header() {
 
   const navigation = [
     { name: "Trang chủ", href: "/" },
-    { name: "Giới thiệu", href: pathname === "/" ? "#about" : "/about" },
+    { name: "Giới thiệu", href: "/about" },
     { name: "Sản phẩm", href: "/products" },
-    { name: "Dự án", href: pathname === "/" ? "#projects" : "/projects" },
-    { name: "Liên hệ", href: pathname === "/" ? "#contact" : "/contact" },
+    { name: "Dự án", href: "/projects" },
+    { name: "Liên hệ", href: "/contact" },
   ]
 
   return (
