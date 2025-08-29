@@ -1,33 +1,42 @@
 "use client"
 
+import type React from "react"
+
 import { useState } from "react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface ProductGalleryDialogProps {
-  isOpen: boolean
-  onClose: () => void
   product: {
     name: string
     description: string
-    images: string[]
+    gallery: string[] // Changed from images to gallery to match product data structure
   }
+  children: React.ReactNode // Added children prop to make it a wrapper component
 }
 
-export default function ProductGalleryDialog({ isOpen, onClose, product }: ProductGalleryDialogProps) {
+export default function ProductGalleryDialog({ product, children }: ProductGalleryDialogProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % product.images.length)
+    if (product.gallery && product.gallery.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % product.gallery.length)
+    }
   }
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + product.images.length) % product.images.length)
+    if (product.gallery && product.gallery.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + product.gallery.length) % product.gallery.length)
+    }
   }
 
+  const galleryImages = product.gallery || []
+  const hasMultipleImages = galleryImages.length > 1
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog>
+      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] p-0">
         <DialogHeader className="p-6 pb-0">
           <DialogTitle className="text-2xl font-serif font-bold text-foreground pr-8">{product.name}</DialogTitle>
@@ -36,12 +45,12 @@ export default function ProductGalleryDialog({ isOpen, onClose, product }: Produ
         <div className="px-6 pb-6">
           <div className="relative aspect-video mb-6 bg-muted rounded-lg overflow-hidden">
             <img
-              src={product.images[currentImageIndex] || "/placeholder.svg"}
+              src={galleryImages[currentImageIndex] || "/placeholder.svg"}
               alt={`${product.name} - Image ${currentImageIndex + 1}`}
               className="w-full h-full object-cover"
             />
 
-            {product.images.length > 1 && (
+            {hasMultipleImages && (
               <>
                 <Button
                   variant="secondary"
@@ -63,9 +72,9 @@ export default function ProductGalleryDialog({ isOpen, onClose, product }: Produ
             )}
           </div>
 
-          {product.images.length > 1 && (
+          {hasMultipleImages && (
             <div className="flex justify-center space-x-2 mb-6">
-              {product.images.map((_, index) => (
+              {galleryImages.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
