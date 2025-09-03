@@ -1,4 +1,5 @@
 import { Award, Target, Users, Wrench } from "lucide-react"
+import Image from "next/image"
 import FeatureCard from "./feature-card.ui"
 
 /**
@@ -32,8 +33,20 @@ export default function AboutSection() {
 
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
-		<section id="about" className="py-20 bg-muted/30">
-			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+		<section id="about" className="bg-muted/30">
+			{/* Placeholder image - full width */}
+			<div>
+				<Image
+					src="/placeholder-gtu1v.png"
+					alt="Hình ảnh công ty - sẽ được cập nhật sau"
+					width={1200}
+					height={600}
+					className="w-full h-64 lg:h-80 object-cover rounded-lg"
+					priority={false}
+				/>
+			</div>
+
+			<div className="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8">
 				<div className="text-center mb-16">
 					<h2 className="text-3xl lg:text-5xl font-serif font-bold text-foreground mb-6">
 						{"Về Công ty"} <span className="text-primary">{"Nghiệp Hưng"}</span>
