@@ -20,7 +20,7 @@ export default function SplashScreen() {
         >
           <div className="absolute inset-0 bg-white/20 rounded-full blur-3xl scale-150"></div>
           <img
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/nghiep_hung_logo_bg-T8322MemfFo82wE4Lyl1TRt5fZ5AVe.svg"
+            src="/nghiep_hung_logo_no_bg.svg"
             alt="Nghiệp Hưng Logo"
             className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 mx-auto relative z-10 drop-shadow-2xl"
           />
@@ -35,8 +35,6 @@ export default function SplashScreen() {
           <h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-2 tracking-tight">{"Nghiệp Hưng"}</h1>
           <p className="text-xl md:text-2xl font-sans font-medium text-white/90 tracking-wide">{"Công ty TNHH"}</p>
         </motion.div>
-
-
       </div>
     </motion.div>
   )

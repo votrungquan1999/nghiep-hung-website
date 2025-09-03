@@ -11,9 +11,9 @@ interface ProductGalleryDialogProps {
   product: {
     name: string
     description: string
-    gallery: string[] // Changed from images to gallery to match product data structure
+    gallery: string[]
   }
-  children: React.ReactNode // Added children prop to make it a wrapper component
+  children: React.ReactNode
 }
 
 export default function ProductGalleryDialog({ product, children }: ProductGalleryDialogProps) {
@@ -37,13 +37,13 @@ export default function ProductGalleryDialog({ product, children }: ProductGalle
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-4xl w-[95vw] max-h-[90vh] p-0">
-        <DialogHeader className="p-6 pb-0">
+      <DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] overflow-y-auto p-0">
+        <DialogHeader className="p-6 pb-0 sticky top-0 bg-background z-10">
           <DialogTitle className="text-2xl font-serif font-bold text-foreground pr-8">{product.name}</DialogTitle>
         </DialogHeader>
 
         <div className="px-6 pb-6">
-          <div className="relative aspect-video mb-6 bg-muted rounded-lg overflow-hidden">
+          <div className="relative w-full h-[40vh] min-h-[300px] max-h-[500px] mb-6 bg-muted rounded-lg overflow-hidden">
             <img
               src={galleryImages[currentImageIndex] || "/placeholder.svg"}
               alt={`${product.name} - Image ${currentImageIndex + 1}`}
