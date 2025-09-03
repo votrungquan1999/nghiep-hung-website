@@ -1,6 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card"
 import { Target, Users, Award, Wrench } from "lucide-react"
+import FeatureCard from "./feature-card.ui"
 
+/**
+ * About section component that displays company overview with interactive feature cards
+ * Each feature card opens a dialog when clicked to show detailed description
+ */
 export default function AboutSection() {
   const features = [
     {
@@ -41,47 +45,13 @@ export default function AboutSection() {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
           {features.map((feature, index) => (
-            <Card key={index} className="text-center hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="p-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-full mb-6">
-                  <feature.icon className="h-8 w-8 text-primary" />
-                </div>
-                <h3 className="text-xl font-serif font-bold text-foreground mb-4">{feature.title}</h3>
-                <p className="text-muted-foreground leading-relaxed">{feature.description}</p>
-              </CardContent>
-            </Card>
+            <FeatureCard
+              key={index}
+              icon={feature.icon}
+              title={feature.title}
+              description={feature.description}
+            />
           ))}
-        </div>
-
-        <div className="mt-16 bg-card rounded-2xl p-8 lg:p-12 shadow-lg">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-2xl lg:text-3xl font-serif font-bold text-foreground mb-6">
-                {"Cam kết của chúng tôi"}
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                  <p className="text-muted-foreground">{"Sử dụng vật liệu chất lượng cao, đạt tiêu chuẩn quốc tế"}</p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                  <p className="text-muted-foreground">{"Thi công đúng tiến độ, đảm bảo an toàn lao động"}</p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                  <p className="text-muted-foreground">{"Hỗ trợ khách hàng 24/7, bảo hành và bảo trì định kỳ"}</p>
-                </div>
-                <div className="flex items-start">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-                  <p className="text-muted-foreground">{"Giá cả cạnh tranh, minh bạch trong báo giá"}</p>
-                </div>
-              </div>
-            </div>
-            <div>
-              <img src="/duct-installation-team.png" alt="Đội ngũ chuyên nghiệp" className="rounded-lg shadow-lg" />
-            </div>
-          </div>
         </div>
       </div>
     </section>
