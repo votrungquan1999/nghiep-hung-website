@@ -68,6 +68,51 @@ export default function AboutSection() {
 						/>
 					))}
 				</div>
+
+				<div className="mt-16 bg-card rounded-2xl p-8 lg:p-12 shadow-lg">
+					<div className="grid lg:grid-cols-2 gap-12 items-center">
+						<div>
+							<h3 className="text-2xl lg:text-3xl font-serif font-bold text-foreground mb-6">
+								{"Cam kết của chúng tôi"}
+							</h3>
+							<div className="space-y-4">
+								<div className="flex items-start">
+									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
+									<p className="text-muted-foreground">
+										{"Sử dụng vật liệu chất lượng cao, đạt tiêu chuẩn quốc tế"}
+									</p>
+								</div>
+								<div className="flex items-start">
+									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
+									<p className="text-muted-foreground">
+										{"Thi công đúng tiến độ, đảm bảo an toàn lao động"}
+									</p>
+								</div>
+								<div className="flex items-start">
+									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
+									<p className="text-muted-foreground">
+										{"Hỗ trợ khách hàng 24/7, bảo hành và bảo trì định kỳ"}
+									</p>
+								</div>
+								<div className="flex items-start">
+									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
+									<p className="text-muted-foreground">
+										{"Giá cả cạnh tranh, minh bạch trong báo giá"}
+									</p>
+								</div>
+							</div>
+						</div>
+						<div>
+							<Image
+								src="/duct-installation-team.png"
+								alt="Đội ngũ chuyên nghiệp"
+								width={600}
+								height={400}
+								className="rounded-lg shadow-lg"
+							/>
+						</div>
+					</div>
+				</div>
 			</div>
 		</section>
 	)
