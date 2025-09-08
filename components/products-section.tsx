@@ -76,11 +76,11 @@ export default function ProductsSection() {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="text-center mb-16">
 					<h2 className="text-3xl lg:text-5xl font-serif font-bold text-foreground mb-6">
-						{"Sản phẩm &"} <span className="text-primary">{"Dịch vụ"}</span>
+						{"Sản phẩm"} <span className="text-primary">{"Chất lượng cao"}</span>
 					</h2>
 					<p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
 						{
-							"Chúng tôi cung cấp đa dạng các sản phẩm và dịch vụ hệ thống ống gió, đáp ứng mọi nhu cầu của khách hàng."
+							"Chúng tôi cung cấp đa dạng các sản phẩm hệ thống ống gió chất lượng cao, đáp ứng mọi nhu cầu của khách hàng."
 						}
 					</p>
 				</div>

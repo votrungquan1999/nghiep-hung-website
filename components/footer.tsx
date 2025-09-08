@@ -58,6 +58,14 @@ export default function Footer() {
 							</li>
 							<li>
 								<Link
+									href="/services"
+									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+								>
+									{"Dịch vụ"}
+								</Link>
+							</li>
+							<li>
+								<Link
 									href="/projects"
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>

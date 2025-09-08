@@ -8,6 +8,7 @@ import Header from "@/components/header"
 import HeroSection from "@/components/hero-section"
 import ProductsSection from "@/components/products-section"
 import ProjectsSection from "@/components/projects-section"
+import ServicesSection from "@/components/services-section"
 import SplashScreen from "@/components/splash-screen"
 
 export default function HomePage() {
@@ -43,6 +44,7 @@ export default function HomePage() {
 						<HeroSection />
 						<AboutSection />
 						<ProductsSection />
+						<ServicesSection />
 						<ProjectsSection />
 						<ContactSection />
 					</main>
