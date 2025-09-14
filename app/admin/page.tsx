@@ -1,51 +1,86 @@
-import { Home, Shield } from "lucide-react"
+import { FolderOpen, Package, Phone, Wrench } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 
 /**
- * Admin landing page
- * Simple protected admin area
+ * Admin dashboard page
+ * Provides navigation to all admin management sections
  * Redirects to login if not authenticated
  */
 export default async function AdminPage() {
 	return (
-		<div className="min-h-screen bg-background flex items-center justify-center p-4">
-			<div className="max-w-md w-full space-y-6">
-				{/* Header */}
-				<div className="text-center space-y-2">
-					<div className="flex justify-center">
-						<div className="p-3 rounded-full bg-primary/10">
-							<Shield className="size-8 text-primary" />
-						</div>
-					</div>
-					<h1 className="text-3xl font-serif font-bold text-foreground">{"Admin Area"}</h1>
-					<p className="text-muted-foreground">{"Welcome to the protected admin section"}</p>
-				</div>
-
-				{/* Info Card */}
-				<Card>
+		<div className="container mx-auto px-4 py-8">
+			<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+				{/* Products Management */}
+				<Card className="hover:shadow-md transition-shadow">
 					<CardHeader>
-						<CardTitle className="text-center">{"Admin Access"}</CardTitle>
-						<CardDescription className="text-center">
-							{"You have successfully accessed the protected admin area."}
-						</CardDescription>
+						<div className="flex items-center space-x-3">
+							<div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/20">
+								<Package className="size-5 text-blue-600 dark:text-blue-400" />
+							</div>
+							<CardTitle className="text-lg">{"Products"}</CardTitle>
+						</div>
+						<CardDescription>{"Manage air duct products and inventory"}</CardDescription>
 					</CardHeader>
-					<CardContent className="space-y-4">
-						<div className="text-center space-y-2">
-							<p className="text-sm text-muted-foreground">
-								{"This is a simple admin landing page protected by authentication."}
-							</p>
-						</div>
+					<CardContent>
+						<Link href="/admin/products">
+							<Button className="w-full">{"Manage Products"}</Button>
+						</Link>
+					</CardContent>
+				</Card>
 
-						<div className="pt-4">
-							<Link href="/" className="block">
-								<Button className="w-full" variant="outline">
-									<Home className="mr-2 size-4" />
-									{"Back to Homepage"}
-								</Button>
-							</Link>
+				{/* Services Management */}
+				<Card className="hover:shadow-md transition-shadow">
+					<CardHeader>
+						<div className="flex items-center space-x-3">
+							<div className="p-2 rounded-lg bg-green-100 dark:bg-green-900/20">
+								<Wrench className="size-5 text-green-600 dark:text-green-400" />
+							</div>
+							<CardTitle className="text-lg">{"Services"}</CardTitle>
 						</div>
+						<CardDescription>{"Manage company services and offerings"}</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<Link href="/admin/services">
+							<Button className="w-full">{"Manage Services"}</Button>
+						</Link>
+					</CardContent>
+				</Card>
+
+				{/* Projects Management */}
+				<Card className="hover:shadow-md transition-shadow">
+					<CardHeader>
+						<div className="flex items-center space-x-3">
+							<div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/20">
+								<FolderOpen className="size-5 text-purple-600 dark:text-purple-400" />
+							</div>
+							<CardTitle className="text-lg">{"Projects"}</CardTitle>
+						</div>
+						<CardDescription>{"Showcase completed projects and portfolio"}</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<Link href="/admin/projects">
+							<Button className="w-full">{"Manage Projects"}</Button>
+						</Link>
+					</CardContent>
+				</Card>
+
+				{/* Contact Management */}
+				<Card className="hover:shadow-md transition-shadow">
+					<CardHeader>
+						<div className="flex items-center space-x-3">
+							<div className="p-2 rounded-lg bg-orange-100 dark:bg-orange-900/20">
+								<Phone className="size-5 text-orange-600 dark:text-orange-400" />
+							</div>
+							<CardTitle className="text-lg">{"Contact Info"}</CardTitle>
+						</div>
+						<CardDescription>{"Update contact details and social media"}</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<Link href="/admin/contact">
+							<Button className="w-full">{"Manage Contact"}</Button>
+						</Link>
 					</CardContent>
 				</Card>
 			</div>
