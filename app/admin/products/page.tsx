@@ -1,8 +1,9 @@
-import { Edit, Package, Plus, Trash2 } from "lucide-react"
+import { Edit, Package, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import CreateProductDialog from "./create-product-dialog/create-product-dialog"
 import { ProductPreviewDialog } from "./product-preview-dialog"
 
 /**
@@ -83,12 +84,7 @@ export default async function ProductsPage() {
 				</div>
 
 				{/* Add New Button */}
-				<form>
-					<Button type="submit">
-						<Plus className="mr-2 size-4" />
-						{"Add New Product"}
-					</Button>
-				</form>
+				<CreateProductDialog />
 			</div>
 			{/* Stats Cards */}
 			<div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">

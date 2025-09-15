@@ -169,6 +169,9 @@
 	html {
 		scroll-behavior: smooth;
 	}
+	input, textarea {
+		@apply bg-white border-slate-700;
+	}
 }
 
 @layer utilities {
