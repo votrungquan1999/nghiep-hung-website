@@ -97,7 +97,10 @@ export default function CreateProductDialog() {
 								<ImageUploadError />
 
 								{/* Image Review with Custom Component */}
-								<ImageUploadReview ImageComponent={ProductImageRenderer} />
+								<ImageUploadReview
+									ImageComponent={ProductImageRenderer}
+									className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3"
+								/>
 							</ImageUploadRoot>
 						</div>
 
