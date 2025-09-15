@@ -73,7 +73,7 @@ export default function CreateProductDialog() {
 								</p>
 							</div>
 
-							<ImageUploadRoot maxFiles={10} maxFileSize={5 * 1024 * 1024}>
+							<ImageUploadRoot maxFiles={10} maxFileSize={5 * 1024 * 1024} name="productImages">
 								{/* Upload Trigger */}
 								<ImageUploadTrigger asChild>
 									<Button type="button" variant="outline" className="w-full">
