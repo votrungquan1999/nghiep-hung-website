@@ -1,8 +1,9 @@
-import { Calendar, Edit, Eye, FolderOpen, MapPin, Plus, Trash2 } from "lucide-react"
+import { Calendar, Edit, FolderOpen, MapPin, Plus, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { ProjectPreviewDialog } from "./project-preview-dialog"
 
 /**
  * Projects management page
@@ -20,7 +21,11 @@ export default async function ProjectsPage() {
 			client: "Vincom Shopping Mall",
 			status: "completed",
 			completionDate: "2024-01-15",
-			image: "/shopping-mall-ducts.png",
+			gallery: [
+				"/shopping-mall-ducts.png",
+				"/mall-ventilation-installation.png",
+				"/modern-mall-air-ducts.png",
+			],
 			category: "Commercial",
 			duration: "3 months",
 		},
@@ -32,7 +37,11 @@ export default async function ProjectsPage() {
 			client: "Samsung Electronics",
 			status: "completed",
 			completionDate: "2023-12-20",
-			image: "/factory-duct-installation.png",
+			gallery: [
+				"/factory-duct-installation.png",
+				"/industrial-air-ducts.png",
+				"/duct-installation-team.png",
+			],
 			category: "Industrial",
 			duration: "6 months",
 		},
@@ -44,7 +53,7 @@ export default async function ProjectsPage() {
 			client: "Vinhomes",
 			status: "completed",
 			completionDate: "2023-11-10",
-			image: "/modern-mall-air-ducts.png",
+			gallery: ["/modern-mall-air-ducts.png", "/commercial-duct-work-completion.png"],
 			category: "Residential",
 			duration: "4 months",
 		},
@@ -56,7 +65,11 @@ export default async function ProjectsPage() {
 			client: "Bach Mai Hospital",
 			status: "in-progress",
 			completionDate: "2024-03-15",
-			image: "/air-filtration-system.png",
+			gallery: [
+				"/air-filtration-system.png",
+				"/air-filter-installation.png",
+				"/air-purifier-installation.png",
+			],
 			category: "Healthcare",
 			duration: "5 months",
 		},
@@ -68,7 +81,7 @@ export default async function ProjectsPage() {
 			client: "Saigon Trade Center",
 			status: "completed",
 			completionDate: "2023-10-05",
-			image: "/commercial-duct-work-completion.png",
+			gallery: ["/commercial-duct-work-completion.png", "/duct-installation-team.png"],
 			category: "Commercial",
 			duration: "2 months",
 		},
@@ -80,7 +93,11 @@ export default async function ProjectsPage() {
 			client: "Music Studio Pro",
 			status: "draft",
 			completionDate: "2024-04-30",
-			image: "/soundproof-air-duct-installation.png",
+			gallery: [
+				"/soundproof-air-duct-installation.png",
+				"/soundproof-air-duct.png",
+				"/soundproof-materials.png",
+			],
 			category: "Specialized",
 			duration: "1 month",
 		},
@@ -172,7 +189,7 @@ export default async function ProjectsPage() {
 						<Card key={project.id} className="overflow-hidden hover:shadow-md transition-shadow">
 							<div className="aspect-video overflow-hidden">
 								<Image
-									src={project.image}
+									src={project.gallery[0]}
 									alt={project.title}
 									width={400}
 									height={225}
@@ -227,10 +244,7 @@ export default async function ProjectsPage() {
 										</div>
 									</div>
 									<div className="flex items-center space-x-2 pt-2">
-										<Button type="button" variant="ghost" size="sm" className="flex-1">
-											<Eye className="mr-1 size-3" />
-											{"View"}
-										</Button>
+										<ProjectPreviewDialog project={project} />
 										<Button type="button" variant="ghost" size="sm" className="flex-1">
 											<Edit className="mr-1 size-3" />
 											{"Edit"}

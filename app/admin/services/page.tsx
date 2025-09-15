@@ -1,7 +1,9 @@
-import { Edit, Eye, Plus, Trash2, Wrench } from "lucide-react"
+import { Edit, Plus, Trash2, Wrench } from "lucide-react"
+import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ServicePreviewDialog } from "./service-preview-dialog"
 
 /**
  * Services management page
@@ -20,6 +22,11 @@ export default async function ServicesPage() {
 			price: "Custom Quote",
 			status: "active",
 			icon: "🔧",
+			gallery: [
+				"/duct-installation-team.png",
+				"/round-air-duct-installation.png",
+				"/square-air-duct-installation.png",
+			],
 			createdAt: "2024-01-15",
 		},
 		{
@@ -30,6 +37,7 @@ export default async function ServicesPage() {
 			price: "Starting from $150",
 			status: "active",
 			icon: "🧹",
+			gallery: ["/air-filter-installation.png", "/air-filtration-system.png"],
 			createdAt: "2024-01-10",
 		},
 		{
@@ -40,6 +48,11 @@ export default async function ServicesPage() {
 			price: "Custom Quote",
 			status: "active",
 			icon: "🌬️",
+			gallery: [
+				"/air-filtration-system.png",
+				"/air-filter-installation.png",
+				"/air-purifier-installation.png",
+			],
 			createdAt: "2024-01-05",
 		},
 		{
@@ -50,6 +63,11 @@ export default async function ServicesPage() {
 			price: "Custom Quote",
 			status: "active",
 			icon: "🔇",
+			gallery: [
+				"/soundproof-air-duct-installation.png",
+				"/soundproof-air-duct.png",
+				"/soundproof-materials.png",
+			],
 			createdAt: "2024-01-01",
 		},
 		{
@@ -60,6 +78,7 @@ export default async function ServicesPage() {
 			price: "Emergency Rates",
 			status: "active",
 			icon: "🚨",
+			gallery: ["/commercial-duct-work-completion.png", "/duct-installation-team.png"],
 			createdAt: "2023-12-20",
 		},
 		{
@@ -70,6 +89,7 @@ export default async function ServicesPage() {
 			price: "Hourly Rate",
 			status: "draft",
 			icon: "💡",
+			gallery: ["/placeholder-953i4.png"],
 			createdAt: "2023-12-15",
 		},
 	]
@@ -170,8 +190,14 @@ export default async function ServicesPage() {
 									className="flex items-center justify-between p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors"
 								>
 									<div className="flex items-center space-x-4">
-										<div className="size-16 rounded-lg bg-muted flex items-center justify-center text-2xl">
-											{service.icon}
+										<div className="size-16 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
+											<Image
+												src={service.gallery[0]}
+												alt={service.name}
+												width={64}
+												height={64}
+												className="size-full object-cover"
+											/>
 										</div>
 										<div className="space-y-1">
 											<div className="flex items-center space-x-2">
@@ -198,9 +224,7 @@ export default async function ServicesPage() {
 										</div>
 									</div>
 									<div className="flex items-center space-x-2">
-										<Button type="button" variant="ghost" size="sm">
-											<Eye className="size-4" />
-										</Button>
+										<ServicePreviewDialog service={service} />
 										<Button type="button" variant="ghost" size="sm">
 											<Edit className="size-4" />
 										</Button>

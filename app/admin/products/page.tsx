@@ -1,8 +1,9 @@
-import { Edit, Eye, Package, Plus, Trash2 } from "lucide-react"
+import { Edit, Package, Plus, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { ProductPreviewDialog } from "./product-preview-dialog"
 
 /**
  * Products management page
@@ -19,7 +20,11 @@ export default async function ProductsPage() {
 			category: "Ducts",
 			price: "Contact for pricing",
 			status: "active",
-			image: "/round-air-ducts.png",
+			gallery: [
+				"/round-air-ducts.png",
+				"/round-air-duct-installation.png",
+				"/round-air-duct-factory.png",
+			],
 			createdAt: "2024-01-15",
 		},
 		{
@@ -29,7 +34,11 @@ export default async function ProductsPage() {
 			category: "Ducts",
 			price: "Contact for pricing",
 			status: "active",
-			image: "/square-air-ducts.png",
+			gallery: [
+				"/square-air-ducts.png",
+				"/square-air-duct-manufacturing.png",
+				"/square-air-duct-system.png",
+			],
 			createdAt: "2024-01-10",
 		},
 		{
@@ -39,7 +48,7 @@ export default async function ProductsPage() {
 			category: "Flexible Systems",
 			price: "Contact for pricing",
 			status: "active",
-			image: "/flexible-air-duct-coil.png",
+			gallery: ["/flexible-air-duct-coil.png", "/flexible-air-duct-installation.png"],
 			createdAt: "2024-01-05",
 		},
 		{
@@ -49,7 +58,11 @@ export default async function ProductsPage() {
 			category: "Specialized",
 			price: "Contact for pricing",
 			status: "draft",
-			image: "/soundproof-air-duct.png",
+			gallery: [
+				"/soundproof-air-duct.png",
+				"/soundproof-air-duct-installation.png",
+				"/soundproof-materials.png",
+			],
 			createdAt: "2024-01-01",
 		},
 	]
@@ -152,7 +165,7 @@ export default async function ProductsPage() {
 									<div className="flex items-center space-x-4">
 										<div className="size-16 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
 											<Image
-												src={product.image}
+												src={product.gallery[0]}
 												alt={product.name}
 												width={64}
 												height={64}
@@ -184,9 +197,8 @@ export default async function ProductsPage() {
 										</div>
 									</div>
 									<div className="flex items-center space-x-2">
-										<Button type="button" variant="ghost" size="sm">
-											<Eye className="size-4" />
-										</Button>
+										<ProductPreviewDialog product={product} />
+
 										<Button type="button" variant="ghost" size="sm">
 											<Edit className="size-4" />
 										</Button>
