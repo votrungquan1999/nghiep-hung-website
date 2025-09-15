@@ -3,16 +3,18 @@
 import { Slot } from "@radix-ui/react-slot"
 import { AlertCircle, X } from "lucide-react"
 import Image from "next/image"
-import React, { useId } from "react"
+import React, { useEffect, useId } from "react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import {
 	ImageUploadProvider,
-	useImageUploadDispatch,
+	useImageUploadErrors,
+	useImageUploadFiles,
+	useImageUploadInput,
+	useImageUploadProgress,
 	useImageUploadState,
 } from "./image-upload.state"
 import type { ImageUploadFile, ImageUploadRootProps } from "./image-upload.type"
-import { ImageUploadActionType } from "./image-upload.type"
 
 /**
  * Image upload root component that provides context and manages file input
@@ -21,6 +23,9 @@ import { ImageUploadActionType } from "./image-upload.type"
  * @param acceptedTypes - Array of accepted MIME types (default: ["image/*"])
  * @param maxFileSize - Maximum file size in bytes (default: 5MB)
  * @param inputId - Optional custom input ID, will generate one if not provided
+ * @param name - Optional name attribute for form integration
+ * @param value - Controlled value for files (when using controlled mode)
+ * @param onChange - Callback for file changes (when using controlled mode)
  * @returns JSX element providing upload context to children
  */
 export function ImageUploadRoot({
@@ -29,9 +34,13 @@ export function ImageUploadRoot({
 	acceptedTypes = ["image/*"],
 	maxFileSize = 5 * 1024 * 1024,
 	inputId: providedInputId,
+	name,
+	value,
+	onChange,
 }: ImageUploadRootProps) {
 	const generatedInputId = useId()
 	const inputId = providedInputId || generatedInputId
+	const isControlled = value !== undefined && onChange !== undefined
 
 	return (
 		<ImageUploadProvider
@@ -39,78 +48,60 @@ export function ImageUploadRoot({
 			acceptedTypes={acceptedTypes}
 			maxFileSize={maxFileSize}
 			inputId={inputId}
+			files={isControlled ? value : []}
+			onChange={onChange}
 		>
-			<ImageUploadInput />
+			<ImageUploadInput name={name} />
+			{isControlled && <ImageUploadValueSync value={value} />}
 			{children}
 		</ImageUploadProvider>
 	)
 }
 
 /**
+ * Component that syncs external value prop with internal state
+ * Only renders in controlled mode to handle value prop changes
+ */
+function ImageUploadValueSync({ value }: { value?: ImageUploadFile[] }) {
+	const { syncFiles } = useImageUploadFiles()
+	const state = useImageUploadState()
+
+	useEffect(() => {
+		// Only sync if we have an onChange callback (controlled mode)
+		// and the external value is different from internal state
+		if (state.onChange && value) {
+			syncFiles(value)
+		}
+	}, [value, state.onChange, syncFiles])
+
+	return null
+}
+
+/**
  * Hidden file input component that handles file selection
  * Validates files and dispatches appropriate actions to the upload state
+ * @param name - Optional name attribute for form integration
  * @returns JSX element for the hidden file input
  */
-function ImageUploadInput() {
-	const state = useImageUploadState()
-	const dispatch = useImageUploadDispatch()
+function ImageUploadInput({ name }: { name?: string }) {
+	const { addFiles } = useImageUploadFiles()
+	const { validateFiles, addError, acceptedTypes, inputId } = useImageUploadInput()
 
 	const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const files = event.target.files
 		if (!files) return
 
 		const fileArray = Array.from(files)
-		const validFiles: ImageUploadFile[] = []
-		const errors: string[] = []
-
-		for (const file of fileArray) {
-			// Check file type
-			const isValidType = state.acceptedTypes.some((type) => {
-				if (type.endsWith("/*")) {
-					return file.type.startsWith(type.slice(0, -1))
-				}
-				return file.type === type
-			})
-
-			if (!isValidType) {
-				errors.push(`File ${file.name} is not a valid image type`)
-				continue
-			}
-
-			// Check file size
-			if (file.size > state.maxFileSize) {
-				errors.push(
-					`File ${file.name} is too large (max ${Math.round(state.maxFileSize / 1024 / 1024)}MB)`,
-				)
-				continue
-			}
-
-			// Check max files
-			if (state.files.length + validFiles.length >= state.maxFiles) {
-				errors.push(`Maximum ${state.maxFiles} files allowed`)
-				continue
-			}
-
-			const fileId = Math.random().toString(36).substr(2, 9)
-			const preview = URL.createObjectURL(file)
-
-			validFiles.push({
-				id: fileId,
-				file,
-				preview,
-				name: file.name,
-				size: file.size,
-			})
-		}
+		const { validFiles, errors } = validateFiles(fileArray)
 
 		if (errors.length > 0) {
 			for (const error of errors) {
-				dispatch({ type: ImageUploadActionType.AddError, payload: error })
+				addError(error)
 			}
 		}
 
 		if (validFiles.length > 0) {
-			dispatch({ type: ImageUploadActionType.AddFiles, payload: validFiles })
+			addFiles(validFiles)
 		}
 
 		// Reset input
@@ -119,10 +110,11 @@ function ImageUploadInput() {
 
 	return (
 		<input
-			id={state.inputId}
+			id={inputId}
+			name={name}
 			type="file"
 			multiple
-			accept={state.acceptedTypes.join(",")}
+			accept={acceptedTypes.join(",")}
 			onChange={handleFileSelect}
 			className="hidden"
 		/>
@@ -147,16 +139,11 @@ export function ImageUploadTrigger({
 	asChild = false,
 	className,
 }: ImageUploadTriggerProps) {
-	const state = useImageUploadState()
-
-	const handleClick = () => {
-		const fileInput = document.getElementById(state.inputId) as HTMLInputElement
-		fileInput?.click()
-	}
+	const { inputId, triggerFileSelect } = useImageUploadInput()
 
 	if (asChild) {
 		return (
-			<Slot className={className} onClick={handleClick}>
+			<Slot className={className} onClick={triggerFileSelect}>
 				{children}
 			</Slot>
 		)
@@ -164,13 +151,13 @@ export function ImageUploadTrigger({
 
 	return (
 		<label
-			htmlFor={state.inputId}
+			htmlFor={inputId}
 			className={cn("cursor-pointer", className)}
-			onClick={handleClick}
+			onClick={triggerFileSelect}
 			onKeyDown={(e) => {
 				if (e.key === "Enter" || e.key === " ") {
 					e.preventDefault()
-					handleClick()
+					triggerFileSelect()
 				}
 			}}
 		>
@@ -201,8 +188,8 @@ export function ImageUploadArea({
 	children,
 	asChild = false,
 }: ImageUploadAreaProps) {
-	const dispatch = useImageUploadDispatch()
-	const state = useImageUploadState()
+	const { addFiles } = useImageUploadFiles()
+	const { validateFiles, addError, triggerFileSelect } = useImageUploadInput()
 	const [isDragOver, setIsDragOver] = React.useState(false)
 
 	const handleDragOver = (event: React.DragEvent) => {
@@ -228,64 +215,22 @@ export function ImageUploadArea({
 		if (!files) return
 
 		const fileArray = Array.from(files)
-		const validFiles: ImageUploadFile[] = []
-		const errors: string[] = []
-
-		for (const file of fileArray) {
-			// Check file type
-			const isValidType = state.acceptedTypes.some((type) => {
-				if (type.endsWith("/*")) {
-					return file.type.startsWith(type.slice(0, -1))
-				}
-				return file.type === type
-			})
-
-			if (!isValidType) {
-				errors.push(`File ${file.name} is not a valid image type`)
-				continue
-			}
-
-			// Check file size
-			if (file.size > state.maxFileSize) {
-				errors.push(
-					`File ${file.name} is too large (max ${Math.round(state.maxFileSize / 1024 / 1024)}MB)`,
-				)
-				continue
-			}
-
-			// Check max files
-			if (state.files.length + validFiles.length >= state.maxFiles) {
-				errors.push(`Maximum ${state.maxFiles} files allowed`)
-				continue
-			}
-
-			const fileId = Math.random().toString(36).substr(2, 9)
-			const preview = URL.createObjectURL(file)
-
-			validFiles.push({
-				id: fileId,
-				file,
-				preview,
-				name: file.name,
-				size: file.size,
-			})
-		}
+		const { validFiles, errors } = validateFiles(fileArray)
 
 		if (errors.length > 0) {
 			for (const error of errors) {
-				dispatch({ type: ImageUploadActionType.AddError, payload: error })
+				addError(error)
 			}
 		}
 
 		if (validFiles.length > 0) {
-			dispatch({ type: ImageUploadActionType.AddFiles, payload: validFiles })
+			addFiles(validFiles)
 		}
 	}
 
 	const handleClick = () => {
 		if (disabled) return
-		const fileInput = document.getElementById(state.inputId) as HTMLInputElement
-		fileInput?.click()
+		triggerFileSelect()
 	}
 
 	if (asChild) {
@@ -360,20 +305,15 @@ interface ImageUploadReviewProps {
  * @returns JSX element displaying uploaded images in a grid layout
  */
 export function ImageUploadReview({ className, ImageComponent }: ImageUploadReviewProps) {
-	const state = useImageUploadState()
-	const dispatch = useImageUploadDispatch()
+	const { files, removeFile } = useImageUploadFiles()
 
-	const handleRemoveFile = (fileId: string) => {
-		dispatch({ type: ImageUploadActionType.RemoveFile, payload: fileId })
-	}
-
-	if (state.files.length === 0) return null
+	if (files.length === 0) return null
 
 	const Component = ImageComponent || Image
 
 	return (
 		<div className={cn("grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4", className)}>
-			{state.files.map((file) => (
+			{files.map((file) => (
 				<div key={file.id}>
 					<div className="relative group">
 						<div className="aspect-square rounded-lg overflow-hidden bg-muted">
@@ -390,7 +330,7 @@ export function ImageUploadReview({ className, ImageComponent }: ImageUploadRevi
 							variant="destructive"
 							size="icon"
 							className="absolute top-2 right-2 size-6 opacity-0 group-hover:opacity-100 transition-opacity"
-							onClick={() => handleRemoveFile(file.id)}
+							onClick={() => removeFile(file.id)}
 						>
 							<X className="size-3" />
 						</Button>
@@ -418,22 +358,22 @@ export function ImageUploadProgress({
 	className,
 	showPercentage = true,
 }: ImageUploadProgressProps) {
-	const state = useImageUploadState()
+	const { isUploading, uploadProgress } = useImageUploadProgress()
 
-	if (!state.isUploading) return null
+	if (!isUploading) return null
 
 	return (
 		<div className={cn("space-y-2", className)}>
 			<div className="flex items-center justify-between text-sm">
 				<span className="text-muted-foreground">Uploading...</span>
 				{showPercentage && (
-					<span className="text-muted-foreground">{Math.round(state.uploadProgress)}%</span>
+					<span className="text-muted-foreground">{Math.round(uploadProgress)}%</span>
 				)}
 			</div>
 			<div className="w-full bg-muted rounded-full h-2">
 				<div
 					className="bg-primary h-2 rounded-full transition-all duration-300"
-					style={{ width: `${state.uploadProgress}%` }}
+					style={{ width: `${uploadProgress}%` }}
 				/>
 			</div>
 		</div>
@@ -453,13 +393,13 @@ interface ImageUploadErrorProps {
  * @returns JSX element displaying errors or null if no errors
  */
 export function ImageUploadError({ className, variant = "destructive" }: ImageUploadErrorProps) {
-	const state = useImageUploadState()
+	const errors = useImageUploadErrors()
 
-	if (state.errors.length === 0) return null
+	if (errors.length === 0) return null
 
 	return (
 		<div className={cn("space-y-2", className)}>
-			{state.errors.map((error) => (
+			{errors.map((error) => (
 				<div
 					key={`error-${error}`}
 					className={cn(
