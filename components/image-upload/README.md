@@ -4,7 +4,7 @@ A flexible, composable image upload component with drag-and-drop functionality, 
 
 ## Usage
 
-### Basic Usage
+### Basic Usage (Uncontrolled)
 
 ```tsx
 import { 
@@ -26,6 +26,72 @@ function MyImageUpload() {
       </ImageUploadTrigger>
       <ImageUploadReview />
       <ImageUploadError />
+    </ImageUploadRoot>
+  )
+}
+```
+
+### Form Integration (Uncontrolled with name prop)
+
+```tsx
+function FormImageUpload() {
+  return (
+    <form onSubmit={(e) => {
+      e.preventDefault()
+      const formData = new FormData(e.currentTarget)
+      const files = formData.getAll('productImages') as File[]
+      console.log('Form files:', files)
+    }}>
+      <ImageUploadRoot 
+        maxFiles={5} 
+        maxFileSize={10 * 1024 * 1024}
+        name="productImages" // This enables form integration
+      >
+        <ImageUploadArea className="p-8 text-center">
+          <p>Drag and drop images here or click to select</p>
+        </ImageUploadArea>
+        <ImageUploadTrigger asChild>
+          <Button type="button">Select Images</Button>
+        </ImageUploadTrigger>
+        <ImageUploadReview />
+        <ImageUploadError />
+      </ImageUploadRoot>
+      <Button type="submit">Submit Form</Button>
+    </form>
+  )
+}
+```
+
+### Controlled Usage
+
+```tsx
+import { useState } from "react"
+import type { ImageUploadFile } from "@/components/image-upload/image-upload.type"
+
+function ControlledImageUpload() {
+  const [files, setFiles] = useState<ImageUploadFile[]>([])
+
+  return (
+    <ImageUploadRoot 
+      maxFiles={5} 
+      maxFileSize={10 * 1024 * 1024}
+      value={files}
+      onChange={setFiles}
+    >
+      <ImageUploadArea className="p-8 text-center">
+        <p>Drag and drop images here or click to select</p>
+      </ImageUploadArea>
+      <ImageUploadTrigger asChild>
+        <Button type="button">Select Images</Button>
+      </ImageUploadTrigger>
+      <ImageUploadReview />
+      <ImageUploadError />
+      
+      {/* You can access the files in the parent component */}
+      <div className="mt-4">
+        <p>Selected files: {files.length}</p>
+        <Button onClick={() => setFiles([])}>Clear All</Button>
+      </div>
     </ImageUploadRoot>
   )
 }
@@ -138,7 +204,7 @@ function CustomImageUpload() {
 
 | Component | Props | Description |
 |-----------|-------|-------------|
-| `ImageUploadRoot` | `maxFiles`, `acceptedTypes`, `maxFileSize`, `inputId`, `children` | Root provider component that manages upload state |
+| `ImageUploadRoot` | `maxFiles`, `acceptedTypes`, `maxFileSize`, `inputId`, `name`, `value`, `onChange`, `children` | Root provider component that manages upload state |
 | `ImageUploadTrigger` | `children`, `asChild`, `className` | Button/trigger element to open file selection |
 | `ImageUploadArea` | `className`, `disabled`, `children`, `asChild` | Drag and drop area for file uploads |
 | `ImageUploadReview` | `className`, `ImageComponent` | Grid display of uploaded images with remove functionality |
@@ -156,6 +222,10 @@ interface ImageUploadRootProps {
   acceptedTypes?: string[]            // Default: ["image/*"]
   maxFileSize?: number                // Default: 5MB
   inputId?: string                    // Optional custom input ID
+  name?: string                       // Optional name attribute for form integration
+  // Controlled mode props
+  value?: ImageUploadFile[]           // Controlled value for files
+  onChange?: (files: ImageUploadFile[]) => void // Callback for file changes
 }
 ```
 
@@ -270,6 +340,9 @@ Validation errors are automatically displayed using the `ImageUploadError` compo
 - ✅ asChild pattern with Radix Slot
 - ✅ Context-based state management
 - ✅ Automatic file cleanup (URL.revokeObjectURL)
+- ✅ **Form integration with name prop**
+- ✅ **Controlled and uncontrolled modes**
+- ✅ **Seamless form submission support**
 
 ## File Structure
 

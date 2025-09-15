@@ -19,6 +19,7 @@ export interface ImageUploadState {
 	maxFileSize: number
 	acceptedTypes: string[]
 	inputId: string
+	onChange?: (files: ImageUploadFile[]) => void
 }
 
 export enum ImageUploadActionType {
@@ -29,6 +30,7 @@ export enum ImageUploadActionType {
 	AddError = "ADD_ERROR",
 	ClearErrors = "CLEAR_ERRORS",
 	Reset = "RESET",
+	SyncFiles = "SYNC_FILES",
 }
 
 export type ImageUploadAction =
@@ -39,6 +41,7 @@ export type ImageUploadAction =
 	| { type: ImageUploadActionType.AddError; payload: string }
 	| { type: ImageUploadActionType.ClearErrors }
 	| { type: ImageUploadActionType.Reset }
+	| { type: ImageUploadActionType.SyncFiles; payload: ImageUploadFile[] }
 
 export interface ImageUploadRootProps {
 	children: React.ReactNode
@@ -46,4 +49,8 @@ export interface ImageUploadRootProps {
 	acceptedTypes?: string[]
 	maxFileSize?: number
 	inputId?: string
+	name?: string
+	// Controlled mode props
+	value?: ImageUploadFile[]
+	onChange?: (files: ImageUploadFile[]) => void
 }
