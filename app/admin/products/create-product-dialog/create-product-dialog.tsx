@@ -74,19 +74,36 @@ export default function CreateProductDialog() {
 							</div>
 
 							<ImageUploadRoot maxFiles={10} maxFileSize={5 * 1024 * 1024} name="productImages">
-								{/* Upload Trigger */}
-								<ImageUploadTrigger asChild>
-									<Button type="button" variant="outline" className="w-full">
-										<Upload className="mr-2 size-4" />
-										Select Images
-									</Button>
-								</ImageUploadTrigger>
+								{/* Drop Zone with integrated trigger */}
+								<ImageUploadArea
+									className="p-8 w-full flex items-center justify-center"
+									clickable={false}
+								>
+									<div className="text-center text-muted-foreground space-y-4">
+										<div className="flex flex-col items-center space-y-2">
+											<div className="size-16 rounded-full bg-muted flex items-center justify-center">
+												<Upload className="size-8 text-muted-foreground" />
+											</div>
+											<div className="space-y-1">
+												<h3 className="text-sm font-medium text-foreground">
+													Upload Product Images
+												</h3>
+												<p className="text-xs text-muted-foreground">
+													Drag and drop your images here, or click the button below to select files
+												</p>
+											</div>
+										</div>
 
-								{/* Drop Zone */}
-								<ImageUploadArea className="h-32 w-full flex items-center justify-center">
-									<div className="text-center text-muted-foreground">
-										<Upload className="mx-auto size-8 mb-2" />
-										<p className="text-sm">Drag and drop images here, or click to select</p>
+										<ImageUploadTrigger asChild>
+											<Button
+												type="button"
+												variant="outline"
+												className="bg-white border-border hover:bg-muted"
+											>
+												<Upload className="mr-2 size-4" />
+												Select Images
+											</Button>
+										</ImageUploadTrigger>
 									</div>
 								</ImageUploadArea>
 

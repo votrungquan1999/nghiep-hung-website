@@ -171,6 +171,7 @@ interface ImageUploadAreaProps {
 	disabled?: boolean
 	children?: React.ReactNode
 	asChild?: boolean
+	clickable?: boolean
 }
 
 /**
@@ -180,6 +181,7 @@ interface ImageUploadAreaProps {
  * @param disabled - Whether the drop zone is disabled
  * @param children - React children to render within the drop zone
  * @param asChild - Whether to render as a child component using Radix Slot
+ * @param clickable - Whether clicking the area should trigger file selection (default: true)
  * @returns JSX element for the drag and drop area
  */
 export function ImageUploadArea({
@@ -187,6 +189,7 @@ export function ImageUploadArea({
 	disabled = false,
 	children,
 	asChild = false,
+	clickable = true,
 }: ImageUploadAreaProps) {
 	const { addFiles } = useImageUploadFiles()
 	const { validateFiles, addError, triggerFileSelect } = useImageUploadInput()
@@ -229,7 +232,7 @@ export function ImageUploadArea({
 	}
 
 	const handleClick = () => {
-		if (disabled) return
+		if (disabled || !clickable) return
 		triggerFileSelect()
 	}
 
@@ -242,6 +245,8 @@ export function ImageUploadArea({
 						? "border-primary bg-primary/5"
 						: "border-slate-700 bg-white hover:border-primary/50 focus-within:border-primary",
 					disabled && "opacity-50 cursor-not-allowed",
+					!disabled && clickable && "cursor-pointer",
+					!disabled && !clickable && "cursor-default",
 					className,
 				)}
 				onDragOver={handleDragOver}
@@ -260,31 +265,54 @@ export function ImageUploadArea({
 		)
 	}
 
+	if (clickable) {
+		return (
+			<button
+				type="button"
+				className={cn(
+					"border-2 border-dashed rounded-lg transition-colors w-full",
+					isDragOver
+						? "border-primary bg-primary/5"
+						: "border-slate-700 bg-white hover:border-primary/50 focus-within:border-primary",
+					disabled && "opacity-50 cursor-not-allowed",
+					!disabled && "cursor-pointer",
+					className,
+				)}
+				onDragOver={handleDragOver}
+				onDragLeave={handleDragLeave}
+				onDrop={handleDrop}
+				onClick={handleClick}
+				disabled={disabled}
+				onKeyDown={(e) => {
+					if (e.key === "Enter" || e.key === " ") {
+						e.preventDefault()
+						handleClick()
+					}
+				}}
+			>
+				{children}
+			</button>
+		)
+	}
+
 	return (
-		<button
-			type="button"
+		<section
 			className={cn(
 				"border-2 border-dashed rounded-lg transition-colors w-full",
 				isDragOver
 					? "border-primary bg-primary/5"
-					: "border-slate-700 bg-white hover:border-primary/50 focus-within:border-primary",
+					: "border-slate-700 hover:bg-white focus-within:bg-white",
 				disabled && "opacity-50 cursor-not-allowed",
+				!disabled && "cursor-default",
 				className,
 			)}
+			aria-label="Upload area. Drag and drop images or click to select."
 			onDragOver={handleDragOver}
 			onDragLeave={handleDragLeave}
 			onDrop={handleDrop}
-			onClick={handleClick}
-			disabled={disabled}
-			onKeyDown={(e) => {
-				if (e.key === "Enter" || e.key === " ") {
-					e.preventDefault()
-					handleClick()
-				}
-			}}
 		>
 			{children}
-		</button>
+		</section>
 	)
 }
 
