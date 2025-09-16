@@ -16,6 +16,8 @@
 		"lint:biome": "biome lint ."
 	},
 	"dependencies": {
+		"@aws-sdk/client-s3": "^3.888.0",
+		"@aws-sdk/s3-request-presigner": "^3.888.0",
 		"@emotion/is-prop-valid": "latest",
 		"@hookform/resolvers": "^3.10.0",
 		"@radix-ui/react-accordion": "1.2.2",
