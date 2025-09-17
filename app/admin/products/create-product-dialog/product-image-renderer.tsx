@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import { Check } from "lucide-react"
-import Image from "next/image"
-import { cn } from "@/lib/utils"
+import { Check } from "lucide-react";
+import Image from "next/image";
+import { cn } from "@/lib/utils";
 import {
 	ProductImageSelectionActionType,
 	useProductImageSelectionDispatch,
 	useProductImageSelectionState,
-} from "./product-image-dialog.state"
+} from "./create-product-dialog.state";
 
 interface ProductImageRendererProps extends React.ComponentProps<typeof Image> {
 	file: {
-		id: string
-		preview: string
-		name: string
-	}
+		id: string;
+		preview: string;
+		name: string;
+	};
 }
 
 /**
@@ -25,14 +25,14 @@ interface ProductImageRendererProps extends React.ComponentProps<typeof Image> {
  * @returns JSX element for the image with selection functionality
  */
 export function ProductImageRenderer({ file, ...imageProps }: ProductImageRendererProps) {
-	const state = useProductImageSelectionState()
-	const dispatch = useProductImageSelectionDispatch()
+	const state = useProductImageSelectionState();
+	const dispatch = useProductImageSelectionDispatch();
 
-	const isMainImage = state.selectedMainImageId === file.id
+	const isMainImage = state.selectedMainImageId === file.id;
 
 	const handleSelectMain = (fileId: string) => {
-		dispatch({ type: ProductImageSelectionActionType.SetMainImage, payload: fileId })
-	}
+		dispatch({ type: ProductImageSelectionActionType.SetMainImage, payload: fileId });
+	};
 
 	return (
 		// <div className="space-y-2">
@@ -47,8 +47,8 @@ export function ProductImageRenderer({ file, ...imageProps }: ProductImageRender
 			onClick={() => handleSelectMain(file.id)}
 			onKeyDown={(e) => {
 				if (e.key === "Enter" || e.key === " ") {
-					e.preventDefault()
-					handleSelectMain(file.id)
+					e.preventDefault();
+					handleSelectMain(file.id);
 				}
 			}}
 		>
@@ -59,5 +59,5 @@ export function ProductImageRenderer({ file, ...imageProps }: ProductImageRender
 				</div>
 			)}
 		</button>
-	)
+	);
 }

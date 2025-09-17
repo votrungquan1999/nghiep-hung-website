@@ -1,63 +1,79 @@
-"use server"
+"use server";
 
-import { nanoid } from "nanoid"
-import { getDatabase } from "@/lib/database"
-import { uploadToS3 } from "@/lib/s3"
-import type { CreateProductResult, Product, ProductImage } from "./create-product-dialog.type"
-import { ProductStatus } from "./create-product-dialog.type"
-import { generateProductS3Key } from "./create-product-s3.utils"
+import { ObjectId } from "mongodb";
+import { nanoid } from "nanoid";
+import type { FormResult } from "@/components/form-state/form-state.type";
+import { getDatabase } from "@/lib/database";
+import { uploadToS3 } from "@/lib/s3";
+import type { Product, ProductImage } from "./create-product-dialog.type";
+import { ProductStatus } from "./create-product-dialog.type";
+
+/**
+ * Generate a unique S3 key for product images
+ * @param productName - The name of the product
+ * @param fileName - The original file name
+ * @param index - The index of the image (for multiple images)
+ * @returns A unique S3 key
+ */
+function generateProductS3Key(productId: string, fileName: string, index: number = 0): string {
+	const timestamp = Date.now();
+	const fileExtension = fileName.split(".").pop();
+	const uniqueKey = `${timestamp}-${index}`;
+
+	return `products/${productId}/${uniqueKey}.${fileExtension}`;
+}
 
 /**
  * Server action to create a new product with image uploads to S3 and data storage in MongoDB
  * @param formData - Form data containing product information and images
  * @returns Promise that resolves to the creation result
  */
-export async function createProduct(formData: FormData): Promise<CreateProductResult> {
+export async function createProduct(formData: FormData): Promise<FormResult> {
 	try {
 		// Extract form data
-		const productName = formData.get("productName") as string
-		const productDescription = formData.get("productDescription") as string
-		const productImages = formData.getAll("productImages") as File[]
+		const productName = formData.get("productName") as string;
+		const productDescription = formData.get("productDescription") as string;
+		const productImages = formData.getAll("productImages") as File[];
 
 		// Validate required fields
 		if (!productName || !productDescription) {
 			return {
 				success: false,
 				error: "Product name and description are required",
-			}
+			};
 		}
 
 		if (productImages.length === 0) {
 			return {
 				success: false,
 				error: "At least one product image is required",
-			}
+			};
 		}
 
-		const productId = nanoid()
+		const productId = nanoid();
 
 		// Upload images to S3
-		const uploadedImages: ProductImage[] = []
+		const uploadedImages: ProductImage[] = [];
 
 		for (let i = 0; i < productImages.length; i++) {
-			const file = productImages[i]
-			const s3Key = generateProductS3Key(productId, file.name, i)
+			const file = productImages[i];
+			const s3Key = generateProductS3Key(productId, file.name, i);
 
 			try {
-				const uploadResult = await uploadToS3(file, s3Key)
+				const uploadResult = await uploadToS3(file, s3Key);
 
 				uploadedImages.push({
 					key: uploadResult.key,
 					url: uploadResult.url,
 					isMain: i === 0, // First image is the main image
 					uploadedAt: new Date(),
-				})
+				});
 			} catch (uploadError) {
-				console.error(`Failed to upload image ${i + 1}:`, uploadError)
+				console.error(`Failed to upload image ${i + 1}:`, uploadError);
 				return {
 					success: false,
 					error: `Failed to upload image ${i + 1}`,
-				}
+				};
 			}
 		}
 
@@ -72,29 +88,29 @@ export async function createProduct(formData: FormData): Promise<CreateProductRe
 			gallery: uploadedImages,
 			createdAt: new Date(),
 			updatedAt: new Date(),
-		}
+		};
 
 		// Save to MongoDB
-		const db = await getDatabase()
-		const result = await db.collection("products").insertOne(product)
+		const db = await getDatabase();
+		const result = await db.collection("products").insertOne(product);
 
 		if (!result.insertedId) {
 			return {
 				success: false,
 				error: "Failed to save product to database",
-			}
+			};
 		}
 
 		return {
 			success: true,
-			productId: result.insertedId.toString(),
-		}
+			refresh: true,
+		};
 	} catch (error) {
-		console.error("Error creating product:", error)
+		console.error("Error creating product:", error);
 		return {
 			success: false,
 			error: "An unexpected error occurred while creating the product",
-		}
+		};
 	}
 }
 
@@ -104,13 +120,13 @@ export async function createProduct(formData: FormData): Promise<CreateProductRe
  */
 export async function getProducts(): Promise<Product[]> {
 	try {
-		const db = await getDatabase()
-		const products = await db.collection<Product>("products").find({}).toArray()
+		const db = await getDatabase();
+		const products = await db.collection<Product>("products").find({}).toArray();
 
-		return products
+		return products;
 	} catch (error) {
-		console.error("Error fetching products:", error)
-		return []
+		console.error("Error fetching products:", error);
+		return [];
 	}
 }
 
@@ -121,19 +137,18 @@ export async function getProducts(): Promise<Product[]> {
  */
 export async function getProductById(productId: string): Promise<Product | null> {
 	try {
-		const db = await getDatabase()
-		const { ObjectId } = await import("mongodb")
+		const db = await getDatabase();
 		const product = await db
 			.collection<Product>("products")
-			.findOne({ _id: new ObjectId(productId) })
+			.findOne({ _id: new ObjectId(productId) });
 
 		if (!product) {
-			return null
+			return null;
 		}
 
-		return product
+		return product;
 	} catch (error) {
-		console.error("Error fetching product:", error)
-		return null
+		console.error("Error fetching product:", error);
+		return null;
 	}
 }

@@ -1,4 +1,12 @@
-import { Upload } from "lucide-react"
+import { Upload } from "lucide-react";
+import { FieldError, FormField, FormInput, FormLabel } from "@/components/form-field";
+import {
+	Form,
+	FormErrorDisplay,
+	FormPendingMessage,
+	FormResetButton,
+	FormSubmitMessage,
+} from "@/components/form-state";
 import {
 	ImageUploadArea,
 	ImageUploadError,
@@ -6,13 +14,11 @@ import {
 	ImageUploadReview,
 	ImageUploadRoot,
 	ImageUploadTrigger,
-} from "@/components/image-upload"
-import { Button } from "@/components/ui/button"
-import { ProductImageRenderer } from "./create-product-dialog.ui"
-import { CreateProductErrorDisplay } from "./create-product-error-display"
-import { CreateProductFormActions } from "./create-product-form-actions"
-import { CreateProductFormFields } from "./create-product-form-fields"
-import { CreateProductFormHandler } from "./create-product-form-handler"
+} from "@/components/image-upload";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { createProduct } from "./create-product-dialog.actions";
+import { ProductImageRenderer } from "./product-image-renderer";
 
 /**
  * Server component for product creation form
@@ -20,9 +26,35 @@ import { CreateProductFormHandler } from "./create-product-form-handler"
  */
 export function CreateProductForm() {
 	return (
-		<CreateProductFormHandler>
+		<Form action={createProduct}>
 			{/* Form Fields */}
-			<CreateProductFormFields />
+			<div className="space-y-6">
+				{/* Product Name */}
+				<FormField
+					fieldId="productName"
+					name="productName"
+					placeholder="Enter product name"
+					required
+				>
+					<FormLabel>Product Name</FormLabel>
+					<FormInput />
+					<FieldError />
+				</FormField>
+
+				{/* Product Description */}
+				<FormField
+					fieldId="productDescription"
+					name="productDescription"
+					placeholder="Enter product description"
+					required
+				>
+					<FormLabel>Product Description</FormLabel>
+					<FormInput asChild>
+						<Textarea rows={4} />
+					</FormInput>
+					<FieldError />
+				</FormField>
+			</div>
 
 			{/* Image Upload Section */}
 			<div className="space-y-4">
@@ -80,10 +112,16 @@ export function CreateProductForm() {
 			</div>
 
 			{/* Error Display */}
-			<CreateProductErrorDisplay />
+			<FormErrorDisplay />
 
 			{/* Form Actions */}
-			<CreateProductFormActions />
-		</CreateProductFormHandler>
-	)
+			<div className="flex justify-end space-x-2 pt-4">
+				<FormResetButton>Cancel</FormResetButton>
+				<Button type="submit">
+					<FormSubmitMessage>Create Product</FormSubmitMessage>
+					<FormPendingMessage>Creating...</FormPendingMessage>
+				</Button>
+			</div>
+		</Form>
+	);
 }

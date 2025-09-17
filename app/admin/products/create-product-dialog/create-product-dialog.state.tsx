@@ -9,8 +9,6 @@ import { ProductImageSelectionActionType } from "./create-product-dialog.type"
 
 const initialState: ProductImageSelectionState = {
 	selectedMainImageId: null,
-	isSubmitting: false,
-	error: null,
 }
 
 function productImageSelectionReducer(
@@ -23,18 +21,6 @@ function productImageSelectionReducer(
 				...state,
 				selectedMainImageId: action.payload,
 			}
-		case ProductImageSelectionActionType.SetSubmitting:
-			return {
-				...state,
-				isSubmitting: action.payload,
-			}
-		case ProductImageSelectionActionType.SetError:
-			return {
-				...state,
-				error: action.payload,
-			}
-		case ProductImageSelectionActionType.Reset:
-			return initialState
 		default:
 			return state
 	}
