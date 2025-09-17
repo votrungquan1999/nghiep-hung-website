@@ -1,51 +1,65 @@
-"use client"
+"use client";
 
-import { AlertCircle } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
-import { FormProvider, useForm, useFormActions } from "./form-state.state"
-import type { FormProps } from "./form-state.type"
-import { FormActionType } from "./form-state.type"
+import { AlertCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { startTransition } from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { FormProvider, useForm, useFormActions } from "./form-state.state";
+import type { FormProps } from "./form-state.type";
+import { FormActionType } from "./form-state.type";
 
 /**
  * Form submission handler component
  * Manages form submission state and error handling
  */
 function FormSubmissionHandler({ action, children }: Pick<FormProps, "action" | "children">) {
-	const dispatch = useFormActions()
-
+	const dispatch = useFormActions();
+	const router = useRouter();
 	/**
 	 * Handle form submission with state management
 	 * @param formData - Form data from the form submission
 	 */
 	async function handleSubmit(formData: FormData) {
-		dispatch({ type: FormActionType.SetSubmitting, payload: true })
-		dispatch({ type: FormActionType.SetError, payload: null })
-		dispatch({ type: FormActionType.SetHasSubmitted, payload: true })
+		dispatch({ type: FormActionType.SetSubmitting, payload: true });
+		dispatch({ type: FormActionType.SetError, payload: null });
+		dispatch({ type: FormActionType.SetHasSubmitted, payload: true });
 
-		try {
-			const result = await action(formData)
+		startTransition(async () => {
+			try {
+				const result = await action(formData);
 
-			if (result.success) {
-				// Success - let the action handle any redirects or success logic
-			} else {
-				const errorMessage = result.error || "An unexpected error occurred"
-				dispatch({ type: FormActionType.SetError, payload: errorMessage })
+				if (result.success) {
+					if ("redirect" in result) {
+						router.push(result.redirect);
+						return;
+					}
+
+					if ("refresh" in result) {
+						router.refresh();
+						return;
+					}
+
+					// Success - let the action handle any redirects or success logic
+				} else {
+					const errorMessage = result.error || "An unexpected error occurred";
+					dispatch({ type: FormActionType.SetError, payload: errorMessage });
+				}
+			} catch (err) {
+				const errorMessage = "An unexpected error occurred";
+				dispatch({ type: FormActionType.SetError, payload: errorMessage });
+				console.error("Form submission error:", err);
+			} finally {
+				dispatch({ type: FormActionType.SetSubmitting, payload: false });
 			}
-		} catch (err) {
-			const errorMessage = "An unexpected error occurred"
-			dispatch({ type: FormActionType.SetError, payload: errorMessage })
-			console.error("Form submission error:", err)
-		} finally {
-			dispatch({ type: FormActionType.SetSubmitting, payload: false })
-		}
+		});
 	}
 
 	return (
 		<form action={handleSubmit} className="space-y-6">
 			{children}
 		</form>
-	)
+	);
 }
 
 /**
@@ -57,7 +71,7 @@ export function Form({ action, children }: FormProps) {
 		<FormProvider>
 			<FormSubmissionHandler action={action}>{children}</FormSubmissionHandler>
 		</FormProvider>
-	)
+	);
 }
 
 /**
@@ -65,9 +79,9 @@ export function Form({ action, children }: FormProps) {
  * Shows error messages when form submission fails
  */
 export function FormErrorDisplay({ className }: { className?: string }) {
-	const { error } = useForm()
+	const { error } = useForm();
 
-	if (!error) return null
+	if (!error) return null;
 
 	return (
 		<div
@@ -79,7 +93,7 @@ export function FormErrorDisplay({ className }: { className?: string }) {
 			<AlertCircle className="size-4 flex-shrink-0" />
 			<span className="text-sm">{error}</span>
 		</div>
-	)
+	);
 }
 
 /**
@@ -87,13 +101,13 @@ export function FormErrorDisplay({ className }: { className?: string }) {
  * Shows submit button text with loading state
  */
 export function FormSubmitMessage({ children }: { children: React.ReactNode }) {
-	const { isSubmitting } = useForm()
+	const { isSubmitting } = useForm();
 
 	if (isSubmitting) {
-		return null
+		return null;
 	}
 
-	return children
+	return children;
 }
 
 /**
@@ -101,11 +115,11 @@ export function FormSubmitMessage({ children }: { children: React.ReactNode }) {
  * Shows pending/loading message
  */
 export function FormPendingMessage({ children }: { children: React.ReactNode }) {
-	const { isSubmitting } = useForm()
+	const { isSubmitting } = useForm();
 
-	if (!isSubmitting) return null
+	if (!isSubmitting) return null;
 
-	return children
+	return children;
 }
 
 /**
@@ -117,15 +131,15 @@ export function FormResetButton({
 	className,
 	...props
 }: Omit<React.ComponentProps<typeof Button>, "onClick">) {
-	const dispatch = useFormActions()
+	const dispatch = useFormActions();
 
 	const handleReset = () => {
-		dispatch({ type: FormActionType.Reset })
-	}
+		dispatch({ type: FormActionType.Reset });
+	};
 
 	return (
 		<Button type="button" variant="outline" onClick={handleReset} className={className} {...props}>
 			{children}
 		</Button>
-	)
+	);
 }

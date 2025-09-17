@@ -4,10 +4,16 @@
  */
 
 // State management
-export { FormProvider, useForm, useFormActions } from "./form-state.state"
+export {
+	FormProvider,
+	useFieldError,
+	useFieldErrors,
+	useForm,
+	useFormActions,
+} from "./form-state.state";
 // Types
-export type { FormAction, FormProps, FormState, FormSubmitHandler } from "./form-state.type"
-export { FormActionType } from "./form-state.type"
+export type { FormAction, FormProps, FormState, FormSubmitHandler } from "./form-state.type";
+export { FormActionType } from "./form-state.type";
 // Main form component
 // UI components
 export {
@@ -16,4 +22,4 @@ export {
 	FormPendingMessage,
 	FormResetButton,
 	FormSubmitMessage,
-} from "./form-state.ui"
+} from "./form-state.ui";
