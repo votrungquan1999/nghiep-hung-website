@@ -20,12 +20,16 @@ function FormSubmissionHandler({ action, children }: Pick<FormProps, "action" | 
 
 	/**
 	 * Handle form submission with state management
-	 * @param formData - Form data from the form submission
+	 * @param event - Form submission event
 	 */
-	async function handleSubmit(formData: FormData) {
-		dispatch({ type: FormActionType.SetSubmitting, payload: true });
-		dispatch({ type: FormActionType.SetError, payload: null });
-		dispatch({ type: FormActionType.SetHasSubmitted, payload: true });
+	async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+
+		// Start submission - this automatically resets error state
+		dispatch({ type: FormActionType.StartSubmitting });
+
+		// Create FormData from the form
+		const formData = new FormData(event.currentTarget);
 
 		startTransition(async () => {
 			try {
@@ -46,20 +50,27 @@ function FormSubmissionHandler({ action, children }: Pick<FormProps, "action" | 
 					// Success - let the action handle any redirects or success logic
 				} else {
 					const errorMessage = result.error || "An unexpected error occurred";
-					dispatch({ type: FormActionType.SetError, payload: errorMessage });
+					startTransition(() => {
+						dispatch({ type: FormActionType.SetError, payload: errorMessage });
+					});
 				}
 			} catch (err) {
 				const errorMessage = "An unexpected error occurred";
-				dispatch({ type: FormActionType.SetError, payload: errorMessage });
+				startTransition(() => {
+					dispatch({ type: FormActionType.SetError, payload: errorMessage });
+				});
 				console.error("Form submission error:", err);
 			} finally {
-				dispatch({ type: FormActionType.SetSubmitting, payload: false });
+				// Finish submission
+				startTransition(() => {
+					dispatch({ type: FormActionType.FinishSubmitting });
+				});
 			}
 		});
 	}
 
 	return (
-		<form action={handleSubmit} className="space-y-6">
+		<form onSubmit={handleSubmit} className="space-y-6">
 			{children}
 		</form>
 	);

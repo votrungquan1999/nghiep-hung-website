@@ -3,6 +3,7 @@
 import { createContext, useContext, useState } from "react";
 import { createReducerContext } from "@/contexts/createReducerContext";
 import type { FormAction, FormState } from "./form-state.type";
+import { FormActionType } from "./form-state.type";
 
 const FormBoundaryContext = createContext<{ formKey: string; resetFormKey: () => void }>({
 	formKey: "",
@@ -36,7 +37,6 @@ export function useResetFormBoundary() {
 const initialState: FormState = {
 	isSubmitting: false,
 	error: null,
-	hasSubmitted: false,
 	fieldErrors: {},
 };
 
@@ -49,45 +49,44 @@ const initialState: FormState = {
  */
 function formReducer(state: FormState, action: FormAction): FormState {
 	switch (action.type) {
-		case "SET_SUBMITTING":
+		case FormActionType.StartSubmitting:
 			return {
 				...state,
-				isSubmitting: action.payload as boolean,
+				isSubmitting: true,
+				// Automatically reset error when starting submission
+				error: null,
 			};
-		case "SET_ERROR":
+		case FormActionType.FinishSubmitting:
 			return {
 				...state,
-				error: action.payload as string | null,
+				isSubmitting: false,
 			};
-		case "SET_HAS_SUBMITTED":
+		case FormActionType.SetError:
 			return {
 				...state,
-				hasSubmitted: action.payload as boolean,
+				error: action.payload,
 			};
-		case "SET_FIELD_ERROR": {
-			const fieldErrorPayload = action.payload as { fieldName: string; error: string };
+		case FormActionType.SetFieldError:
 			return {
 				...state,
 				fieldErrors: {
 					...state.fieldErrors,
-					[fieldErrorPayload.fieldName]: fieldErrorPayload.error,
+					[action.payload.fieldName]: action.payload.error,
 				},
 			};
-		}
-		case "CLEAR_FIELD_ERROR": {
-			const fieldName = action.payload as string;
-			const { [fieldName]: _, ...remainingFieldErrors } = state.fieldErrors;
+		case FormActionType.ClearFieldError: {
+			const { [action.payload]: _, ...remainingFieldErrors } = state.fieldErrors;
 			return {
 				...state,
 				fieldErrors: remainingFieldErrors,
 			};
 		}
-		case "CLEAR_ALL_FIELD_ERRORS":
+		case FormActionType.ClearAllFieldErrors:
 			return {
 				...state,
 				fieldErrors: {},
 			};
-		case "RESET":
+		case FormActionType.Reset:
 			return initialState;
 		default:
 			return state;

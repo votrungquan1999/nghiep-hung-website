@@ -13,29 +13,29 @@ export interface FormState {
 	 */
 	error: string | null;
 	/**
-	 * Whether the form has been submitted at least once
-	 */
-	hasSubmitted: boolean;
-	/**
 	 * Field-specific validation errors
 	 */
 	fieldErrors: Record<string, string>;
 }
 
 export enum FormActionType {
-	SetSubmitting = "SET_SUBMITTING",
+	StartSubmitting = "START_SUBMITTING",
+	FinishSubmitting = "FINISH_SUBMITTING",
 	SetError = "SET_ERROR",
-	SetHasSubmitted = "SET_HAS_SUBMITTED",
 	SetFieldError = "SET_FIELD_ERROR",
 	ClearFieldError = "CLEAR_FIELD_ERROR",
 	ClearAllFieldErrors = "CLEAR_ALL_FIELD_ERRORS",
 	Reset = "RESET",
 }
 
-export interface FormAction {
-	type: FormActionType;
-	payload?: boolean | string | null | { fieldName: string; error: string } | string;
-}
+export type FormAction =
+	| { type: FormActionType.StartSubmitting }
+	| { type: FormActionType.FinishSubmitting }
+	| { type: FormActionType.SetError; payload: string | null }
+	| { type: FormActionType.SetFieldError; payload: { fieldName: string; error: string } }
+	| { type: FormActionType.ClearFieldError; payload: string }
+	| { type: FormActionType.ClearAllFieldErrors }
+	| { type: FormActionType.Reset };
 
 interface RedirectResult {
 	success: true;

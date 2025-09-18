@@ -198,11 +198,7 @@ export interface FormLabelProps {
  * Form input component props
  * Props for the FormInput component
  */
-export interface FormInputProps
-	extends Omit<
-		React.InputHTMLAttributes<HTMLInputElement>,
-		"id" | "name" | "value" | "disabled" | "readOnly" | "required"
-	> {
+export interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	/**
 	 * Input children content (for asChild pattern)
 	 */
