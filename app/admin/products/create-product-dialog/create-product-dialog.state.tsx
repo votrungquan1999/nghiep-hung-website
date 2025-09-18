@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import { createReducerContext } from "@/contexts/createReducerContext"
+import { createReducerContext } from "@/contexts/createReducerContext";
 import type {
 	ProductImageSelectionAction,
 	ProductImageSelectionState,
-} from "./create-product-dialog.type"
-import { ProductImageSelectionActionType } from "./create-product-dialog.type"
+} from "./create-product-dialog.type";
+import { ProductImageSelectionActionType } from "./create-product-dialog.type";
 
 const initialState: ProductImageSelectionState = {
 	selectedMainImageId: null,
-}
+};
 
 function productImageSelectionReducer(
 	state: ProductImageSelectionState,
@@ -20,9 +20,9 @@ function productImageSelectionReducer(
 			return {
 				...state,
 				selectedMainImageId: action.payload,
-			}
+			};
 		default:
-			return state
+			return state;
 	}
 }
 
@@ -30,11 +30,11 @@ const [
 	ProductImageSelectionProvider,
 	useProductImageSelectionState,
 	useProductImageSelectionDispatch,
-] = createReducerContext(productImageSelectionReducer, initialState)
+] = createReducerContext(productImageSelectionReducer, initialState);
 
 export {
 	ProductImageSelectionProvider,
 	useProductImageSelectionState,
 	useProductImageSelectionDispatch,
 	ProductImageSelectionActionType,
-}
+};

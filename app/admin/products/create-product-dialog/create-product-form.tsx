@@ -17,7 +17,9 @@ import {
 } from "@/components/image-upload";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { ProductStatus } from "@/server/products/product.type";
 import { createProduct } from "./create-product-dialog.actions";
+import { HiddenSelectedImageInput } from "./hidden-selected-image-input";
 import { ProductImageRenderer } from "./product-image-renderer";
 
 /**
@@ -96,19 +98,58 @@ export function CreateProductForm() {
 							</ImageUploadTrigger>
 						</div>
 					</ImageUploadArea>
-
 					{/* Upload Progress */}
 					<ImageUploadProgress />
-
 					{/* Upload Errors */}
 					<ImageUploadError />
-
 					{/* Image Review with Custom Component */}
 					<ImageUploadReview
 						ImageComponent={ProductImageRenderer}
 						className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3"
 					/>
+
+					{/* Hidden Selected Image Input - need to be in the ImageUploadRoot so that it can use the files context */}
+					<HiddenSelectedImageInput />
 				</ImageUploadRoot>
+			</div>
+
+			{/* Product Status */}
+			<div className="space-y-4">
+				<div className="space-y-2">
+					<div className="text-sm font-medium text-foreground">Product Status</div>
+					<p className="text-xs text-muted-foreground">
+						Choose whether to publish the product immediately or save as draft
+					</p>
+				</div>
+
+				<FormField fieldId="productStatus" name="productStatus" required>
+					<div className="flex space-x-1 p-1 bg-muted rounded-lg">
+						<label className="flex-1">
+							<input
+								type="radio"
+								name="productStatus"
+								value={ProductStatus.Draft}
+								className="sr-only peer"
+								defaultChecked
+							/>
+							<div className="flex items-center justify-center py-2 px-4 text-sm font-medium rounded-md cursor-pointer transition-all peer-checked:bg-slate-100 peer-checked:text-slate-700 peer-checked:shadow-sm text-muted-foreground hover:text-foreground peer-checked:border peer-checked:border-slate-200">
+								Draft
+							</div>
+						</label>
+						<label className="flex-1">
+							<input
+								type="radio"
+								name="productStatus"
+								value={ProductStatus.Active}
+								className="sr-only peer"
+							/>
+							<div className="flex items-center justify-center py-2 px-4 text-sm font-medium rounded-md cursor-pointer transition-all peer-checked:bg-green-100 peer-checked:text-green-600 peer-checked:shadow-sm text-green-600 hover:text-green-700 peer-checked:border peer-checked:border-green-200">
+								Active
+							</div>
+						</label>
+					</div>
+					<FieldError />
+				</FormField>
 			</div>
 
 			{/* Error Display */}
@@ -117,6 +158,7 @@ export function CreateProductForm() {
 			{/* Form Actions */}
 			<div className="flex justify-end space-x-2 pt-4">
 				<FormResetButton>Cancel</FormResetButton>
+
 				<Button type="submit">
 					<FormSubmitMessage>Create Product</FormSubmitMessage>
 					<FormPendingMessage>Creating...</FormPendingMessage>

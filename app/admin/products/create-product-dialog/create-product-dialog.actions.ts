@@ -1,12 +1,13 @@
 "use server";
 
-import { ObjectId } from "mongodb";
+import { chunk } from "lodash";
 import { nanoid } from "nanoid";
 import type { FormResult } from "@/components/form-state/form-state.type";
 import { getDatabase } from "@/lib/database";
+import type { S3UploadResult } from "@/lib/s3";
 import { uploadToS3 } from "@/lib/s3";
-import type { Product, ProductImage } from "./create-product-dialog.type";
-import { ProductStatus } from "./create-product-dialog.type";
+import type { Product, ProductDocument, ProductImage } from "@/server/products/product.type";
+import { ProductStatus } from "@/server/products/product.type";
 
 /**
  * Generate a unique S3 key for product images
@@ -33,16 +34,11 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 		// Extract form data
 		const productName = formData.get("productName") as string;
 		const productDescription = formData.get("productDescription") as string;
+		const productStatus = formData.get("productStatus") as string;
 		const productImages = formData.getAll("productImages") as File[];
+		const selectedImageIndex = formData.get("selectedImageIndex") as string;
 
-		// Validate required fields
-		if (!productName || !productDescription) {
-			return {
-				success: false,
-				error: "Product name and description are required",
-			};
-		}
-
+		// Validation phase
 		if (productImages.length === 0) {
 			return {
 				success: false,
@@ -50,29 +46,67 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 			};
 		}
 
+		if (!selectedImageIndex) {
+			return {
+				success: false,
+				error: "Select a main image",
+			};
+		}
+
+		// Validate required fields, these are validated in the client already, no need to handle errors here
+		if (!productName || !productDescription || !productStatus) {
+			throw new Error("Product name, description, and status are required");
+		}
+
+		// Validate status value, these are validated in the client already, no need to handle errors here
+		if (!Object.values(ProductStatus).includes(productStatus as ProductStatus)) {
+			throw new Error("Invalid product status");
+		}
+
 		const productId = nanoid();
 
-		// Upload images to S3
+		// Upload images to S3 in batches of 10 using lodash chunk
+		const batchSize = 10;
+		const imageBatches = chunk(productImages, batchSize);
 		const uploadedImages: ProductImage[] = [];
 
-		for (let i = 0; i < productImages.length; i++) {
-			const file = productImages[i];
-			const s3Key = generateProductS3Key(productId, file.name, i);
+		// Process each batch
+		for (const [batchIndex, batchImages] of imageBatches.entries()) {
+			const startIndex = batchIndex * batchSize;
 
-			try {
-				const uploadResult = await uploadToS3(file, s3Key);
+			// Create upload promises for current batch
+			const batchUploadPromises = batchImages.map(async (file, i) => {
+				const globalIndex = startIndex + i;
+				const s3Key = generateProductS3Key(productId, file.name, globalIndex);
 
-				uploadedImages.push({
+				const uploadResult: S3UploadResult = await uploadToS3(file, s3Key);
+
+				// Check if this is the main image based on index
+				const mainImageIndex = parseInt(selectedImageIndex, 10);
+				const isMain = globalIndex === mainImageIndex;
+
+				return {
 					key: uploadResult.key,
 					url: uploadResult.url,
-					isMain: i === 0, // First image is the main image
+					isMain,
 					uploadedAt: new Date(),
-				});
-			} catch (uploadError) {
-				console.error(`Failed to upload image ${i + 1}:`, uploadError);
+					index: globalIndex,
+				};
+			});
+
+			// Execute current batch uploads in parallel
+			try {
+				const batchResults = await Promise.all(batchUploadPromises);
+				// Sort by original index to maintain order within batch
+				const sortedBatchResults = batchResults
+					.sort((a, b) => a.index - b.index)
+					.map(({ index, ...image }) => image);
+
+				uploadedImages.push(...sortedBatchResults);
+			} catch {
 				return {
 					success: false,
-					error: `Failed to upload image ${i + 1}`,
+					error: "Failed to upload images",
 				};
 			}
 		}
@@ -82,9 +116,7 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 			id: productId,
 			name: productName,
 			description: productDescription,
-			category: "Air Ducts", // Default category, can be made configurable later
-			price: "Contact for pricing", // Default price, can be made configurable later
-			status: ProductStatus.Active,
+			status: productStatus as ProductStatus,
 			gallery: uploadedImages,
 			createdAt: new Date(),
 			updatedAt: new Date(),
@@ -92,7 +124,7 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 
 		// Save to MongoDB
 		const db = await getDatabase();
-		const result = await db.collection("products").insertOne(product);
+		const result = await db.collection<ProductDocument>("products").insertOne(product);
 
 		if (!result.insertedId) {
 			return {
@@ -105,50 +137,10 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 			success: true,
 			refresh: true,
 		};
-	} catch (error) {
-		console.error("Error creating product:", error);
+	} catch {
 		return {
 			success: false,
 			error: "An unexpected error occurred while creating the product",
 		};
-	}
-}
-
-/**
- * Server action to get all products from MongoDB
- * @returns Promise that resolves to an array of products
- */
-export async function getProducts(): Promise<Product[]> {
-	try {
-		const db = await getDatabase();
-		const products = await db.collection<Product>("products").find({}).toArray();
-
-		return products;
-	} catch (error) {
-		console.error("Error fetching products:", error);
-		return [];
-	}
-}
-
-/**
- * Server action to get a single product by ID from MongoDB
- * @param productId - The ID of the product to fetch
- * @returns Promise that resolves to the product or null if not found
- */
-export async function getProductById(productId: string): Promise<Product | null> {
-	try {
-		const db = await getDatabase();
-		const product = await db
-			.collection<Product>("products")
-			.findOne({ _id: new ObjectId(productId) });
-
-		if (!product) {
-			return null;
-		}
-
-		return product;
-	} catch (error) {
-		console.error("Error fetching product:", error);
-		return null;
 	}
 }
