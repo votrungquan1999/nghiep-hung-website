@@ -3,23 +3,24 @@
  */
 
 export interface ImageUploadFile {
-	id: string
-	file: File
-	preview: string
-	name: string
-	size: number
+	id: string;
+	file: File;
+	preview: string;
+	name: string;
+	size: number;
 }
 
 export interface ImageUploadState {
-	files: ImageUploadFile[]
-	isUploading: boolean
-	uploadProgress: number
-	errors: string[]
-	maxFiles: number
-	maxFileSize: number
-	acceptedTypes: string[]
-	inputId: string
-	onChange?: (files: ImageUploadFile[]) => void
+	files: ImageUploadFile[];
+	isUploading: boolean;
+	uploadProgress: number;
+	errors: string[];
+	maxFiles: number;
+	maxFileSize: number;
+	acceptedTypes: string[];
+	inputId: string;
+	inputRef: React.RefObject<HTMLInputElement | null>;
+	onChange?: (files: ImageUploadFile[]) => void;
 }
 
 export enum ImageUploadActionType {
@@ -41,16 +42,16 @@ export type ImageUploadAction =
 	| { type: ImageUploadActionType.AddError; payload: string }
 	| { type: ImageUploadActionType.ClearErrors }
 	| { type: ImageUploadActionType.Reset }
-	| { type: ImageUploadActionType.SyncFiles; payload: ImageUploadFile[] }
+	| { type: ImageUploadActionType.SyncFiles; payload: ImageUploadFile[] };
 
 export interface ImageUploadRootProps {
-	children: React.ReactNode
-	maxFiles?: number
-	acceptedTypes?: string[]
-	maxFileSize?: number
-	inputId?: string
-	name?: string
+	children: React.ReactNode;
+	maxFiles?: number;
+	acceptedTypes?: string[];
+	maxFileSize?: number;
+	inputId?: string;
+	name?: string;
 	// Controlled mode props
-	value?: ImageUploadFile[]
-	onChange?: (files: ImageUploadFile[]) => void
+	value?: ImageUploadFile[];
+	onChange?: (files: ImageUploadFile[]) => void;
 }

@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import { Slot } from "@radix-ui/react-slot"
-import { AlertCircle, X } from "lucide-react"
-import Image from "next/image"
-import React, { useEffect, useId } from "react"
-import { Button } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { Slot } from "@radix-ui/react-slot";
+import { AlertCircle, X } from "lucide-react";
+import Image from "next/image";
+import React, { useEffect, useId, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
 	ImageUploadProvider,
 	useImageUploadErrors,
@@ -13,8 +13,8 @@ import {
 	useImageUploadInput,
 	useImageUploadProgress,
 	useImageUploadState,
-} from "./image-upload.state"
-import type { ImageUploadFile, ImageUploadRootProps } from "./image-upload.type"
+} from "./image-upload.state";
+import type { ImageUploadFile, ImageUploadRootProps } from "./image-upload.type";
 
 /**
  * Image upload root component that provides context and manages file input
@@ -38,9 +38,10 @@ export function ImageUploadRoot({
 	value,
 	onChange,
 }: ImageUploadRootProps) {
-	const generatedInputId = useId()
-	const inputId = providedInputId || generatedInputId
-	const isControlled = value !== undefined && onChange !== undefined
+	const generatedInputId = useId();
+	const inputId = providedInputId || generatedInputId;
+	const isControlled = value !== undefined && onChange !== undefined;
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	return (
 		<ImageUploadProvider
@@ -48,6 +49,7 @@ export function ImageUploadRoot({
 			acceptedTypes={acceptedTypes}
 			maxFileSize={maxFileSize}
 			inputId={inputId}
+			inputRef={inputRef}
 			files={isControlled ? value : []}
 			onChange={onChange}
 		>
@@ -55,7 +57,7 @@ export function ImageUploadRoot({
 			{isControlled && <ImageUploadValueSync value={value} />}
 			{children}
 		</ImageUploadProvider>
-	)
+	);
 }
 
 /**
@@ -63,18 +65,18 @@ export function ImageUploadRoot({
  * Only renders in controlled mode to handle value prop changes
  */
 function ImageUploadValueSync({ value }: { value?: ImageUploadFile[] }) {
-	const { syncFiles } = useImageUploadFiles()
-	const state = useImageUploadState()
+	const { syncFiles } = useImageUploadFiles();
+	const state = useImageUploadState();
 
 	useEffect(() => {
 		// Only sync if we have an onChange callback (controlled mode)
 		// and the external value is different from internal state
 		if (state.onChange && value) {
-			syncFiles(value)
+			syncFiles(value);
 		}
-	}, [value, state.onChange, syncFiles])
+	}, [value, state.onChange, syncFiles]);
 
-	return null
+	return null;
 }
 
 /**
@@ -84,32 +86,30 @@ function ImageUploadValueSync({ value }: { value?: ImageUploadFile[] }) {
  * @returns JSX element for the hidden file input
  */
 function ImageUploadInput({ name }: { name?: string }) {
-	const { addFiles } = useImageUploadFiles()
-	const { validateFiles, addError, acceptedTypes, inputId } = useImageUploadInput()
+	const { addFiles } = useImageUploadFiles();
+	const { validateFiles, addError, acceptedTypes, inputId, inputRef } = useImageUploadInput();
 
 	const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const files = event.target.files
-		if (!files) return
+		const files = event.target.files;
+		if (!files) return;
 
-		const fileArray = Array.from(files)
-		const { validFiles, errors } = validateFiles(fileArray)
+		const fileArray = Array.from(files);
+		const { validFiles, errors } = validateFiles(fileArray);
 
 		if (errors.length > 0) {
 			for (const error of errors) {
-				addError(error)
+				addError(error);
 			}
 		}
 
 		if (validFiles.length > 0) {
-			addFiles(validFiles)
+			addFiles(validFiles);
 		}
-
-		// Reset input
-		event.target.value = ""
-	}
+	};
 
 	return (
 		<input
+			ref={inputRef}
 			id={inputId}
 			name={name}
 			type="file"
@@ -118,13 +118,13 @@ function ImageUploadInput({ name }: { name?: string }) {
 			onChange={handleFileSelect}
 			className="hidden"
 		/>
-	)
+	);
 }
 
 interface ImageUploadTriggerProps {
-	children: React.ReactNode
-	asChild?: boolean
-	className?: string
+	children: React.ReactNode;
+	asChild?: boolean;
+	className?: string;
 }
 
 /**
@@ -139,14 +139,14 @@ export function ImageUploadTrigger({
 	asChild = false,
 	className,
 }: ImageUploadTriggerProps) {
-	const { inputId, triggerFileSelect } = useImageUploadInput()
+	const { inputId, triggerFileSelect } = useImageUploadInput();
 
 	if (asChild) {
 		return (
 			<Slot className={className} onClick={triggerFileSelect}>
 				{children}
 			</Slot>
-		)
+		);
 	}
 
 	return (
@@ -156,22 +156,22 @@ export function ImageUploadTrigger({
 			onClick={triggerFileSelect}
 			onKeyDown={(e) => {
 				if (e.key === "Enter" || e.key === " ") {
-					e.preventDefault()
-					triggerFileSelect()
+					e.preventDefault();
+					triggerFileSelect();
 				}
 			}}
 		>
 			{children}
 		</label>
-	)
+	);
 }
 
 interface ImageUploadAreaProps {
-	className?: string
-	disabled?: boolean
-	children?: React.ReactNode
-	asChild?: boolean
-	clickable?: boolean
+	className?: string;
+	disabled?: boolean;
+	children?: React.ReactNode;
+	asChild?: boolean;
+	clickable?: boolean;
 }
 
 /**
@@ -191,50 +191,50 @@ export function ImageUploadArea({
 	asChild = false,
 	clickable = true,
 }: ImageUploadAreaProps) {
-	const { addFiles } = useImageUploadFiles()
-	const { validateFiles, addError, triggerFileSelect } = useImageUploadInput()
-	const [isDragOver, setIsDragOver] = React.useState(false)
+	const { addFiles } = useImageUploadFiles();
+	const { validateFiles, addError, triggerFileSelect } = useImageUploadInput();
+	const [isDragOver, setIsDragOver] = React.useState(false);
 
 	const handleDragOver = (event: React.DragEvent) => {
-		event.preventDefault()
-		event.stopPropagation()
-		setIsDragOver(true)
-	}
+		event.preventDefault();
+		event.stopPropagation();
+		setIsDragOver(true);
+	};
 
 	const handleDragLeave = (event: React.DragEvent) => {
-		event.preventDefault()
-		event.stopPropagation()
-		setIsDragOver(false)
-	}
+		event.preventDefault();
+		event.stopPropagation();
+		setIsDragOver(false);
+	};
 
 	const handleDrop = (event: React.DragEvent) => {
-		event.preventDefault()
-		event.stopPropagation()
-		setIsDragOver(false)
+		event.preventDefault();
+		event.stopPropagation();
+		setIsDragOver(false);
 
-		if (disabled) return
+		if (disabled) return;
 
-		const files = event.dataTransfer.files
-		if (!files) return
+		const files = event.dataTransfer.files;
+		if (!files) return;
 
-		const fileArray = Array.from(files)
-		const { validFiles, errors } = validateFiles(fileArray)
+		const fileArray = Array.from(files);
+		const { validFiles, errors } = validateFiles(fileArray);
 
 		if (errors.length > 0) {
 			for (const error of errors) {
-				addError(error)
+				addError(error);
 			}
 		}
 
 		if (validFiles.length > 0) {
-			addFiles(validFiles)
+			addFiles(validFiles);
 		}
-	}
+	};
 
 	const handleClick = () => {
-		if (disabled || !clickable) return
-		triggerFileSelect()
-	}
+		if (disabled || !clickable) return;
+		triggerFileSelect();
+	};
 
 	if (asChild) {
 		return (
@@ -255,14 +255,14 @@ export function ImageUploadArea({
 				onClick={handleClick}
 				onKeyDown={(e) => {
 					if (e.key === "Enter" || e.key === " ") {
-						e.preventDefault()
-						handleClick()
+						e.preventDefault();
+						handleClick();
 					}
 				}}
 			>
 				{children}
 			</Slot>
-		)
+		);
 	}
 
 	if (clickable) {
@@ -285,14 +285,14 @@ export function ImageUploadArea({
 				disabled={disabled}
 				onKeyDown={(e) => {
 					if (e.key === "Enter" || e.key === " ") {
-						e.preventDefault()
-						handleClick()
+						e.preventDefault();
+						handleClick();
 					}
 				}}
 			>
 				{children}
 			</button>
-		)
+		);
 	}
 
 	return (
@@ -313,16 +313,16 @@ export function ImageUploadArea({
 		>
 			{children}
 		</section>
-	)
+	);
 }
 
 interface ImageUploadReviewProps {
-	className?: string
+	className?: string;
 	ImageComponent?: React.ComponentType<
 		React.ComponentProps<typeof Image> & {
-			file: ImageUploadFile
+			file: ImageUploadFile;
 		}
-	>
+	>;
 }
 
 /**
@@ -333,11 +333,11 @@ interface ImageUploadReviewProps {
  * @returns JSX element displaying uploaded images in a grid layout
  */
 export function ImageUploadReview({ className, ImageComponent }: ImageUploadReviewProps) {
-	const { files, removeFile } = useImageUploadFiles()
+	const { files, removeFile } = useImageUploadFiles();
 
-	if (files.length === 0) return null
+	if (files.length === 0) return null;
 
-	const Component = ImageComponent || Image
+	const Component = ImageComponent || Image;
 
 	return (
 		<div className={cn("grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4", className)}>
@@ -367,12 +367,12 @@ export function ImageUploadReview({ className, ImageComponent }: ImageUploadRevi
 				</div>
 			))}
 		</div>
-	)
+	);
 }
 
 interface ImageUploadProgressProps {
-	className?: string
-	showPercentage?: boolean
+	className?: string;
+	showPercentage?: boolean;
 }
 
 /**
@@ -386,9 +386,9 @@ export function ImageUploadProgress({
 	className,
 	showPercentage = true,
 }: ImageUploadProgressProps) {
-	const { isUploading, uploadProgress } = useImageUploadProgress()
+	const { isUploading, uploadProgress } = useImageUploadProgress();
 
-	if (!isUploading) return null
+	if (!isUploading) return null;
 
 	return (
 		<div className={cn("space-y-2", className)}>
@@ -405,12 +405,12 @@ export function ImageUploadProgress({
 				/>
 			</div>
 		</div>
-	)
+	);
 }
 
 interface ImageUploadErrorProps {
-	className?: string
-	variant?: "default" | "destructive"
+	className?: string;
+	variant?: "default" | "destructive";
 }
 
 /**
@@ -421,9 +421,9 @@ interface ImageUploadErrorProps {
  * @returns JSX element displaying errors or null if no errors
  */
 export function ImageUploadError({ className, variant = "destructive" }: ImageUploadErrorProps) {
-	const errors = useImageUploadErrors()
+	const errors = useImageUploadErrors();
 
-	if (errors.length === 0) return null
+	if (errors.length === 0) return null;
 
 	return (
 		<div className={cn("space-y-2", className)}>
@@ -440,5 +440,5 @@ export function ImageUploadError({ className, variant = "destructive" }: ImageUp
 				</div>
 			))}
 		</div>
-	)
+	);
 }

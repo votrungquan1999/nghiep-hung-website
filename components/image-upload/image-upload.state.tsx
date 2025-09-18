@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import { createReducerContext } from "@/contexts/createReducerContext"
-import type { ImageUploadAction, ImageUploadFile, ImageUploadState } from "./image-upload.type"
-import { ImageUploadActionType } from "./image-upload.type"
+import { createReducerContext } from "@/contexts/createReducerContext";
+import type { ImageUploadAction, ImageUploadFile, ImageUploadState } from "./image-upload.type";
+import { ImageUploadActionType } from "./image-upload.type";
 
 const createInitialState = (
 	maxFiles: number = 10,
@@ -11,6 +11,7 @@ const createInitialState = (
 	inputId: string = "",
 	initialFiles: ImageUploadFile[] = [],
 	onChange?: (files: ImageUploadFile[]) => void,
+	inputRef: React.RefObject<HTMLInputElement | null> = { current: null },
 ): ImageUploadState => ({
 	files: initialFiles,
 	isUploading: false,
@@ -20,63 +21,82 @@ const createInitialState = (
 	maxFileSize,
 	acceptedTypes,
 	inputId,
+	inputRef: inputRef || { current: null },
 	onChange,
-})
+});
 
 function imageUploadReducer(state: ImageUploadState, action: ImageUploadAction): ImageUploadState {
 	switch (action.type) {
 		case ImageUploadActionType.AddFiles: {
-			const newFiles = [...state.files, ...action.payload]
-			const limitedFiles = newFiles.slice(0, state.maxFiles)
+			const newFiles = [...state.files, ...action.payload];
+			const limitedFiles = newFiles.slice(0, state.maxFiles);
 
 			const newState = {
 				...state,
 				files: limitedFiles,
 				errors: [],
+			};
+
+			// Update input files to match current state
+			if (state.inputRef?.current) {
+				const dataTransfer = new DataTransfer();
+				limitedFiles.forEach((fileObj) => {
+					dataTransfer.items.add(fileObj.file);
+				});
+				state.inputRef.current.files = dataTransfer.files;
 			}
 
 			// Call onChange for controlled mode
 			if (state.onChange) {
-				state.onChange(limitedFiles)
+				state.onChange(limitedFiles);
 			}
 
-			return newState
+			return newState;
 		}
 		case ImageUploadActionType.RemoveFile: {
-			const filteredFiles = state.files.filter((file) => file.id !== action.payload)
+			const filteredFiles = state.files.filter((file) => file.id !== action.payload);
 
 			const newState = {
 				...state,
 				files: filteredFiles,
+			};
+
+			// Update input files to match current state
+			if (state.inputRef?.current) {
+				const dataTransfer = new DataTransfer();
+				filteredFiles.forEach((fileObj) => {
+					dataTransfer.items.add(fileObj.file);
+				});
+				state.inputRef.current.files = dataTransfer.files;
 			}
 
 			// Call onChange for controlled mode
 			if (state.onChange) {
-				state.onChange(filteredFiles)
+				state.onChange(filteredFiles);
 			}
 
-			return newState
+			return newState;
 		}
 		case ImageUploadActionType.SetUploading:
 			return {
 				...state,
 				isUploading: action.payload,
-			}
+			};
 		case ImageUploadActionType.SetProgress:
 			return {
 				...state,
 				uploadProgress: action.payload,
-			}
+			};
 		case ImageUploadActionType.AddError:
 			return {
 				...state,
 				errors: [...state.errors, action.payload],
-			}
+			};
 		case ImageUploadActionType.ClearErrors:
 			return {
 				...state,
 				errors: [],
-			}
+			};
 		case ImageUploadActionType.Reset:
 			return createInitialState(
 				state.maxFiles,
@@ -85,46 +105,57 @@ function imageUploadReducer(state: ImageUploadState, action: ImageUploadAction):
 				state.inputId,
 				state.files, // Keep current files on reset
 				state.onChange,
-			)
-		case ImageUploadActionType.SyncFiles:
+				state.inputRef,
+			);
+		case ImageUploadActionType.SyncFiles: {
+			// Update input files to match current state
+			if (state.inputRef?.current) {
+				const dataTransfer = new DataTransfer();
+				action.payload.forEach((fileObj) => {
+					dataTransfer.items.add(fileObj.file);
+				});
+				state.inputRef.current.files = dataTransfer.files;
+			}
+
 			return {
 				...state,
 				files: action.payload,
-			}
+			};
+		}
 		default:
-			return state
+			return state;
 	}
 }
 
 export const [ImageUploadProvider, useImageUploadState, useImageUploadDispatch] =
-	createReducerContext(imageUploadReducer, createInitialState())
+	createReducerContext(imageUploadReducer, createInitialState());
 
 /**
  * Hook for file management - handles files display and basic operations
  * @returns Object containing files array and file management functions
  */
 export function useImageUploadFiles() {
-	const state = useImageUploadState()
-	const dispatch = useImageUploadDispatch()
+	const state = useImageUploadState();
+	const dispatch = useImageUploadDispatch();
 
 	const addFiles = (files: ImageUploadFile[]) => {
-		dispatch({ type: ImageUploadActionType.AddFiles, payload: files })
-	}
+		dispatch({ type: ImageUploadActionType.AddFiles, payload: files });
+	};
 
 	const removeFile = (fileId: string) => {
-		dispatch({ type: ImageUploadActionType.RemoveFile, payload: fileId })
-	}
+		dispatch({ type: ImageUploadActionType.RemoveFile, payload: fileId });
+	};
 
 	const syncFiles = (files: ImageUploadFile[]) => {
-		dispatch({ type: ImageUploadActionType.SyncFiles, payload: files })
-	}
+		dispatch({ type: ImageUploadActionType.SyncFiles, payload: files });
+	};
 
 	return {
 		files: state.files,
 		addFiles,
 		removeFile,
 		syncFiles,
-	}
+	};
 }
 
 /**
@@ -132,11 +163,11 @@ export function useImageUploadFiles() {
  * @returns Object containing upload state and progress
  */
 export function useImageUploadProgress() {
-	const state = useImageUploadState()
+	const state = useImageUploadState();
 	return {
 		isUploading: state.isUploading,
 		uploadProgress: state.uploadProgress,
-	}
+	};
 }
 
 /**
@@ -144,8 +175,8 @@ export function useImageUploadProgress() {
  * @returns Array of error messages
  */
 export function useImageUploadErrors() {
-	const state = useImageUploadState()
-	return state.errors
+	const state = useImageUploadState();
+	return state.errors;
 }
 
 /**
@@ -153,24 +184,24 @@ export function useImageUploadErrors() {
  * @returns Object containing input configuration and validation functions
  */
 export function useImageUploadInput() {
-	const state = useImageUploadState()
-	const dispatch = useImageUploadDispatch()
+	const state = useImageUploadState();
+	const dispatch = useImageUploadDispatch();
 
 	const addError = (error: string) => {
-		dispatch({ type: ImageUploadActionType.AddError, payload: error })
-	}
+		dispatch({ type: ImageUploadActionType.AddError, payload: error });
+	};
 
 	const validateFile = (file: File): { isValid: boolean; error?: string } => {
 		// Check file type
 		const isValidType = state.acceptedTypes.some((type) => {
 			if (type.endsWith("/*")) {
-				return file.type.startsWith(type.slice(0, -1))
+				return file.type.startsWith(type.slice(0, -1));
 			}
-			return file.type === type
-		})
+			return file.type === type;
+		});
 
 		if (!isValidType) {
-			return { isValid: false, error: `File ${file.name} is not a valid image type` }
+			return { isValid: false, error: `File ${file.name} is not a valid image type` };
 		}
 
 		// Check file size
@@ -178,34 +209,34 @@ export function useImageUploadInput() {
 			return {
 				isValid: false,
 				error: `File ${file.name} is too large (max ${Math.round(state.maxFileSize / 1024 / 1024)}MB)`,
-			}
+			};
 		}
 
-		return { isValid: true }
-	}
+		return { isValid: true };
+	};
 
 	const validateFiles = (files: File[]): { validFiles: ImageUploadFile[]; errors: string[] } => {
-		const validFiles: ImageUploadFile[] = []
-		const errors: string[] = []
+		const validFiles: ImageUploadFile[] = [];
+		const errors: string[] = [];
 
 		for (const file of files) {
-			const validation = validateFile(file)
+			const validation = validateFile(file);
 
 			if (!validation.isValid) {
 				if (validation.error) {
-					errors.push(validation.error)
+					errors.push(validation.error);
 				}
-				continue
+				continue;
 			}
 
 			// Check max files
 			if (state.files.length + validFiles.length >= state.maxFiles) {
-				errors.push(`Maximum ${state.maxFiles} files allowed`)
-				continue
+				errors.push(`Maximum ${state.maxFiles} files allowed`);
+				continue;
 			}
 
-			const fileId = Math.random().toString(36).substr(2, 9)
-			const preview = URL.createObjectURL(file)
+			const fileId = Math.random().toString(36).substr(2, 9);
+			const preview = URL.createObjectURL(file);
 
 			validFiles.push({
 				id: fileId,
@@ -213,22 +244,22 @@ export function useImageUploadInput() {
 				preview,
 				name: file.name,
 				size: file.size,
-			})
+			});
 		}
 
-		return { validFiles, errors }
-	}
+		return { validFiles, errors };
+	};
 
 	const triggerFileSelect = () => {
-		const fileInput = document.getElementById(state.inputId) as HTMLInputElement
-		fileInput?.click()
-	}
+		state.inputRef?.current?.click();
+	};
 
 	return {
 		inputId: state.inputId,
+		inputRef: state.inputRef,
 		acceptedTypes: state.acceptedTypes,
 		validateFiles,
 		addError,
 		triggerFileSelect,
-	}
+	};
 }
