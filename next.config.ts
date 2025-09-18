@@ -1,4 +1,4 @@
-import type { NextConfig } from "next"
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
 	eslint: {
@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
 	images: {
 		unoptimized: true,
 	},
-}
+	experimental: {
+		serverActions: {
+			bodySizeLimit: "100mb",
+		},
+	},
+};
 
-export default nextConfig
+export default nextConfig;
