@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
-import { Slot } from "@radix-ui/react-slot"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
+import { Slot } from "@radix-ui/react-slot";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 import {
 	ImageGalleryProvider,
 	useImageGalleryDispatch,
 	useImageGalleryState,
-} from "./image-gallery.state"
-import type { ImageGalleryImage } from "./image-gallery.type"
-import { ImageGalleryActionType } from "./image-gallery.type"
+} from "./image-gallery.state";
+import type { ImageGalleryImage } from "./image-gallery.type";
+import { ImageGalleryActionType } from "./image-gallery.type";
 
 interface GalleryRootProps {
-	images: ImageGalleryImage[]
-	children: React.ReactNode
+	images: ImageGalleryImage[];
+	children: React.ReactNode;
 }
 
 /**
@@ -24,105 +24,109 @@ export function GalleryRoot({ images, children }: GalleryRootProps) {
 		<ImageGalleryProvider imageCount={images.length} images={images}>
 			{children}
 		</ImageGalleryProvider>
-	)
+	);
 }
 
 interface GalleryButtonProps {
-	children: React.ReactNode
-	asChild?: boolean
-	className?: string
+	children: React.ReactNode;
+	asChild?: boolean;
+	className?: string;
 }
 
 /**
  * Gallery next button component
  */
 export function GalleryNextButton({ children, asChild = false, className }: GalleryButtonProps) {
-	const dispatch = useImageGalleryDispatch()
+	const dispatch = useImageGalleryDispatch();
 
 	const handleClick = () => {
-		dispatch({ type: ImageGalleryActionType.NextImage })
-	}
+		dispatch({ type: ImageGalleryActionType.NextImage });
+	};
 
 	if (asChild) {
 		return (
 			<Slot onClick={handleClick} className={className}>
 				{children}
 			</Slot>
-		)
+		);
 	}
 
 	return (
 		<Button variant="secondary" size="icon" onClick={handleClick} className={className}>
 			{children}
 		</Button>
-	)
+	);
 }
 
 /**
  * Gallery back button component
  */
 export function GalleryBackButton({ children, asChild = false, className }: GalleryButtonProps) {
-	const dispatch = useImageGalleryDispatch()
+	const dispatch = useImageGalleryDispatch();
 
 	const handleClick = () => {
-		dispatch({ type: ImageGalleryActionType.PrevImage })
-	}
+		dispatch({ type: ImageGalleryActionType.PrevImage });
+	};
 
 	if (asChild) {
 		return (
 			<Slot onClick={handleClick} className={className}>
 				{children}
 			</Slot>
-		)
+		);
 	}
 
 	return (
 		<Button variant="secondary" size="icon" onClick={handleClick} className={className}>
 			{children}
 		</Button>
-	)
+	);
 }
 
 interface GalleryImageProps {
-	className?: string
-	aspectRatio?: string
+	className?: string;
+	aspectRatio?: string;
 }
 
 /**
- * Gallery image component that renders the currently selected image
+ * Gallery image component that renders all images and hides non-current ones
  */
 export function GalleryImage({ className = "", aspectRatio = "aspect-video" }: GalleryImageProps) {
-	const state = useImageGalleryState()
-	const currentImage = state.images[state.currentIndex]
+	const state = useImageGalleryState();
 
 	return (
 		<div className={`relative w-full bg-muted rounded-lg overflow-hidden ${className}`}>
 			<div className={`${aspectRatio} w-full`}>
-				<Image
-					src={currentImage?.src || "/placeholder.svg"}
-					alt={currentImage?.alt || "Gallery image"}
-					fill
-					className="object-contain"
-				/>
+				{state.images.map((image, index) => (
+					<Image
+						key={`${image.src}-${index}`}
+						src={image.src || "/placeholder.svg"}
+						alt={image.alt || "Gallery image"}
+						fill
+						className={`object-contain transition-opacity duration-300 ${
+							index === state.currentIndex ? "opacity-100" : "opacity-0 absolute"
+						}`}
+					/>
+				))}
 			</div>
 		</div>
-	)
+	);
 }
 
 interface GalleryThumbnailsProps {
-	className?: string
+	className?: string;
 }
 
 /**
  * Gallery thumbnails component that renders navigation dots
  */
 export function GalleryThumbnails({ className = "" }: GalleryThumbnailsProps) {
-	const state = useImageGalleryState()
-	const dispatch = useImageGalleryDispatch()
+	const state = useImageGalleryState();
+	const dispatch = useImageGalleryDispatch();
 
-	const hasMultipleImages = state.images.length > 1
+	const hasMultipleImages = state.images.length > 1;
 
-	if (!hasMultipleImages) return null
+	if (!hasMultipleImages) return null;
 
 	return (
 		<div className={`flex justify-center space-x-2 ${className}`}>
@@ -138,5 +142,5 @@ export function GalleryThumbnails({ className = "" }: GalleryThumbnailsProps) {
 				/>
 			))}
 		</div>
-	)
+	);
 }
