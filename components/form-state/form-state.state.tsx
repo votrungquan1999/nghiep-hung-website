@@ -1,7 +1,37 @@
 "use client";
 
+import { createContext, useContext, useState } from "react";
 import { createReducerContext } from "@/contexts/createReducerContext";
 import type { FormAction, FormState } from "./form-state.type";
+
+const FormBoundaryContext = createContext<{ formKey: string; resetFormKey: () => void }>({
+	formKey: "",
+	resetFormKey: () => {},
+});
+
+export function FormBoundaryProvider({ children }: { children: React.ReactNode }) {
+	const [formKey, setFormKey] = useState(1);
+
+	const resetFormKey = () => {
+		setFormKey(formKey + 1);
+	};
+
+	return (
+		<FormBoundaryContext.Provider value={{ formKey: formKey.toString(), resetFormKey }}>
+			<div key={formKey}>{children}</div>
+		</FormBoundaryContext.Provider>
+	);
+}
+
+export function useResetFormBoundary() {
+	const context = useContext(FormBoundaryContext);
+
+	if (!context) {
+		return () => {};
+	}
+
+	return context.resetFormKey;
+}
 
 const initialState: FormState = {
 	isSubmitting: false,

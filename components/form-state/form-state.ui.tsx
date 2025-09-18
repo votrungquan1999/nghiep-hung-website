@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { startTransition } from "react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { FormProvider, useForm, useFormActions } from "./form-state.state";
+import { FormProvider, useForm, useFormActions, useResetFormBoundary } from "./form-state.state";
 import type { FormProps } from "./form-state.type";
 import { FormActionType } from "./form-state.type";
 
@@ -16,6 +16,8 @@ import { FormActionType } from "./form-state.type";
 function FormSubmissionHandler({ action, children }: Pick<FormProps, "action" | "children">) {
 	const dispatch = useFormActions();
 	const router = useRouter();
+	const resetFormBoundary = useResetFormBoundary();
+
 	/**
 	 * Handle form submission with state management
 	 * @param formData - Form data from the form submission
@@ -36,6 +38,7 @@ function FormSubmissionHandler({ action, children }: Pick<FormProps, "action" | 
 					}
 
 					if ("refresh" in result) {
+						resetFormBoundary();
 						router.refresh();
 						return;
 					}
