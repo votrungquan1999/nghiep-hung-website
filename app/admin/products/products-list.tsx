@@ -1,3 +1,4 @@
+import { FormBoundaryProvider } from "@/components/form-state/form-state.state";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProductRow } from "./product-row";
 import { ProductRowProvider } from "./product-row-context.state";
@@ -21,9 +22,11 @@ export function ProductsList({ productIds }: ProductsListProps) {
 			<CardContent>
 				<div className="space-y-4">
 					{productIds.map((productId) => (
-						<ProductRowProvider key={productId}>
-							<ProductRow productId={productId} />
-						</ProductRowProvider>
+						<FormBoundaryProvider key={productId}>
+							<ProductRowProvider>
+								<ProductRow productId={productId} />
+							</ProductRowProvider>
+						</FormBoundaryProvider>
 					))}
 				</div>
 			</CardContent>
