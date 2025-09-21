@@ -46,11 +46,6 @@ function imageUploadReducer(state: ImageUploadState, action: ImageUploadAction):
 				state.inputRef.current.files = dataTransfer.files;
 			}
 
-			// Call onChange for controlled mode
-			if (state.onChange) {
-				state.onChange(limitedFiles);
-			}
-
 			return newState;
 		}
 		case ImageUploadActionType.RemoveFile: {
@@ -68,11 +63,6 @@ function imageUploadReducer(state: ImageUploadState, action: ImageUploadAction):
 					dataTransfer.items.add(fileObj.file);
 				});
 				state.inputRef.current.files = dataTransfer.files;
-			}
-
-			// Call onChange for controlled mode
-			if (state.onChange) {
-				state.onChange(filteredFiles);
 			}
 
 			return newState;
@@ -127,8 +117,12 @@ function imageUploadReducer(state: ImageUploadState, action: ImageUploadAction):
 	}
 }
 
-export const [ImageUploadProvider, useImageUploadState, useImageUploadDispatch] =
-	createReducerContext(imageUploadReducer, createInitialState());
+const [ImageUploadProvider, useImageUploadState, useImageUploadDispatch] = createReducerContext(
+	imageUploadReducer,
+	createInitialState(),
+);
+
+export { ImageUploadProvider };
 
 /**
  * Hook for file management - handles files display and basic operations
@@ -156,6 +150,15 @@ export function useImageUploadFiles() {
 		removeFile,
 		syncFiles,
 	};
+}
+
+/**
+ * Hook for accessing the onChange callback
+ * @returns The onChange callback function if available
+ */
+export function useImageUploadOnChange() {
+	const state = useImageUploadState();
+	return state.onChange;
 }
 
 /**

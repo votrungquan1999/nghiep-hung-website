@@ -285,31 +285,28 @@ interface ImageUploadErrorProps {
 
 The component uses a reducer-based context for state management. You can access the state and dispatch functions:
 
-```tsx
-import { useImageUploadState, useImageUploadDispatch } from "@/components/image-upload/image-upload.state"
-import { ImageUploadActionType } from "@/components/image-upload/image-upload.type"
+```javascript
+import { 
+  useImageUploadFiles, 
+  useImageUploadErrors, 
+  useImageUploadProgress 
+} from "@/components/image-upload/image-upload.state"
 
 function MyComponent() {
-  const state = useImageUploadState()
-  const dispatch = useImageUploadDispatch()
-
-  // Access uploaded files
-  console.log(state.files)
-  
-  // Access errors
-  console.log(state.errors)
-  
-  // Access upload progress
-  console.log(state.uploadProgress)
+  const { files } = useImageUploadFiles()
+  const errors = useImageUploadErrors()
+  const { isUploading, uploadProgress } = useImageUploadProgress()
   
   // Clear all files
+  const { syncFiles } = useImageUploadFiles()
   const handleClear = () => {
-    dispatch({ type: ImageUploadActionType.Reset })
+    syncFiles([])
   }
   
   // Remove specific file
+  const { removeFile } = useImageUploadFiles()
   const handleRemove = (fileId: string) => {
-    dispatch({ type: ImageUploadActionType.RemoveFile, payload: fileId })
+    removeFile(fileId)
   }
 }
 ```

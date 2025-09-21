@@ -11,8 +11,8 @@ import {
 	useImageUploadErrors,
 	useImageUploadFiles,
 	useImageUploadInput,
+	useImageUploadOnChange,
 	useImageUploadProgress,
-	useImageUploadState,
 } from "./image-upload.state";
 import type { ImageUploadFile, ImageUploadRootProps } from "./image-upload.type";
 
@@ -66,15 +66,15 @@ export function ImageUploadRoot({
  */
 function ImageUploadValueSync({ value }: { value?: ImageUploadFile[] }) {
 	const { syncFiles } = useImageUploadFiles();
-	const state = useImageUploadState();
+	const onChange = useImageUploadOnChange();
 
 	useEffect(() => {
 		// Only sync if we have an onChange callback (controlled mode)
 		// and the external value is different from internal state
-		if (state.onChange && value) {
+		if (onChange && value) {
 			syncFiles(value);
 		}
-	}, [value, state.onChange, syncFiles]);
+	}, [value, onChange, syncFiles]);
 
 	return null;
 }
@@ -88,6 +88,7 @@ function ImageUploadValueSync({ value }: { value?: ImageUploadFile[] }) {
 function ImageUploadInput({ name }: { name?: string }) {
 	const { addFiles } = useImageUploadFiles();
 	const { validateFiles, addError, acceptedTypes, inputId, inputRef } = useImageUploadInput();
+	const onChange = useImageUploadOnChange();
 
 	const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const files = event.target.files;
@@ -103,6 +104,10 @@ function ImageUploadInput({ name }: { name?: string }) {
 		}
 
 		if (validFiles.length > 0) {
+			// Call onChange before addFiles to prevent setState during render
+			if (onChange) {
+				onChange(validFiles);
+			}
 			addFiles(validFiles);
 		}
 	};
@@ -243,7 +248,7 @@ export function ImageUploadArea({
 					"border-2 border-dashed rounded-lg transition-colors w-full",
 					isDragOver
 						? "border-primary bg-primary/5"
-						: "border-slate-700 bg-white hover:border-primary/50 focus-within:border-primary",
+						: "border-border bg-card hover:border-primary/50 focus-within:border-primary",
 					disabled && "opacity-50 cursor-not-allowed",
 					!disabled && clickable && "cursor-pointer",
 					!disabled && !clickable && "cursor-default",
@@ -273,7 +278,7 @@ export function ImageUploadArea({
 					"border-2 border-dashed rounded-lg transition-colors w-full",
 					isDragOver
 						? "border-primary bg-primary/5"
-						: "border-slate-700 bg-white hover:border-primary/50 focus-within:border-primary",
+						: "border-border bg-card hover:border-primary/50 focus-within:border-primary",
 					disabled && "opacity-50 cursor-not-allowed",
 					!disabled && "cursor-pointer",
 					className,
@@ -301,7 +306,7 @@ export function ImageUploadArea({
 				"border-2 border-dashed rounded-lg transition-colors w-full",
 				isDragOver
 					? "border-primary bg-primary/5"
-					: "border-slate-700 hover:bg-white focus-within:bg-white",
+					: "border-border hover:bg-card focus-within:bg-card",
 				disabled && "opacity-50 cursor-not-allowed",
 				!disabled && "cursor-default",
 				className,
