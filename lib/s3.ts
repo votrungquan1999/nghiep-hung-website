@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { DeleteObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 export interface S3UploadResult {
 	key: string;
@@ -47,4 +47,24 @@ export async function uploadToS3(file: File, key: string): Promise<S3UploadResul
 		key,
 		url,
 	};
+}
+
+/**
+ * Delete a file from AWS S3
+ * @param key - The S3 object key (path) to delete
+ * @returns Promise that resolves when deletion is complete
+ */
+export async function deleteFromS3(key: string): Promise<void> {
+	const bucketName = process.env.AWS_S3_BUCKET_NAME;
+
+	if (!bucketName) {
+		throw new Error("AWS_S3_BUCKET_NAME environment variable is required");
+	}
+
+	const command = new DeleteObjectCommand({
+		Bucket: bucketName,
+		Key: key,
+	});
+
+	await s3Client.send(command);
 }
