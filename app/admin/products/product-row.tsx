@@ -1,4 +1,4 @@
-import { Edit, Eye, MoreHorizontal, Package, Trash2 } from "lucide-react";
+import { Edit, Eye, ImageIcon, MoreHorizontal, Package, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,9 +9,15 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getProductById } from "@/server/products";
+import {
+	ProductEditTrigger,
+	ProductImageTrigger,
+	ProductPreviewTrigger,
+} from "./product-dialog-triggers";
+import { ProductEditDialogContent } from "./product-edit-dialog-content";
+import { ProductImageDialogContent } from "./product-image-dialog-content";
 import { ProductPreviewDialogContent } from "./product-preview-dialog-content";
-import { ProductPreviewTrigger } from "./product-preview-trigger";
-import { ProductRowDialog } from "./product-row-context.state";
+import { ProductRowDialog } from "./product-row-context.ui";
 
 interface ProductRowProps {
 	productId: string;
@@ -67,7 +73,7 @@ export async function ProductRow({ productId }: ProductRowProps) {
 						<p className="text-sm text-muted-foreground line-clamp-2 mb-3">{product.description}</p>
 						<div className="flex items-center gap-4 text-xs text-muted-foreground">
 							<span className="flex items-center gap-1">
-								<span className="size-2 rounded-full bg-blue-500"></span>
+								<span className="size-2 rounded-full bg-primary"></span>
 								Created{" "}
 								{new Date(product.createdAt).toLocaleString(undefined, {
 									year: "numeric",
@@ -78,7 +84,7 @@ export async function ProductRow({ productId }: ProductRowProps) {
 								})}
 							</span>
 							<span className="flex items-center gap-1">
-								<span className="size-2 rounded-full bg-orange-500"></span>
+								<span className="size-2 rounded-full bg-secondary"></span>
 								Updated{" "}
 								{new Date(product.updatedAt).toLocaleString(undefined, {
 									year: "numeric",
@@ -89,7 +95,7 @@ export async function ProductRow({ productId }: ProductRowProps) {
 								})}
 							</span>
 							<span className="flex items-center gap-1">
-								<span className="size-2 rounded-full bg-green-500"></span>
+								<span className="size-2 rounded-full bg-success"></span>
 								{product.gallery.length} image{product.gallery.length !== 1 ? "s" : ""}
 							</span>
 						</div>
@@ -109,10 +115,14 @@ export async function ProductRow({ productId }: ProductRowProps) {
 								<Eye className="size-4" />
 								View Details
 							</ProductPreviewTrigger>
-							<DropdownMenuItem className="flex items-center gap-2">
+							<ProductEditTrigger className="flex items-center gap-2 w-full">
 								<Edit className="size-4" />
 								Edit Product
-							</DropdownMenuItem>
+							</ProductEditTrigger>
+							<ProductImageTrigger className="flex items-center gap-2 w-full">
+								<ImageIcon className="size-4" />
+								Manage Images
+							</ProductImageTrigger>
 							<DropdownMenuItem className="flex items-center gap-2 text-destructive focus:text-destructive">
 								<Trash2 className="size-4" />
 								Delete Product
@@ -121,7 +131,6 @@ export async function ProductRow({ productId }: ProductRowProps) {
 					</DropdownMenu>
 				</div>
 			</div>
-
 			{/* Product Gallery Preview */}
 			{product.gallery.length > 1 && (
 				<div className="flex gap-2 overflow-x-auto pb-2">
@@ -148,10 +157,18 @@ export async function ProductRow({ productId }: ProductRowProps) {
 					)}
 				</div>
 			)}
-
-			{/* Dialog wrapper for preview */}
-			<ProductRowDialog>
+			{/* Dialog wrappers for preview and edit */}
+			<ProductRowDialog type="preview">
 				<ProductPreviewDialogContent productId={product.id} />
+			</ProductRowDialog>
+
+			<ProductRowDialog type="edit">
+				<ProductEditDialogContent product={product} />
+			</ProductRowDialog>
+
+			{/* Image Management Dialog */}
+			<ProductRowDialog type="image">
+				<ProductImageDialogContent product={product} />
 			</ProductRowDialog>
 		</div>
 	);
