@@ -17,6 +17,12 @@ import {
 } from "@/components/image-upload";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import {
+	VisualTabs,
+	VisualTabsContent,
+	VisualTabsList,
+	VisualTabsTrigger,
+} from "@/components/ui/visual-tabs";
 import { ProductStatus } from "@/server/products/product.type";
 import { createProduct } from "./create-product-dialog.actions";
 import { HiddenSelectedImageInput } from "./hidden-selected-image-input";
@@ -31,31 +37,79 @@ export function CreateProductForm() {
 		<Form action={createProduct}>
 			{/* Form Fields */}
 			<div className="space-y-6">
-				{/* Product Name */}
-				<FormField
-					fieldId="productName"
-					name="productName"
-					placeholder="Enter product name"
-					required
-				>
-					<FormLabel>Product Name</FormLabel>
-					<FormInput />
-					<FieldError />
-				</FormField>
+				{/* Product Name - Multilingual */}
+				<div className="space-y-4">
+					<div className="text-sm font-medium text-foreground">Product Name</div>
+					<VisualTabs defaultValue="en" className="w-full">
+						<VisualTabsList className="grid w-full grid-cols-2">
+							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+						</VisualTabsList>
+						<VisualTabsContent value="en">
+							<FormField
+								fieldId="productNameEn"
+								name="productNameEn"
+								placeholder="Enter product name in English"
+								required
+							>
+								<FormLabel>Product Name (English)</FormLabel>
+								<FormInput />
+								<FieldError />
+							</FormField>
+						</VisualTabsContent>
+						<VisualTabsContent value="vi">
+							<FormField
+								fieldId="productNameVi"
+								name="productNameVi"
+								placeholder="Nhập tên sản phẩm bằng tiếng Việt"
+								required
+							>
+								<FormLabel>Tên sản phẩm (Tiếng Việt)</FormLabel>
+								<FormInput />
+								<FieldError />
+							</FormField>
+						</VisualTabsContent>
+					</VisualTabs>
+				</div>
 
-				{/* Product Description */}
-				<FormField
-					fieldId="productDescription"
-					name="productDescription"
-					placeholder="Enter product description"
-					required
-				>
-					<FormLabel>Product Description</FormLabel>
-					<FormInput asChild>
-						<Textarea rows={4} />
-					</FormInput>
-					<FieldError />
-				</FormField>
+				{/* Product Description - Multilingual */}
+				<div className="space-y-4">
+					<div className="text-sm font-medium text-foreground">Product Description</div>
+					<VisualTabs defaultValue="en" className="w-full">
+						<VisualTabsList className="grid w-full grid-cols-2">
+							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+						</VisualTabsList>
+						<VisualTabsContent value="en">
+							<FormField
+								fieldId="productDescriptionEn"
+								name="productDescriptionEn"
+								placeholder="Enter product description in English"
+								required
+							>
+								<FormLabel>Product Description (English)</FormLabel>
+								<FormInput asChild>
+									<Textarea rows={4} />
+								</FormInput>
+								<FieldError />
+							</FormField>
+						</VisualTabsContent>
+						<VisualTabsContent value="vi">
+							<FormField
+								fieldId="productDescriptionVi"
+								name="productDescriptionVi"
+								placeholder="Nhập mô tả sản phẩm bằng tiếng Việt"
+								required
+							>
+								<FormLabel>Mô tả sản phẩm (Tiếng Việt)</FormLabel>
+								<FormInput asChild>
+									<Textarea rows={4} />
+								</FormInput>
+								<FieldError />
+							</FormField>
+						</VisualTabsContent>
+					</VisualTabs>
+				</div>
 			</div>
 
 			{/* Image Upload Section */}
