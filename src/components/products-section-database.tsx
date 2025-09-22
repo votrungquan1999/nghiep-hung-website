@@ -3,8 +3,7 @@
  * Has the same structure as the static products-section.tsx
  */
 
-import { getAllProducts } from "src/server/products/get-all-products.query";
-import type { Product } from "src/server/products/product.type";
+import { getProductIds } from "src/server/products";
 import ProductDialog from "./product-dialog";
 
 /**
@@ -12,7 +11,7 @@ import ProductDialog from "./product-dialog";
  * Has the exact same structure as the static products-section.tsx
  */
 export default async function ProductsSectionDatabase() {
-	const products: Product[] = await getAllProducts();
+	const productIds: string[] = await getProductIds();
 
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
@@ -30,8 +29,8 @@ export default async function ProductsSectionDatabase() {
 				</div>
 
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-					{products.map((product) => (
-						<ProductDialog key={product.id} productId={product.id} />
+					{productIds.map((productId) => (
+						<ProductDialog key={productId} productId={productId} />
 					))}
 				</div>
 			</div>
