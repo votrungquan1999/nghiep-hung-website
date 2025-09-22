@@ -1,7 +1,24 @@
 import { Edit, Eye, ImageIcon, MoreHorizontal, Package, Trash2 } from "lucide-react";
 import Image from "next/image";
+import {
+	CancelButton,
+	ConfirmButton,
+	ConfirmDialog,
+	Form,
+	FormErrorDisplay,
+	FormPendingMessage,
+	FormSubmitMessage,
+} from "@/components/form-state";
+import { SubmitButton } from "@/components/form-state/form-state.ui";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "@/components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -9,6 +26,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { getProductById } from "@/server/products";
+import { deleteProductAction } from "./delete-product.actions";
 import {
 	ProductEditTrigger,
 	ProductImageTrigger,
@@ -104,31 +122,78 @@ export async function ProductRow({ productId }: ProductRowProps) {
 
 				{/* Actions */}
 				<div className="flex items-center gap-2 ml-4">
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button variant="ghost" size="sm">
-								<MoreHorizontal className="size-4" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end" className="w-48">
-							<ProductPreviewTrigger className="flex items-center gap-2 w-full">
-								<Eye className="size-4" />
-								View Details
-							</ProductPreviewTrigger>
-							<ProductEditTrigger className="flex items-center gap-2 w-full">
-								<Edit className="size-4" />
-								Edit Product
-							</ProductEditTrigger>
-							<ProductImageTrigger className="flex items-center gap-2 w-full">
-								<ImageIcon className="size-4" />
-								Manage Images
-							</ProductImageTrigger>
-							<DropdownMenuItem className="flex items-center gap-2 text-destructive focus:text-destructive">
-								<Trash2 className="size-4" />
-								Delete Product
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+					<Form action={deleteProductAction} confirmBeforeSubmit>
+						<input type="hidden" name="productId" value={product.id} />
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button variant="ghost" size="sm">
+									<MoreHorizontal className="size-4" />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end" className="w-48">
+								<ProductPreviewTrigger className="flex items-center gap-2 w-full">
+									<Eye className="size-4" />
+									View Details
+								</ProductPreviewTrigger>
+								<ProductEditTrigger className="flex items-center gap-2 w-full">
+									<Edit className="size-4" />
+									Edit Product
+								</ProductEditTrigger>
+								<ProductImageTrigger className="flex items-center gap-2 w-full">
+									<ImageIcon className="size-4" />
+									Manage Images
+								</ProductImageTrigger>
+								<SubmitButton asChild className="flex items-center gap-2 w-full">
+									<DropdownMenuItem className="flex items-center gap-2 text-destructive focus:text-destructive">
+										<Trash2 className="size-4" />
+										Delete Product
+									</DropdownMenuItem>
+								</SubmitButton>
+							</DropdownMenuContent>
+						</DropdownMenu>
+						{/* Delete Confirm Dialog */}
+						<ConfirmDialog>
+							<DialogContent className="sm:max-w-2xl bg-white">
+								<DialogHeader className="space-y-3">
+									<div className="flex items-start gap-3">
+										<div className="p-2 rounded-full bg-destructive/10 flex-shrink-0">
+											<Trash2 className="size-5 text-destructive" />
+										</div>
+										<div className="space-y-1">
+											<DialogTitle>Delete Product</DialogTitle>
+											<DialogDescription>
+												This action cannot be undone. The product will be permanently removed.
+											</DialogDescription>
+										</div>
+									</div>
+								</DialogHeader>
+								<div className="space-y-3">
+									<div className="p-4 bg-muted/50 rounded-lg border">
+										<p className="font-medium text-foreground mb-2">{product.name}</p>
+										<p className="text-sm text-muted-foreground leading-relaxed mb-3">
+											{product.description}
+										</p>
+										<div className="flex items-center gap-4 text-xs text-muted-foreground">
+											<span className="flex items-center gap-1">
+												<span className="size-2 rounded-full bg-destructive"></span>
+												{product.gallery.length} image{product.gallery.length !== 1 ? "s" : ""} will
+												be deleted
+											</span>
+										</div>
+									</div>
+									<FormErrorDisplay />
+								</div>
+
+								<DialogFooter className="gap-2">
+									<CancelButton>Cancel</CancelButton>
+									<ConfirmButton variant="destructive">
+										<FormSubmitMessage>Delete Product</FormSubmitMessage>
+										<FormPendingMessage>Deleting...</FormPendingMessage>
+									</ConfirmButton>
+								</DialogFooter>
+							</DialogContent>
+						</ConfirmDialog>
+					</Form>
 				</div>
 			</div>
 			{/* Product Gallery Preview */}
