@@ -3,28 +3,9 @@
  * Has the same structure as the static products-section.tsx
  */
 
-import Image from "next/image";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getAllProducts } from "@/server/products/get-all-products.query";
 import type { Product } from "@/server/products/product.type";
-import ProductGalleryDialog from "./product-gallery-dialog";
-
-/**
- * Convert database product to display format matching static version
- * @param product - Product from database
- * @returns Product in display format matching static structure
- */
-function convertDatabaseProductToDisplay(product: Product) {
-	const mainImage = product.gallery?.find((img) => img.isMain) || product.gallery?.[0];
-	const imageUrls = product.gallery?.map((img) => img.url) || [];
-
-	return {
-		name: product.name,
-		description: product.description,
-		image: mainImage?.url || "/placeholder.svg",
-		gallery: imageUrls,
-	};
-}
+import ProductDialog from "./product-dialog";
 
 /**
  * Server component that fetches products from database
@@ -32,8 +13,6 @@ function convertDatabaseProductToDisplay(product: Product) {
  */
 export default async function ProductsSectionDatabase() {
 	const products: Product[] = await getAllProducts();
-
-	const displayProducts = products.map(convertDatabaseProductToDisplay);
 
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
@@ -51,30 +30,8 @@ export default async function ProductsSectionDatabase() {
 				</div>
 
 				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-					{displayProducts.map((product) => (
-						<ProductGalleryDialog key={product.name} product={product}>
-							<Card className="group hover:shadow-xl transition-all duration-300 py-0 hover:-translate-y-1 cursor-pointer">
-								<div className="aspect-video overflow-hidden rounded-t-lg px-0">
-									<Image
-										src={product.image || "/placeholder.svg"}
-										alt={product.name}
-										width={400}
-										height={300}
-										className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-									/>
-								</div>
-								<CardHeader>
-									<CardTitle className="text-xl font-serif font-bold text-foreground">
-										{product.name}
-									</CardTitle>
-								</CardHeader>
-								<CardContent>
-									<p className="text-muted-foreground mb-4 leading-relaxed">
-										{product.description}
-									</p>
-								</CardContent>
-							</Card>
-						</ProductGalleryDialog>
+					{products.map((product) => (
+						<ProductDialog key={product.id} productId={product.id} />
 					))}
 				</div>
 			</div>

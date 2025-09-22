@@ -1,44 +1,45 @@
-"use client"
+"use client";
 
-import { ChevronLeft, ChevronRight } from "lucide-react"
-import Image from "next/image"
-import type React from "react"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
+import type React from "react";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
 interface ProductGalleryDialogProps {
 	product: {
-		name: string
-		description: string
-		gallery: string[]
-	}
-	children: React.ReactNode
+		name: string;
+		description: string;
+		image: string;
+		gallery: string[];
+	};
+	children: React.ReactNode;
 }
 
 export default function ProductGalleryDialog({ product, children }: ProductGalleryDialogProps) {
-	const [currentImageIndex, setCurrentImageIndex] = useState(0)
+	const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
 	const nextImage = () => {
 		if (product.gallery && product.gallery.length > 0) {
-			setCurrentImageIndex((prev) => (prev + 1) % product.gallery.length)
+			setCurrentImageIndex((prev) => (prev + 1) % product.gallery.length);
 		}
-	}
+	};
 
 	const prevImage = () => {
 		if (product.gallery && product.gallery.length > 0) {
-			setCurrentImageIndex((prev) => (prev - 1 + product.gallery.length) % product.gallery.length)
+			setCurrentImageIndex((prev) => (prev - 1 + product.gallery.length) % product.gallery.length);
 		}
-	}
+	};
 
-	const galleryImages = product.gallery || []
-	const hasMultipleImages = galleryImages.length > 1
+	const galleryImages = product.gallery || [];
+	const hasMultipleImages = galleryImages.length > 1;
 
 	return (
 		<Dialog>
@@ -103,5 +104,5 @@ export default function ProductGalleryDialog({ product, children }: ProductGalle
 				</div>
 			</DialogContent>
 		</Dialog>
-	)
+	);
 }
