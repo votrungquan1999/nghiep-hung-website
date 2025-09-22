@@ -18,8 +18,8 @@ import { CreateProductForm } from "./create-product-form";
  */
 export default function CreateProductDialog() {
 	return (
-		<ProductImageSelectionProvider>
-			<FormBoundaryProvider>
+		<FormBoundaryProvider>
+			<ProductImageSelectionProvider>
 				<Dialog>
 					<DialogTrigger asChild>
 						<Button>
@@ -35,7 +35,7 @@ export default function CreateProductDialog() {
 						<CreateProductForm />
 					</DialogContent>
 				</Dialog>
-			</FormBoundaryProvider>
-		</ProductImageSelectionProvider>
+			</ProductImageSelectionProvider>
+		</FormBoundaryProvider>
 	);
 }
