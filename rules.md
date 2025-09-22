@@ -747,6 +747,56 @@ useEffect(() => {
 
 - ALWAYS use `createReducerContext` when possible.
 
+- ALWAYS reuse existing providers when they serve the same internal state. DO NOT create separate providers for related functionality.
+
+✅ Correct (reusing existing provider):
+
+```tsx
+// form-state.state.tsx
+const initialState: FormState = {
+  isSubmitting: false,
+  error: null,
+  fieldErrors: {},
+  formRef: null,
+  isConfirmDialogOpen: false,
+};
+
+const [FormProviderBase, useFormState, useFormDispatch] = createReducerContext(
+  formReducer,
+  initialState,
+);
+
+// Enhanced provider that includes formRef in state
+export function FormProvider({
+  formRef,
+  children,
+}: {
+  formRef: React.RefObject<HTMLFormElement | null>;
+  children: React.ReactNode;
+}) {
+  return <FormProviderBase formRef={formRef}>{children}</FormProviderBase>;
+}
+
+// Hook to access formRef from state
+export function useFormRef() {
+  const state = useFormState();
+  return state.formRef;
+}
+```
+
+❌ Incorrect (creating separate providers for related functionality):
+
+```tsx
+// DON'T DO THIS - separate contexts for related state
+const FormStateContext = createContext(/* form state */);
+const FormRefContext = createContext(/* form ref */);
+const FormActionContext = createContext(/* form action */);
+
+export function FormProvider({ children }) { /* form state context */ }
+export function FormRefProvider({ children }) { /* form ref context */ }
+export function FormActionProvider({ children }) { /* form action context */ }
+```
+
 - NEVER use the hooks from `createReducerContext` directly in components. ALWAYS transform them into more useful, domain-specific hooks.
 
 ✅ Correct (transforming hooks into domain-specific ones):
