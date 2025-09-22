@@ -32,8 +32,10 @@ function generateProductS3Key(productId: string, fileName: string, index: number
 export async function createProduct(formData: FormData): Promise<FormResult> {
 	try {
 		// Extract form data
-		const productName = formData.get("productName") as string;
-		const productDescription = formData.get("productDescription") as string;
+		const productNameEn = formData.get("productNameEn") as string;
+		const productNameVi = formData.get("productNameVi") as string;
+		const productDescriptionEn = formData.get("productDescriptionEn") as string;
+		const productDescriptionVi = formData.get("productDescriptionVi") as string;
 		const productStatus = formData.get("productStatus") as string;
 		const productImages = formData.getAll("productImages") as File[];
 		const selectedImageIndex = formData.get("selectedImageIndex") as string;
@@ -54,8 +56,16 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 		}
 
 		// Validate required fields, these are validated in the client already, no need to handle errors here
-		if (!productName || !productDescription || !productStatus) {
-			throw new Error("Product name, description, and status are required");
+		if (
+			!productNameEn ||
+			!productNameVi ||
+			!productDescriptionEn ||
+			!productDescriptionVi ||
+			!productStatus
+		) {
+			throw new Error(
+				"Product name (both languages), description (both languages), and status are required",
+			);
 		}
 
 		// Validate status value, these are validated in the client already, no need to handle errors here
@@ -114,8 +124,14 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 		// Create product document for MongoDB
 		const product: Product = {
 			id: productId,
-			name: productName,
-			description: productDescription,
+			name: {
+				en: productNameEn,
+				vi: productNameVi,
+			},
+			description: {
+				en: productDescriptionEn,
+				vi: productDescriptionVi,
+			},
 			status: productStatus as ProductStatus,
 			gallery: uploadedImages,
 			createdAt: new Date(),
