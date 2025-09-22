@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { motion } from "framer-motion"
-import Image from "next/image"
+import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function SplashScreen() {
 	return (
@@ -36,13 +36,13 @@ export default function SplashScreen() {
 					className="mb-8"
 				>
 					<h1 className="text-5xl md:text-6xl font-serif font-bold text-white mb-2 tracking-tight">
-						{"Nghiệp Hưng"}
+						{"NGHIỆP HƯNG"}
 					</h1>
-					<p className="text-xl md:text-2xl font-sans font-medium text-white/90 tracking-wide">
-						{"Công ty TNHH"}
+					<p className="text-xl md:text-2xl font-roboto font-medium text-white/90 tracking-wide">
+						{"CÔNG TY TNHH"}
 					</p>
 				</motion.div>
 			</div>
 		</motion.div>
-	)
+	);
 }

@@ -1,19 +1,17 @@
-"use client"
-
-import type { LucideIcon } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import type { LucideIcon } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import {
 	Dialog,
 	DialogContent,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 
 interface FeatureCardProps {
-	icon: LucideIcon
-	title: string
-	description: string
+	icon: LucideIcon;
+	title: string;
+	description: string;
 }
 
 /**
@@ -47,5 +45,5 @@ export default function FeatureCard({ icon: Icon, title, description }: FeatureC
 				</div>
 			</DialogContent>
 		</Dialog>
-	)
+	);
 }

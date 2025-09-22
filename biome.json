@@ -25,12 +25,19 @@
 		"formatter": {
 			"quoteStyle": "double",
 			"trailingCommas": "all",
-			"semicolons": "asNeeded"
+			"semicolons": "always"
 		}
 	},
 	"json": {
 		"formatter": {
 			"trailingCommas": "none"
+		}
+	},
+	"assist": {
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
 		}
 	}
 }
