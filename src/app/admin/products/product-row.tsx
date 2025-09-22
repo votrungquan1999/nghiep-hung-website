@@ -1,6 +1,5 @@
 import { Edit, Eye, ImageIcon, MoreHorizontal, Package, Trash2 } from "lucide-react";
 import Image from "next/image";
-import { getProductById } from "src/server/products";
 import {
 	CancelButton,
 	ConfirmButton,
@@ -26,6 +25,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
+import { getProductById } from "src/server/products";
 import { deleteProductAction } from "./delete-product.actions";
 import {
 	ProductEditTrigger,
@@ -59,7 +59,7 @@ export async function ProductRow({ productId }: ProductRowProps) {
 		<div className="group relative bg-card border border-border rounded-xl p-6 hover:shadow-md transition-all duration-200 hover:border-primary/20">
 			{/* Product Header */}
 			<div className="flex items-start justify-between mb-4">
-				<div className="flex items-start space-x-4 flex-1">
+				<div className="flex items-start space-x-4 flex-1 min-w-0">
 					{/* Product Image */}
 					<div className="relative size-20 rounded-lg bg-muted overflow-hidden flex-shrink-0">
 						{mainImage ? (
@@ -79,25 +79,15 @@ export async function ProductRow({ productId }: ProductRowProps) {
 
 					{/* Product Info */}
 					<div className="flex-1 min-w-0">
-						<div className="flex items-center gap-3 mb-2">
-							<div className="flex-1 min-w-0">
-								<h3 className="text-lg font-semibold text-foreground truncate">
-									{product.name.en}
-								</h3>
-								<p className="text-sm text-muted-foreground truncate">{product.name.vi}</p>
-							</div>
-							<Badge
-								variant={product.status === "active" ? "default" : "secondary"}
-								className="flex-shrink-0"
-							>
-								{product.status}
-							</Badge>
+						<div className="mb-2">
+							<h3 className="text-lg font-semibold text-foreground truncate">{product.name.en}</h3>
+							<p className="text-sm text-muted-foreground truncate">{product.name.vi}</p>
 						</div>
-						<div className="text-sm text-muted-foreground line-clamp-2 mb-3">
-							<p className="mb-1">
+						<div className="text-sm text-muted-foreground mb-3 min-w-0 max-w-full">
+							<p className="truncate mb-1 whitespace-nowrap overflow-hidden">
 								<strong>EN:</strong> {product.description.en}
 							</p>
-							<p>
+							<p className="truncate whitespace-nowrap overflow-hidden">
 								<strong>VI:</strong> {product.description.vi}
 							</p>
 						</div>
@@ -132,8 +122,14 @@ export async function ProductRow({ productId }: ProductRowProps) {
 					</div>
 				</div>
 
-				{/* Actions */}
-				<div className="flex items-center gap-2 ml-4">
+				{/* Status and Actions */}
+				<div className="flex items-center gap-3 ml-4">
+					<Badge
+						variant={product.status === "active" ? "default" : "secondary"}
+						className="flex-shrink-0"
+					>
+						{product.status}
+					</Badge>
 					<Form action={deleteProductAction} confirmBeforeSubmit>
 						<input type="hidden" name="productId" value={product.id} />
 						<DropdownMenu>
