@@ -4,13 +4,21 @@
  */
 
 /**
+ * Multilingual text content for products
+ */
+export interface MultilingualText {
+	en: string;
+	vi: string;
+}
+
+/**
  * Database document type for products stored in MongoDB
  * This represents the raw document structure in the database
  */
 export interface ProductDocument {
 	id: string;
-	name: string;
-	description: string;
+	name: MultilingualText;
+	description: MultilingualText;
 	status: ProductStatus;
 	gallery: ProductImageDocument[];
 	createdAt: Date;
@@ -34,8 +42,8 @@ export interface ProductImageDocument {
  */
 export interface Product {
 	id: string;
-	name: string;
-	description: string;
+	name: MultilingualText;
+	description: MultilingualText;
 	status: ProductStatus;
 	gallery: ProductImage[];
 	createdAt: Date;
@@ -56,8 +64,8 @@ export enum ProductStatus {
 }
 
 export interface CreateProductData {
-	name: string;
-	description: string;
+	name: MultilingualText;
+	description: MultilingualText;
 	status: ProductStatus;
 	images: File[];
 }
