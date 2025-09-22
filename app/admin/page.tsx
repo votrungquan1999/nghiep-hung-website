@@ -1,7 +1,7 @@
-import { FolderOpen, Package, Phone, Wrench } from "lucide-react"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { FolderOpen, Package, Phone, Wrench } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 /**
  * Admin dashboard page
@@ -85,5 +85,5 @@ export default async function AdminPage() {
 				</Card>
 			</div>
 		</div>
-	)
+	);
 }
