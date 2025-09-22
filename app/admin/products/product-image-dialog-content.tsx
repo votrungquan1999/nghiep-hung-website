@@ -33,7 +33,7 @@ export function ProductImageDialogContent({ product }: ProductImageDialogContent
 			<DialogHeader>
 				<DialogTitle className="flex items-center gap-2">
 					<ImageIcon className="size-5" />
-					Manage Images: {product.name}
+					Manage Images: {product.name.vi}
 				</DialogTitle>
 			</DialogHeader>
 

@@ -65,7 +65,7 @@ export async function ProductRow({ productId }: ProductRowProps) {
 						{mainImage ? (
 							<Image
 								src={mainImage.url}
-								alt={product.name}
+								alt={product.name.en}
 								fill
 								className="object-cover"
 								sizes="80px"
@@ -80,7 +80,12 @@ export async function ProductRow({ productId }: ProductRowProps) {
 					{/* Product Info */}
 					<div className="flex-1 min-w-0">
 						<div className="flex items-center gap-3 mb-2">
-							<h3 className="text-lg font-semibold text-foreground truncate">{product.name}</h3>
+							<div className="flex-1 min-w-0">
+								<h3 className="text-lg font-semibold text-foreground truncate">
+									{product.name.en}
+								</h3>
+								<p className="text-sm text-muted-foreground truncate">{product.name.vi}</p>
+							</div>
 							<Badge
 								variant={product.status === "active" ? "default" : "secondary"}
 								className="flex-shrink-0"
@@ -88,7 +93,14 @@ export async function ProductRow({ productId }: ProductRowProps) {
 								{product.status}
 							</Badge>
 						</div>
-						<p className="text-sm text-muted-foreground line-clamp-2 mb-3">{product.description}</p>
+						<div className="text-sm text-muted-foreground line-clamp-2 mb-3">
+							<p className="mb-1">
+								<strong>EN:</strong> {product.description.en}
+							</p>
+							<p>
+								<strong>VI:</strong> {product.description.vi}
+							</p>
+						</div>
 						<div className="flex items-center gap-4 text-xs text-muted-foreground">
 							<span className="flex items-center gap-1">
 								<span className="size-2 rounded-full bg-primary"></span>
@@ -169,10 +181,18 @@ export async function ProductRow({ productId }: ProductRowProps) {
 								</DialogHeader>
 								<div className="space-y-3">
 									<div className="p-4 bg-muted/50 rounded-lg border">
-										<p className="font-medium text-foreground mb-2">{product.name}</p>
-										<p className="text-sm text-muted-foreground leading-relaxed mb-3">
-											{product.description}
-										</p>
+										<div className="mb-2">
+											<p className="font-medium text-foreground">{product.name.en}</p>
+											<p className="text-sm text-muted-foreground">{product.name.vi}</p>
+										</div>
+										<div className="text-sm text-muted-foreground leading-relaxed mb-3">
+											<p className="mb-1">
+												<strong>EN:</strong> {product.description.en}
+											</p>
+											<p>
+												<strong>VI:</strong> {product.description.vi}
+											</p>
+										</div>
 										<div className="flex items-center gap-4 text-xs text-muted-foreground">
 											<span className="flex items-center gap-1">
 												<span className="size-2 rounded-full bg-destructive"></span>

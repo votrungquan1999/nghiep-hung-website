@@ -19,7 +19,7 @@ export function ProductEditDialogContent({ product }: ProductEditDialogContentPr
 			<DialogHeader>
 				<DialogTitle className="flex items-center gap-2">
 					<Edit className="size-5" />
-					Edit Product: {product.name}
+					Edit Product: {product.name.en}
 				</DialogTitle>
 			</DialogHeader>
 
