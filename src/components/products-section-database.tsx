@@ -3,7 +3,7 @@
  * Has the same structure as the static products-section.tsx
  */
 
-import { getProductIds } from "src/server/products";
+import { getActiveProductIds } from "src/server/products";
 import ProductDialog from "./product-dialog";
 
 /**
@@ -11,7 +11,7 @@ import ProductDialog from "./product-dialog";
  * Has the exact same structure as the static products-section.tsx
  */
 export default async function ProductsSectionDatabase() {
-	const productIds: string[] = await getProductIds();
+	const productIds: string[] = await getActiveProductIds();
 
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
