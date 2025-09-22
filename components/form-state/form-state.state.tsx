@@ -38,6 +38,8 @@ const initialState: FormState = {
 	isSubmitting: false,
 	error: null,
 	fieldErrors: {},
+	formRef: null,
+	isConfirmDialogOpen: false,
 };
 
 /**
@@ -88,6 +90,16 @@ function formReducer(state: FormState, action: FormAction): FormState {
 			};
 		case FormActionType.Reset:
 			return initialState;
+		case FormActionType.OpenConfirmDialog:
+			return {
+				...state,
+				isConfirmDialogOpen: true,
+			};
+		case FormActionType.CloseConfirmDialog:
+			return {
+				...state,
+				isConfirmDialogOpen: false,
+			};
 		default:
 			return state;
 	}
@@ -97,12 +109,33 @@ function formReducer(state: FormState, action: FormAction): FormState {
  * Form state context provider and hooks
  * Provides form state management to child components
  */
-const [FormProvider, useFormState, useFormDispatch] = createReducerContext(
+const [FormProviderBase, useFormState, useFormDispatch] = createReducerContext(
 	formReducer,
 	initialState,
 );
 
-export { FormProvider, useFormState, useFormDispatch };
+/**
+ * Enhanced FormProvider that includes form ref
+ * Provides both form state and form ref to child components
+ */
+export function FormProvider({
+	formRef,
+	children,
+}: {
+	formRef: React.RefObject<HTMLFormElement | null>;
+	children: React.ReactNode;
+}) {
+	return <FormProviderBase formRef={formRef}>{children}</FormProviderBase>;
+}
+
+/**
+ * Hook to get form ref
+ * @returns Form ref
+ */
+export function useFormRef() {
+	const context = useFormState();
+	return context.formRef;
+}
 
 /**
  * Hook to get form state
@@ -137,4 +170,25 @@ export function useFieldError(fieldName: string): string | null {
 export function useFieldErrors(): Record<string, string> {
 	const { fieldErrors } = useFormState();
 	return fieldErrors;
+}
+
+/**
+ * Hook to get confirm dialog state
+ * @returns Boolean indicating if confirm dialog is open
+ */
+export function useConfirmDialogOpen(): boolean {
+	const { isConfirmDialogOpen } = useFormState();
+	return isConfirmDialogOpen;
+}
+
+/**
+ * Hook to get confirm dialog actions
+ * @returns Object containing confirm dialog action functions
+ */
+export function useConfirmDialogActions() {
+	const dispatch = useFormDispatch();
+	return {
+		openConfirmDialog: () => dispatch({ type: FormActionType.OpenConfirmDialog }),
+		closeConfirmDialog: () => dispatch({ type: FormActionType.CloseConfirmDialog }),
+	};
 }

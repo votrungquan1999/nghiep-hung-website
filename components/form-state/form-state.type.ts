@@ -16,6 +16,15 @@ export interface FormState {
 	 * Field-specific validation errors
 	 */
 	fieldErrors: Record<string, string>;
+	/**
+	 * Whether the confirm dialog is open
+	 */
+	isConfirmDialogOpen: boolean;
+
+	/**
+	 * Form ref
+	 */
+	formRef: React.RefObject<HTMLFormElement | null> | null;
 }
 
 export enum FormActionType {
@@ -26,6 +35,8 @@ export enum FormActionType {
 	ClearFieldError = "CLEAR_FIELD_ERROR",
 	ClearAllFieldErrors = "CLEAR_ALL_FIELD_ERRORS",
 	Reset = "RESET",
+	OpenConfirmDialog = "OPEN_CONFIRM_DIALOG",
+	CloseConfirmDialog = "CLOSE_CONFIRM_DIALOG",
 }
 
 export type FormAction =
@@ -35,7 +46,9 @@ export type FormAction =
 	| { type: FormActionType.SetFieldError; payload: { fieldName: string; error: string } }
 	| { type: FormActionType.ClearFieldError; payload: string }
 	| { type: FormActionType.ClearAllFieldErrors }
-	| { type: FormActionType.Reset };
+	| { type: FormActionType.Reset }
+	| { type: FormActionType.OpenConfirmDialog }
+	| { type: FormActionType.CloseConfirmDialog };
 
 interface RedirectResult {
 	success: true;
@@ -74,4 +87,8 @@ export interface FormProps {
 	 * Form children components
 	 */
 	children: React.ReactNode;
+	/**
+	 * Whether to show confirm dialog before submit
+	 */
+	confirmBeforeSubmit?: boolean;
 }
