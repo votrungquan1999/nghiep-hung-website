@@ -2,7 +2,8 @@ import { ImageIcon } from "lucide-react";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
 import type { Service } from "src/server/services/service.type";
 import { ServiceImageManagementProvider } from "./edit-service-images/image-management-dialog.state";
-import { ServiceImageManagement } from "./edit-service-images/image-management-dialog.ui";
+import type { ExistingImage } from "./edit-service-images/image-management-dialog.type";
+import { ServiceImageManagementContent } from "./edit-service-images/image-management-dialog.ui";
 
 interface ServiceImageDialogContentProps {
 	service: Service;
@@ -14,6 +15,18 @@ interface ServiceImageDialogContentProps {
  * @param service - The service whose images to manage
  */
 export function ServiceImageDialogContent({ service }: ServiceImageDialogContentProps) {
+	// Convert service images to the expected format
+	const existingImages: ExistingImage[] = service.gallery.map((image) => ({
+		id: image.key,
+		type: "existing" as const,
+		url: image.url,
+		name: `Service image ${image.key}`,
+	}));
+
+	// Find the main image
+	const mainImage = service.gallery.find((img) => img.isMain);
+	const mainImageId = mainImage ? mainImage.key : null;
+
 	return (
 		<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white">
 			<DialogHeader>
@@ -23,8 +36,8 @@ export function ServiceImageDialogContent({ service }: ServiceImageDialogContent
 				</DialogTitle>
 			</DialogHeader>
 
-			<ServiceImageManagementProvider>
-				<ServiceImageManagement service={service} />
+			<ServiceImageManagementProvider existingImages={existingImages} mainImageId={mainImageId}>
+				<ServiceImageManagementContent serviceId={service.id} />
 			</ServiceImageManagementProvider>
 		</DialogContent>
 	);
