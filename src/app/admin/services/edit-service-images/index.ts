@@ -1,7 +1,9 @@
-export { addServiceImages } from "./image-management.actions";
+export { updateServiceImages } from "./image-management.actions";
 export {
 	ServiceImageManagementProvider,
-	useServiceImageManagementDispatch,
-	useServiceImageManagementState,
+	useExistingImages,
+	useMainImageSelection,
+	useNewImages,
+	useUnifiedImages,
 } from "./image-management-dialog.state";
-export { ServiceImageManagement } from "./image-management-dialog.ui";
+export { ServiceImageManagementContent } from "./image-management-dialog.ui";
