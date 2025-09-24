@@ -68,3 +68,18 @@ export async function deleteFromS3(key: string): Promise<void> {
 
 	await s3Client.send(command);
 }
+
+/**
+ * Generate public S3 URL from object key
+ * @param key - The S3 object key (path)
+ * @returns The public URL for the S3 object
+ */
+export function getS3Url(key: string): string {
+	const bucketName = process.env.AWS_S3_BUCKET_NAME;
+
+	if (!bucketName) {
+		throw new Error("AWS_S3_BUCKET_NAME environment variable is required");
+	}
+
+	return `https://${bucketName}.s3.${process.env.AWS_REGION || "us-east-1"}.amazonaws.com/${key}`;
+}
