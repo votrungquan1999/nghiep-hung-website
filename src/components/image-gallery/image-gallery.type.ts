@@ -3,15 +3,15 @@
  */
 
 export interface ImageGalleryImage {
-	src: string
-	alt: string
+	src: string;
+	alt: string;
 }
 
 export interface ImageGalleryState {
-	currentIndex: number
-	imageCount: number
-	images: ImageGalleryImage[]
-	isTransitioning: boolean
+	currentIndex: number;
+	imageCount: number;
+	images: ImageGalleryImage[];
+	isTransitioning: boolean;
 }
 
 export enum ImageGalleryActionType {
@@ -27,9 +27,9 @@ export type ImageGalleryAction =
 	| { type: ImageGalleryActionType.NextImage }
 	| { type: ImageGalleryActionType.PrevImage }
 	| { type: ImageGalleryActionType.SetImageCount; payload: number }
-	| { type: ImageGalleryActionType.SetTransitioning; payload: boolean }
+	| { type: ImageGalleryActionType.SetTransitioning; payload: boolean };
 
 export interface GalleryRootProps {
-	images: ImageGalleryImage[]
-	children: React.ReactNode
+	images: ImageGalleryImage[];
+	children: React.ReactNode;
 }
