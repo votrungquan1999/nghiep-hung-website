@@ -35,23 +35,12 @@ export default function AdminLoginPage() {
 	const handleGoogleSignIn = async () => {
 		setIsLoading(true);
 
-		// Log environment and sign-in details for debugging
-		console.log("🔍 [LOGIN DEBUG] Environment variables:", {
-			NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
-			current_origin: window.location.origin,
-			current_pathname: window.location.pathname,
-		});
-
 		const signInParams = {
 			provider: "google",
 			callbackURL: "/admin",
 		};
-		console.log("🔍 [LOGIN DEBUG] Sign-in parameters:", signInParams);
 
 		try {
-			// Intercept the OAuth URL that would be generated
-			console.log("🔍 [LOGIN DEBUG] About to initiate Google OAuth sign-in...");
-
 			await signIn.social(signInParams);
 		} catch (error) {
 			console.error("🔍 [LOGIN DEBUG] Login error:", error);
