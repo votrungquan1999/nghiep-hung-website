@@ -160,7 +160,7 @@ export async function createProject(formData: FormData): Promise<FormResult> {
 
 					return {
 						key: s3Key,
-						isMain: globalImageIndex === parseInt(selectedImageIndex),
+						isMain: globalImageIndex === parseInt(selectedImageIndex, 10),
 						uploadedAt: new Date(),
 					} as ProjectImageDocument;
 				});

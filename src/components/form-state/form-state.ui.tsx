@@ -62,8 +62,8 @@ function FormSubmissionHandler({ action, children, confirmBeforeSubmit }: FormPr
 					}
 
 					if ("refresh" in result) {
-						resetFormBoundary();
 						router.refresh();
+						resetFormBoundary();
 						return;
 					}
 

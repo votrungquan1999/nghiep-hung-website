@@ -234,25 +234,23 @@ export function CreateProjectForm() {
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 					<FormField fieldId="visibilityStatus" name="visibilityStatus" required>
 						<FormLabel>Visibility Status</FormLabel>
-						<select
-							name="visibilityStatus"
-							className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							<option value={ProjectVisibilityStatus.Active}>Active</option>
-							<option value={ProjectVisibilityStatus.Draft}>Draft</option>
-						</select>
+						<FormInput asChild>
+							<select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+								<option value={ProjectVisibilityStatus.Active}>Active</option>
+								<option value={ProjectVisibilityStatus.Draft}>Draft</option>
+							</select>
+						</FormInput>
 						<FieldError />
 					</FormField>
 					<FormField fieldId="completionStatus" name="completionStatus" required>
 						<FormLabel>Completion Status</FormLabel>
-						<select
-							name="completionStatus"
-							className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-						>
-							<option value={ProjectCompletionStatus.Completed}>Completed</option>
-							<option value={ProjectCompletionStatus.InProgress}>In Progress</option>
-							<option value={ProjectCompletionStatus.Planning}>Planning</option>
-						</select>
+						<FormInput asChild>
+							<select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50">
+								<option value={ProjectCompletionStatus.Completed}>Completed</option>
+								<option value={ProjectCompletionStatus.InProgress}>In Progress</option>
+								<option value={ProjectCompletionStatus.Planning}>Planning</option>
+							</select>
+						</FormInput>
 						<FieldError />
 					</FormField>
 				</div>
