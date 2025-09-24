@@ -110,8 +110,8 @@
 	--font-serif: var(--font-montserrat);
 	--font-roboto: var(--font-roboto);
 	--font-mono:
-		ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono",
-		"Courier New", monospace;
+		ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New",
+		monospace;
 
 	/* Radius */
 	--radius-sm: calc(var(--radius) - 4px);
@@ -171,7 +171,8 @@
 	html {
 		scroll-behavior: smooth;
 	}
-	input, textarea {
+	input,
+	textarea {
 		@apply bg-white border-slate-700;
 	}
 }
