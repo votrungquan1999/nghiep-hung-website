@@ -1,4 +1,4 @@
-import { type Db, MongoClient } from "mongodb"
+import { type Db, MongoClient } from "mongodb";
 
 /**
  * Simple MongoDB database client with singleton pattern
@@ -6,9 +6,9 @@ import { type Db, MongoClient } from "mongodb"
  */
 
 class DatabaseClient {
-	private static instance: DatabaseClient
-	private client: MongoClient | null = null
-	private db: Db | null = null
+	private static instance: DatabaseClient;
+	private client: MongoClient | null = null;
+	private db: Db | null = null;
 
 	private constructor() {}
 
@@ -17,9 +17,35 @@ class DatabaseClient {
 	 */
 	public static getInstance(): DatabaseClient {
 		if (!DatabaseClient.instance) {
-			DatabaseClient.instance = new DatabaseClient()
+			DatabaseClient.instance = new DatabaseClient();
 		}
-		return DatabaseClient.instance
+		return DatabaseClient.instance;
+	}
+
+	/**
+	 * Build MongoDB connection string with optional username and password
+	 * @returns Complete MongoDB connection URI
+	 */
+	private buildConnectionString(): string {
+		const mongoUri = process.env.MONGODB_URI;
+		const mongoUsername = process.env.MONGODB_USERNAME;
+		const mongoPassword = process.env.MONGODB_PASSWORD;
+
+		if (!mongoUri) {
+			throw new Error("MONGODB_URI environment variable is required");
+		}
+
+		// If username and password are provided, inject them into the URI
+		if (mongoUsername && mongoPassword) {
+			// Parse the URI to inject credentials
+			const url = new URL(mongoUri);
+			url.username = mongoUsername;
+			url.password = mongoPassword;
+			return url.toString();
+		}
+
+		// Return the original URI if no credentials are provided
+		return mongoUri;
 	}
 
 	/**
@@ -27,16 +53,12 @@ class DatabaseClient {
 	 */
 	public async getClient(): Promise<MongoClient> {
 		if (!this.client) {
-			const mongoUrl = process.env.MONGODB_URI
-			if (!mongoUrl) {
-				throw new Error("MONGODB_URI environment variable is required")
-			}
-
-			this.client = new MongoClient(mongoUrl)
-			await this.client.connect()
+			const connectionString = this.buildConnectionString();
+			this.client = new MongoClient(connectionString);
+			await this.client.connect();
 		}
 
-		return this.client
+		return this.client;
 	}
 
 	/**
@@ -44,12 +66,12 @@ class DatabaseClient {
 	 */
 	public async getDatabase(): Promise<Db> {
 		if (!this.db) {
-			const client = await this.getClient()
-			const dbName = process.env.MONGODB_DB_NAME || "nghiep-hung-website"
-			this.db = client.db(dbName)
+			const client = await this.getClient();
+			const dbName = process.env.MONGODB_DBNAME || "nghiep-hung-website";
+			this.db = client.db(dbName);
 		}
 
-		return this.db
+		return this.db;
 	}
 
 	/**
@@ -57,34 +79,34 @@ class DatabaseClient {
 	 */
 	public async close(): Promise<void> {
 		if (this.client) {
-			await this.client.close()
-			this.client = null
-			this.db = null
+			await this.client.close();
+			this.client = null;
+			this.db = null;
 		}
 	}
 }
 
 // Export singleton instance
-const databaseClient = DatabaseClient.getInstance()
+const databaseClient = DatabaseClient.getInstance();
 
 /**
  * Get MongoDB database instance
  * Uses singleton pattern to ensure single connection
  */
 export async function getDatabase(): Promise<Db> {
-	return await databaseClient.getDatabase()
+	return await databaseClient.getDatabase();
 }
 
 /**
  * Get MongoDB client instance
  */
 export async function getClient(): Promise<MongoClient> {
-	return await databaseClient.getClient()
+	return await databaseClient.getClient();
 }
 
 /**
  * Close database connection
  */
 export async function closeDatabase(): Promise<void> {
-	await databaseClient.close()
+	await databaseClient.close();
 }
