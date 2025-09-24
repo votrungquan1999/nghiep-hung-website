@@ -80,6 +80,14 @@ export default function Footer() {
 									{"Liên hệ"}
 								</Link>
 							</li>
+							<li>
+								<Link
+									href="/privacy-policy"
+									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+								>
+									{"Chính sách Bảo mật"}
+								</Link>
+							</li>
 						</ul>
 					</div>
 
