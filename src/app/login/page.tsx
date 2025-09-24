@@ -29,51 +29,6 @@ export default function AdminLoginPage() {
 		}
 	}, [session, router]);
 
-	// Add network request interceptor to log OAuth URLs
-	useEffect(() => {
-		const originalFetch = window.fetch;
-		window.fetch = function (...args) {
-			const [resource, config] = args;
-			console.log("🔍 [NETWORK DEBUG] Fetch request:", resource, config);
-			return originalFetch.apply(this, args);
-		};
-
-		// Intercept window.location changes
-		const originalAssign = window.location.assign;
-		window.location.assign = function (url) {
-			console.log("🔍 [REDIRECT DEBUG] window.location.assign called with:", url);
-			return originalAssign.call(this, url);
-		};
-
-		const originalReplace = window.location.replace;
-		window.location.replace = function (url) {
-			console.log("🔍 [REDIRECT DEBUG] window.location.replace called with:", url);
-			return originalReplace.call(this, url);
-		};
-
-		// Also intercept href changes
-		const originalHref = Object.getOwnPropertyDescriptor(window.location, "href");
-		if (originalHref) {
-			Object.defineProperty(window.location, "href", {
-				get: originalHref.get,
-				set: function (url) {
-					console.log("🔍 [REDIRECT DEBUG] window.location.href set to:", url);
-					return originalHref.set?.call(this, url);
-				},
-			});
-		}
-
-		return () => {
-			// Cleanup
-			window.fetch = originalFetch;
-			window.location.assign = originalAssign;
-			window.location.replace = originalReplace;
-			if (originalHref) {
-				Object.defineProperty(window.location, "href", originalHref);
-			}
-		};
-	}, []);
-
 	/**
 	 * Handle Google OAuth sign-in
 	 */
