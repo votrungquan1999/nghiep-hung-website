@@ -1,7 +1,17 @@
-import { Building, Calendar, Edit, FolderOpen, MapPin, MoreVertical, Trash2 } from "lucide-react";
+import {
+	Building,
+	Calendar,
+	Edit,
+	Eye,
+	FolderOpen,
+	MapPin,
+	MoreVertical,
+	Trash2,
+} from "lucide-react";
 import Image from "next/image";
 import { Badge } from "src/components/ui/badge";
 import { Button } from "src/components/ui/button";
+import { DialogContent, DialogTitle } from "src/components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -13,7 +23,14 @@ import {
 	ProjectCompletionStatus,
 	ProjectVisibilityStatus,
 } from "src/server/projects";
-import { ProjectPreviewDialog } from "./project-preview-dialog";
+import {
+	ProjectEditTrigger,
+	ProjectImageTrigger,
+	ProjectPreviewTrigger,
+} from "./project-dialog-triggers";
+import { ProjectEditDialogContent } from "./project-edit-dialog-content";
+import { ProjectPreviewDialogContent } from "./project-preview-dialog-content";
+import { ProjectRowDialog } from "./project-row-context.ui";
 
 interface ProjectRowProps {
 	projectId: string;
@@ -79,7 +96,9 @@ export async function ProjectRow({ projectId }: ProjectRowProps) {
 							>
 								{project.completionStatus === ProjectCompletionStatus.Completed
 									? "Completed"
-									: "In Progress"}
+									: project.completionStatus === ProjectCompletionStatus.InProgress
+										? "In Progress"
+										: "Planning"}
 							</Badge>
 						</div>
 					</div>
@@ -137,17 +156,18 @@ export async function ProjectRow({ projectId }: ProjectRowProps) {
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
-							<DropdownMenuItem asChild>
-								<ProjectPreviewDialog projectId={project.id} />
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<Edit className="mr-2 size-4" />
+							<ProjectPreviewTrigger className="flex items-center gap-2 w-full">
+								<Eye className="size-4" />
+								View Details
+							</ProjectPreviewTrigger>
+							<ProjectEditTrigger className="flex items-center gap-2 w-full">
+								<Edit className="size-4" />
 								Edit Project Info
-							</DropdownMenuItem>
-							<DropdownMenuItem>
-								<FolderOpen className="mr-2 size-4" />
+							</ProjectEditTrigger>
+							<ProjectImageTrigger className="flex items-center gap-2 w-full">
+								<FolderOpen className="size-4" />
 								Edit Images
-							</DropdownMenuItem>
+							</ProjectImageTrigger>
 							<DropdownMenuItem className="text-destructive focus:text-destructive">
 								<Trash2 className="mr-2 size-4" />
 								Delete Project
@@ -156,6 +176,23 @@ export async function ProjectRow({ projectId }: ProjectRowProps) {
 					</DropdownMenu>
 				</div>
 			</div>
+
+			{/* Dialog wrappers for preview and edit */}
+			<ProjectRowDialog type="preview">
+				<ProjectPreviewDialogContent projectId={project.id} />
+			</ProjectRowDialog>
+
+			<ProjectRowDialog type="edit">
+				<ProjectEditDialogContent project={project} />
+			</ProjectRowDialog>
+
+			{/* Image Management Dialog - placeholder for future implementation */}
+			<ProjectRowDialog type="image">
+				{/* TODO: Implement ProjectImageDialogContent */}
+				<DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-white">
+					<DialogTitle>Image management coming soon</DialogTitle>
+				</DialogContent>
+			</ProjectRowDialog>
 		</div>
 	);
 }

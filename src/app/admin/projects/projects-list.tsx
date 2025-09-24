@@ -1,5 +1,6 @@
 import { FormBoundaryProvider } from "src/components/form-state/form-state.state";
 import { ProjectRow } from "./project-row";
+import { ProjectRowProvider } from "./project-row-context.state";
 
 interface ProjectsListProps {
 	projectIds: string[];
@@ -23,7 +24,9 @@ export function ProjectsList({ projectIds }: ProjectsListProps) {
 			<div className="divide-y">
 				{projectIds.map((projectId) => (
 					<FormBoundaryProvider key={projectId}>
-						<ProjectRow projectId={projectId} />
+						<ProjectRowProvider>
+							<ProjectRow projectId={projectId} />
+						</ProjectRowProvider>
 					</FormBoundaryProvider>
 				))}
 			</div>
