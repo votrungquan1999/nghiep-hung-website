@@ -4,13 +4,7 @@ import { Chrome, Loader2, ShieldCheck } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "src/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "src/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "src/components/ui/card";
 import { signIn, useSession } from "src/lib/auth-client";
 
 /**
@@ -35,18 +29,78 @@ export default function AdminLoginPage() {
 		}
 	}, [session, router]);
 
+	// Add network request interceptor to log OAuth URLs
+	useEffect(() => {
+		const originalFetch = window.fetch;
+		window.fetch = function (...args) {
+			const [resource, config] = args;
+			console.log("🔍 [NETWORK DEBUG] Fetch request:", resource, config);
+			return originalFetch.apply(this, args);
+		};
+
+		// Intercept window.location changes
+		const originalAssign = window.location.assign;
+		window.location.assign = function (url) {
+			console.log("🔍 [REDIRECT DEBUG] window.location.assign called with:", url);
+			return originalAssign.call(this, url);
+		};
+
+		const originalReplace = window.location.replace;
+		window.location.replace = function (url) {
+			console.log("🔍 [REDIRECT DEBUG] window.location.replace called with:", url);
+			return originalReplace.call(this, url);
+		};
+
+		// Also intercept href changes
+		const originalHref = Object.getOwnPropertyDescriptor(window.location, "href");
+		if (originalHref) {
+			Object.defineProperty(window.location, "href", {
+				get: originalHref.get,
+				set: function (url) {
+					console.log("🔍 [REDIRECT DEBUG] window.location.href set to:", url);
+					return originalHref.set?.call(this, url);
+				},
+			});
+		}
+
+		return () => {
+			// Cleanup
+			window.fetch = originalFetch;
+			window.location.assign = originalAssign;
+			window.location.replace = originalReplace;
+			if (originalHref) {
+				Object.defineProperty(window.location, "href", originalHref);
+			}
+		};
+	}, []);
+
 	/**
 	 * Handle Google OAuth sign-in
 	 */
 	const handleGoogleSignIn = async () => {
 		setIsLoading(true);
+
+		// Log environment and sign-in details for debugging
+		console.log("🔍 [LOGIN DEBUG] Environment variables:", {
+			NEXT_PUBLIC_BETTER_AUTH_URL: process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
+			current_origin: window.location.origin,
+			current_pathname: window.location.pathname,
+		});
+
+		const signInParams = {
+			provider: "google",
+			callbackURL: "/admin",
+		};
+		console.log("🔍 [LOGIN DEBUG] Sign-in parameters:", signInParams);
+
 		try {
-			await signIn.social({
-				provider: "google",
-				callbackURL: "/admin",
-			});
+			// Intercept the OAuth URL that would be generated
+			console.log("🔍 [LOGIN DEBUG] About to initiate Google OAuth sign-in...");
+
+			await signIn.social(signInParams);
 		} catch (error) {
-			console.error("Login error:", error);
+			console.error("🔍 [LOGIN DEBUG] Login error:", error);
+			console.error("🔍 [LOGIN DEBUG] Error details:", JSON.stringify(error, null, 2));
 			setIsLoading(false);
 		}
 	};

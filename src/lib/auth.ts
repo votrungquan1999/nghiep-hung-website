@@ -32,6 +32,15 @@ function validateEnvVars(): {
 // Validate environment variables once
 const envVars = validateEnvVars();
 
+// Construct redirect URI and log it for debugging
+const redirectURI = new URL("/api/auth/callback/google", envVars.BETTER_AUTH_URL).toString();
+console.log("🔍 [AUTH DEBUG] Environment variables:", {
+	BETTER_AUTH_URL: envVars.BETTER_AUTH_URL,
+	GOOGLE_CLIENT_ID: envVars.GOOGLE_CLIENT_ID,
+	// Don't log the secret for security
+});
+console.log("🔍 [AUTH DEBUG] Constructed redirect URI:", redirectURI);
+
 /**
  * Better Auth configuration for the application
  * Configures Google OAuth-only authentication for admin access
@@ -42,7 +51,7 @@ export const auth = betterAuth({
 		google: {
 			clientId: envVars.GOOGLE_CLIENT_ID,
 			clientSecret: envVars.GOOGLE_CLIENT_SECRET,
-			redirectURI: new URL("/api/auth/callback.google", envVars.BETTER_AUTH_URL).toString(),
+			redirectURI,
 		},
 	},
 	session: {
