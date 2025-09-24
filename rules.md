@@ -1033,10 +1033,11 @@ export async function getAllProducts(): Promise<ProductDocument[]> {
 - ALWAYS explain which rules were applied in the output.
 - MUST keep files under **300 lines** for AI context management.
 - NEVER require running/building the server to validate output.
+- NEVER run `npm run build` or `npm run dev` after completing tasks, the user will handle this.
 - AI MAY replace entire components or structures if it improves clarity/compliance.
 - For complex changes, AI MUST ask:
-  - “Am I correct?”
-  - “Which rules apply here?”
-  - “Did I miss any relevant rules?”
+  - "Am I correct?"
+  - "Which rules apply here?"
+  - "Did I miss any relevant rules?"
 
 ---
