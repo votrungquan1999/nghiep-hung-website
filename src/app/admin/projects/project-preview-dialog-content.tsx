@@ -10,7 +10,7 @@ import {
 import { Badge } from "src/components/ui/badge";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "src/components/ui/tabs";
-import { getProjectById } from "src/server/projects";
+import { getProjectById, ProjectCompletionStatus } from "src/server/projects";
 
 interface ProjectPreviewDialogContentProps {
 	projectId: string;
@@ -72,10 +72,18 @@ export async function ProjectPreviewDialogContent({ projectId }: ProjectPreviewD
 								<span>{project.year}</span>
 							</div>
 							<Badge
-								variant={project.completionStatus === "completed" ? "default" : "outline"}
+								variant={
+									project.completionStatus === ProjectCompletionStatus.Completed
+										? "default"
+										: "outline"
+								}
 								className="w-fit"
 							>
-								{project.completionStatus === "completed" ? "Completed" : "In Progress"}
+								{project.completionStatus === ProjectCompletionStatus.Completed
+									? "Completed"
+									: project.completionStatus === ProjectCompletionStatus.InProgress
+										? "In Progress"
+										: "Planning"}
 							</Badge>
 						</div>
 

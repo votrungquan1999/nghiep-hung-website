@@ -17,8 +17,8 @@ export function EmptyStateWithDialog() {
 					<div className="space-y-2">
 						<h3 className="text-lg font-semibold">No projects yet</h3>
 						<p className="text-muted-foreground max-w-sm">
-							Get started by creating your first project. Showcase your completed work and build your
-							portfolio to demonstrate your expertise.
+							Get started by creating your first project. Showcase your completed work and build
+							your portfolio to demonstrate your expertise.
 						</p>
 					</div>
 					<CreateProjectDialog />
