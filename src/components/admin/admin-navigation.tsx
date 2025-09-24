@@ -1,6 +1,7 @@
 import { FolderOpen, Home, Package, Phone, Shield, Wrench } from "lucide-react";
 import Link from "next/link";
 import { Button } from "src/components/ui/button";
+import { AdminAccountDisplay } from "./admin-account-display";
 import { AdminNavigationItem } from "./admin-navigation-item";
 
 /**
@@ -56,26 +57,30 @@ export function AdminNavigation() {
 						</Link>
 					</div>
 
-					{/* Navigation Menu - Right Side */}
-					<div className="flex items-center space-x-2">
-						{navigationItems.map((item) => (
-							<AdminNavigationItem key={item.href} href={item.href}>
-								<item.icon className="size-4" />
-								<span>{item.label}</span>
-							</AdminNavigationItem>
-						))}
+					{/* Navigation Menu and Account - Right Side */}
+					<div className="flex items-center space-x-4">
+						<div className="flex items-center space-x-2">
+							{navigationItems.map((item) => (
+								<AdminNavigationItem key={item.href} href={item.href}>
+									<item.icon className="size-4" />
+									<span>{item.label}</span>
+								</AdminNavigationItem>
+							))}
+						</div>
+						<AdminAccountDisplay />
 					</div>
 				</div>
 
 				{/* Mobile Navigation */}
 				<div className="md:hidden mt-4">
-					<div className="flex flex-wrap gap-2">
+					<div className="flex flex-wrap gap-2 items-center">
 						{navigationItems.map((item) => (
 							<AdminNavigationItem key={item.href} href={item.href}>
 								<item.icon className="size-4" />
 								<span>{item.label}</span>
 							</AdminNavigationItem>
 						))}
+						<AdminAccountDisplay />
 					</div>
 				</div>
 			</div>
