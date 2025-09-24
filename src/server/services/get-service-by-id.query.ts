@@ -2,6 +2,7 @@
  * Query to get a single service by ID
  */
 
+import { cache } from "react";
 import { getDatabase } from "src/lib/database";
 import type { Service, ServiceDocument, ServiceStatus } from "./service.type";
 
@@ -10,7 +11,7 @@ import type { Service, ServiceDocument, ServiceStatus } from "./service.type";
  * @param id - The service ID
  * @returns Promise that resolves to the service or null if not found
  */
-export async function getServiceById(id: string): Promise<Service | null> {
+export const getServiceById = cache(async (id: string): Promise<Service | null> => {
 	try {
 		const db = await getDatabase();
 		const service = await db.collection<ServiceDocument>("services").findOne({ id });
@@ -32,4 +33,4 @@ export async function getServiceById(id: string): Promise<Service | null> {
 		console.error(`Error fetching service with id ${id}:`, error);
 		throw new Error(`Failed to fetch service with id ${id}`);
 	}
-}
+});

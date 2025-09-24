@@ -2,6 +2,7 @@
  * Query to get a single product by ID
  */
 
+import { cache } from "react";
 import { getDatabase } from "src/lib/database";
 import type { Product, ProductDocument, ProductStatus } from "./product.type";
 
@@ -10,7 +11,7 @@ import type { Product, ProductDocument, ProductStatus } from "./product.type";
  * @param id - The product ID
  * @returns Promise that resolves to the product or null if not found
  */
-export async function getProductById(id: string): Promise<Product | null> {
+export const getProductById = cache(async (id: string): Promise<Product | null> => {
 	try {
 		const db = await getDatabase();
 		const product = await db.collection<ProductDocument>("products").findOne({ id });
@@ -32,4 +33,4 @@ export async function getProductById(id: string): Promise<Product | null> {
 		console.error(`Error fetching product with id ${id}:`, error);
 		throw new Error(`Failed to fetch product with id ${id}`);
 	}
-}
+});
