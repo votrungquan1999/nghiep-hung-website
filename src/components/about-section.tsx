@@ -1,6 +1,6 @@
-import { Award, Target, Users, Wrench } from "lucide-react"
-import Image from "next/image"
-import FeatureCard from "./feature-card.ui"
+import { Award, Target, Users, Wrench } from "lucide-react";
+import Image from "next/image";
+import FeatureCard from "./feature-card.ui";
 
 /**
  * About section component that displays company overview with interactive feature cards
@@ -29,7 +29,7 @@ export default function AboutSection() {
 			title: "Dịch vụ",
 			description: "Tư vấn thiết kế, sản xuất, thi công và bảo trì hệ thống ống gió trọn gói.",
 		},
-	]
+	];
 
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
@@ -115,5 +115,5 @@ export default function AboutSection() {
 				</div>
 			</div>
 		</section>
-	)
+	);
 }

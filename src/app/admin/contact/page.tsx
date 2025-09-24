@@ -10,13 +10,7 @@ import {
 	Youtube,
 } from "lucide-react";
 import { Button } from "src/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "src/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "src/components/ui/card";
 import { Input } from "src/components/ui/input";
 import { Textarea } from "src/components/ui/textarea";
 

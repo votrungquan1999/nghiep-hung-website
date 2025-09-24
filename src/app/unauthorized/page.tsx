@@ -3,13 +3,7 @@
 import { AlertTriangle, Home, LogOut } from "lucide-react";
 import Link from "next/link";
 import { Button } from "src/components/ui/button";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "src/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "src/components/ui/card";
 import { signOut } from "src/lib/auth-client";
 
 /**
