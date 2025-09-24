@@ -2,12 +2,12 @@
 
 import { chunk } from "lodash";
 import { nanoid } from "nanoid";
-import type { Product, ProductDocument, ProductImage } from "src/server/products/product.type";
-import { ProductStatus } from "src/server/products/product.type";
 import type { FormResult } from "src/components/form-state/form-state.type";
 import { getDatabase } from "src/lib/database";
 import type { S3UploadResult } from "src/lib/s3";
 import { uploadToS3 } from "src/lib/s3";
+import type { Product, ProductDocument, ProductImage } from "src/server/products/product.type";
+import { ProductStatus } from "src/server/products/product.type";
 
 /**
  * Generate a unique S3 key for product images

@@ -1,6 +1,6 @@
 import { ImageIcon } from "lucide-react";
-import type { Product } from "src/server/products/product.type";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
+import type { Product } from "src/server/products/product.type";
 import { ImageManagementProvider } from "./edit-product-images/image-management-dialog.state";
 import type { ExistingImage } from "./edit-product-images/image-management-dialog.type";
 import { ImageManagementContent } from "./edit-product-images/image-management-dialog.ui";

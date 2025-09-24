@@ -1,5 +1,3 @@
-import type { Product } from "src/server/products/product.type";
-import { ProductStatus } from "src/server/products/product.type";
 import { FieldError, FormField, FormInput, FormLabel } from "src/components/form-field";
 import {
 	Form,
@@ -17,6 +15,8 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
+import type { Product } from "src/server/products/product.type";
+import { ProductStatus } from "src/server/products/product.type";
 import { updateProduct } from "./edit-product-dialog.actions";
 
 interface EditProductFormProps {

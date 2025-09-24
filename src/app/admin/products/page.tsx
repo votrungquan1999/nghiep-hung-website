@@ -1,6 +1,6 @@
 import { Package } from "lucide-react";
-import { getProductCounts, getProductIds } from "src/server/products";
 import { Card, CardContent } from "src/components/ui/card";
+import { getProductCounts, getProductIds } from "src/server/products";
 import CreateProductDialog from "./create-product-dialog/create-product-dialog";
 import { EmptyStateWithDialog } from "./empty-state-with-dialog";
 import { ProductsList } from "./products-list";

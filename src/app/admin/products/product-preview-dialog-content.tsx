@@ -1,5 +1,4 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { getProductById } from "src/server/products";
 import {
 	convertToGalleryImages,
 	GalleryBackButton,
@@ -10,6 +9,7 @@ import {
 } from "src/components/image-gallery/image-gallery";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "src/components/ui/tabs";
+import { getProductById } from "src/server/products";
 
 interface ProductPreviewDialogContentProps {
 	productId: string;

@@ -1,10 +1,10 @@
 "use server";
 
 import { chunk } from "lodash";
-import type { ProductDocument, ProductImageDocument } from "src/server/products/product.type";
 import type { FormResult } from "src/components/form-state/form-state.type";
 import { getDatabase } from "src/lib/database";
 import { deleteFromS3 } from "src/lib/s3";
+import type { ProductDocument, ProductImageDocument } from "src/server/products/product.type";
 
 /**
  * Delete a product by ID
