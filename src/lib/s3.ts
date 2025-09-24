@@ -40,12 +40,14 @@ export async function uploadToS3(file: File, key: string): Promise<S3UploadResul
 
 	await s3Client.send(command);
 
-	// Construct the public URL
-	const url = `https://${bucketName}.s3.${process.env.AWS_REGION || "us-east-1"}.amazonaws.com/${key}`;
+	// Construct the public URL using proper URL constructor
+	const region = process.env.AWS_REGION || "us-east-1";
+	const baseUrl = `https://${bucketName}.s3.${region}.amazonaws.com`;
+	const url = new URL(key, baseUrl);
 
 	return {
 		key,
-		url,
+		url: url.toString(),
 	};
 }
 
@@ -81,5 +83,8 @@ export function getS3Url(key: string): string {
 		throw new Error("AWS_S3_BUCKET_NAME environment variable is required");
 	}
 
-	return `https://${bucketName}.s3.${process.env.AWS_REGION || "us-east-1"}.amazonaws.com/${key}`;
+	const region = process.env.AWS_REGION || "us-east-1";
+	const baseUrl = `https://${bucketName}.s3.${region}.amazonaws.com`;
+	const url = new URL(key, baseUrl);
+	return url.toString();
 }
