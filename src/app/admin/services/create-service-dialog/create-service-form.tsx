@@ -39,76 +39,72 @@ export function CreateServiceForm() {
 			<div className="space-y-6">
 				{/* Service Name - Multilingual */}
 				<div className="space-y-4">
-					<div className="text-sm font-medium text-foreground">Service Name</div>
-					<VisualTabs defaultValue="en" className="w-full">
-						<VisualTabsList className="grid w-full grid-cols-2">
-							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
-							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
-						</VisualTabsList>
-						<VisualTabsContent value="en">
-							<FormField
-								fieldId="serviceNameEn"
-								name="serviceNameEn"
-								placeholder="Enter service name in English"
-								required
-							>
-								<FormLabel>Service Name (English)</FormLabel>
-								<FormInput />
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-						<VisualTabsContent value="vi">
-							<FormField
-								fieldId="serviceNameVi"
-								name="serviceNameVi"
-								placeholder="Nhập tên dịch vụ bằng tiếng Việt"
-								required
-							>
-								<FormLabel>Tên dịch vụ (Tiếng Việt)</FormLabel>
-								<FormInput />
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-					</VisualTabs>
+					<FormField>
+						<FormLabel>Service Name</FormLabel>
+						<VisualTabs defaultValue="en" className="w-full">
+							<VisualTabsList className="grid w-full grid-cols-2">
+								<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+								<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+							</VisualTabsList>
+							<VisualTabsContent value="en">
+								<FormField
+									fieldId="serviceNameEn"
+									name="serviceNameEn"
+									placeholder="Enter service name in English"
+								>
+									<FormInput />
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+							<VisualTabsContent value="vi">
+								<FormField
+									fieldId="serviceNameVi"
+									name="serviceNameVi"
+									placeholder="Nhập tên dịch vụ bằng tiếng Việt"
+								>
+									<FormInput />
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+						</VisualTabs>
+					</FormField>
 				</div>
 
 				{/* Service Description - Multilingual */}
 				<div className="space-y-4">
-					<div className="text-sm font-medium text-foreground">Service Description</div>
-					<VisualTabs defaultValue="en" className="w-full">
-						<VisualTabsList className="grid w-full grid-cols-2">
-							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
-							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
-						</VisualTabsList>
-						<VisualTabsContent value="en">
-							<FormField
-								fieldId="serviceDescriptionEn"
-								name="serviceDescriptionEn"
-								placeholder="Enter service description in English"
-								required
-							>
-								<FormLabel>Service Description (English)</FormLabel>
-								<FormInput asChild>
-									<Textarea rows={4} />
-								</FormInput>
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-						<VisualTabsContent value="vi">
-							<FormField
-								fieldId="serviceDescriptionVi"
-								name="serviceDescriptionVi"
-								placeholder="Nhập mô tả dịch vụ bằng tiếng Việt"
-								required
-							>
-								<FormLabel>Mô tả dịch vụ (Tiếng Việt)</FormLabel>
-								<FormInput asChild>
-									<Textarea rows={4} />
-								</FormInput>
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-					</VisualTabs>
+					<FormField>
+						<FormLabel>Service Description</FormLabel>
+						<VisualTabs defaultValue="en" className="w-full">
+							<VisualTabsList className="grid w-full grid-cols-2">
+								<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+								<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+							</VisualTabsList>
+							<VisualTabsContent value="en">
+								<FormField
+									fieldId="serviceDescriptionEn"
+									name="serviceDescriptionEn"
+									placeholder="Enter service description in English"
+								>
+									<FormInput asChild>
+										<Textarea rows={4} />
+									</FormInput>
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+							<VisualTabsContent value="vi">
+								<FormField
+									fieldId="serviceDescriptionVi"
+									name="serviceDescriptionVi"
+									placeholder="Nhập mô tả dịch vụ bằng tiếng Việt"
+								>
+									<FormInput asChild>
+										<Textarea rows={4} />
+									</FormInput>
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+						</VisualTabs>
+					</FormField>
 				</div>
 			</div>
 
