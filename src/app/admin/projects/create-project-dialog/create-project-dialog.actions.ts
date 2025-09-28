@@ -85,21 +85,21 @@ export async function createProject(formData: FormData): Promise<FormResult> {
 		// Check for missing required fields and provide specific error messages
 		const missingFields: string[] = [];
 
-		if (!trimmedNameEn) missingFields.push("Project name (English)");
-		if (!trimmedNameVi) missingFields.push("Project name (Vietnamese)");
-		if (!trimmedCategoryEn) missingFields.push("Project category (English)");
-		if (!trimmedCategoryVi) missingFields.push("Project category (Vietnamese)");
-		if (!trimmedLocation) missingFields.push("Project location");
-		if (!trimmedYear) missingFields.push("Project year");
-		if (!trimmedDescriptionEn) missingFields.push("Project description (English)");
-		if (!trimmedDescriptionVi) missingFields.push("Project description (Vietnamese)");
-		if (!visibilityStatus) missingFields.push("Visibility status");
-		if (!completionStatus) missingFields.push("Completion status");
+		if (!trimmedNameEn) missingFields.push("Project Name (English)");
+		if (!trimmedNameVi) missingFields.push("Project Name (Vietnamese)");
+		if (!trimmedCategoryEn) missingFields.push("Project Category (English)");
+		if (!trimmedCategoryVi) missingFields.push("Project Category (Vietnamese)");
+		if (!trimmedLocation) missingFields.push("Location");
+		if (!trimmedYear) missingFields.push("Year");
+		if (!trimmedDescriptionEn) missingFields.push("Project Description (English)");
+		if (!trimmedDescriptionVi) missingFields.push("Project Description (Vietnamese)");
+		if (!visibilityStatus) missingFields.push("Visibility Status");
+		if (!completionStatus) missingFields.push("Completion Status");
 
 		if (missingFields.length > 0) {
 			return {
 				success: false,
-				error: `The following fields are required: ${missingFields.join(", ")}`,
+				error: `Please fill in the following required fields: ${missingFields.join(", ")}`,
 			};
 		}
 

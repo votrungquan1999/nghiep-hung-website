@@ -55,17 +55,30 @@ export async function createService(formData: FormData): Promise<FormResult> {
 			};
 		}
 
-		// Validate required fields, these are validated in the client already, no need to handle errors here
-		if (
-			!serviceNameEn ||
-			!serviceNameVi ||
-			!serviceDescriptionEn ||
-			!serviceDescriptionVi ||
-			!serviceStatus
-		) {
-			throw new Error(
-				"Service name (both languages), description (both languages), and status are required",
-			);
+		// Validate required fields and collect missing field names
+		const missingFields: string[] = [];
+
+		if (!serviceNameEn) {
+			missingFields.push("Service Name (English)");
+		}
+		if (!serviceNameVi) {
+			missingFields.push("Service Name (Vietnamese)");
+		}
+		if (!serviceDescriptionEn) {
+			missingFields.push("Service Description (English)");
+		}
+		if (!serviceDescriptionVi) {
+			missingFields.push("Service Description (Vietnamese)");
+		}
+		if (!serviceStatus) {
+			missingFields.push("Service Status");
+		}
+
+		if (missingFields.length > 0) {
+			return {
+				success: false,
+				error: `Please fill in the following required fields: ${missingFields.join(", ")}`,
+			};
 		}
 
 		// Validate status value, these are validated in the client already, no need to handle errors here
