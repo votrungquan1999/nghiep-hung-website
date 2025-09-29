@@ -1,12 +1,12 @@
 "use server";
 
 import { chunk } from "lodash";
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import type { S3UploadResult } from "src/lib/s3";
 import { deleteFromS3, uploadToS3 } from "src/lib/s3";
+import type { ProjectDocument, ProjectImage } from "src/server/projects";
 import { getProjectById } from "src/server/projects";
-import type { ProjectDocument, ProjectImage } from "src/server/projects/project.type";
 import type { ExistingImage } from "./image-management-dialog.type";
 
 // ============================================================================

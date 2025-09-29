@@ -1,10 +1,10 @@
 "use server";
 
 import { chunk } from "lodash";
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import { deleteFromS3 } from "src/lib/s3";
-import type { ProjectDocument, ProjectImageDocument } from "src/server/projects/project.type";
+import type { ProjectDocument, ProjectImageDocument } from "src/server/projects";
 
 /**
  * Delete a project by ID

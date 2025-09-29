@@ -16,8 +16,8 @@ import {
 	DialogTitle,
 	DialogTrigger,
 } from "src/components/ui/dialog";
+import type { Product } from "src/server/products";
 import { getProductById } from "src/server/products";
-import type { Product } from "src/server/products/product.type";
 
 interface ProductDialogProps {
 	productId: string;

@@ -17,8 +17,8 @@ import {
 	FormErrorDisplay,
 	FormPendingMessage,
 	FormSubmitMessage,
+	SubmitButton,
 } from "src/components/form-state";
-import { SubmitButton } from "src/components/form-state/form-state.ui";
 import { Badge } from "src/components/ui/badge";
 import { Button } from "src/components/ui/button";
 import {

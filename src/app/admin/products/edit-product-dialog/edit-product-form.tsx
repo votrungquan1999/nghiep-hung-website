@@ -15,8 +15,8 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
-import type { Product } from "src/server/products/product.type";
-import { ProductStatus } from "src/server/products/product.type";
+import type { Product } from "src/server/products";
+import { ProductStatus } from "src/server/products";
 import { updateProduct } from "./edit-product-dialog.actions";
 
 interface EditProductFormProps {

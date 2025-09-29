@@ -2,12 +2,12 @@
 
 import { chunk } from "lodash";
 import { nanoid } from "nanoid";
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import type { S3UploadResult } from "src/lib/s3";
 import { uploadToS3 } from "src/lib/s3";
-import type { Service, ServiceDocument, ServiceImage } from "src/server/services/service.type";
-import { ServiceStatus } from "src/server/services/service.type";
+import type { Service, ServiceDocument, ServiceImage } from "src/server/services";
+import { ServiceStatus } from "src/server/services";
 
 /**
  * Generate a unique S3 key for service images

@@ -2,11 +2,11 @@
 
 import { chunk } from "lodash";
 import { nanoid } from "nanoid";
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import { uploadToS3 } from "src/lib/s3";
-import type { ProjectDocument, ProjectImageDocument } from "src/server/projects/project.type";
-import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects/project.type";
+import type { ProjectDocument, ProjectImageDocument } from "src/server/projects";
+import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects";
 
 /**
  * Generates a unique S3 key for project images

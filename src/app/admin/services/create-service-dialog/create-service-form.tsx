@@ -23,7 +23,7 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
-import { ServiceStatus } from "src/server/services/service.type";
+import { ServiceStatus } from "src/server/services";
 import { createService } from "./create-service-dialog.actions";
 import { HiddenSelectedImageInput } from "./hidden-selected-image-input";
 import { ServiceImageRenderer } from "./service-image-renderer";

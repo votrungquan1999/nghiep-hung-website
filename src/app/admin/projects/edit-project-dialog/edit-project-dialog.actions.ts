@@ -1,10 +1,10 @@
 "use server";
 
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import type { MultilingualText } from "src/lib/types/common.type";
-import type { Project, ProjectDocument } from "src/server/projects/project.type";
-import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects/project.type";
+import type { Project, ProjectDocument } from "src/server/projects";
+import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects";
 
 /**
  * Server action to update an existing project (without image handling)

@@ -14,8 +14,8 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
-import type { Project } from "src/server/projects/project.type";
-import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects/project.type";
+import type { Project } from "src/server/projects";
+import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects";
 import { updateProject } from "./edit-project-dialog.actions";
 import { EditProjectSpecsWithState } from "./edit-project-specs-with-state";
 

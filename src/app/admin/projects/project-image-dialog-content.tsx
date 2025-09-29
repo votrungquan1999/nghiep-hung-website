@@ -1,6 +1,6 @@
 import { ImageIcon } from "lucide-react";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
-import type { Project } from "src/server/projects/project.type";
+import type { Project } from "src/server/projects";
 import { ProjectImageManagementProvider } from "./edit-project-images/image-management-dialog.state";
 import type { ExistingImage } from "./edit-project-images/image-management-dialog.type";
 import { ProjectImageManagementContent } from "./edit-project-images/image-management-dialog.ui";

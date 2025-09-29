@@ -1,6 +1,6 @@
 import { Edit } from "lucide-react";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
-import type { Service } from "src/server/services/service.type";
+import type { Service } from "src/server/services";
 import { EditServiceForm } from "./edit-service-dialog/edit-service-form";
 
 interface ServiceEditDialogContentProps {

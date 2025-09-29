@@ -1,9 +1,9 @@
 "use server";
 
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
-import type { Product, ProductDocument } from "src/server/products/product.type";
-import { ProductStatus } from "src/server/products/product.type";
+import type { Product, ProductDocument } from "src/server/products";
+import { ProductStatus } from "src/server/products";
 
 /**
  * Server action to update an existing product (without image handling)

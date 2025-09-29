@@ -23,7 +23,7 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
-import { ProductStatus } from "src/server/products/product.type";
+import { ProductStatus } from "src/server/products";
 import { createProduct } from "./create-product-dialog.actions";
 import { HiddenSelectedImageInput } from "./hidden-selected-image-input";
 import { ProductImageRenderer } from "./product-image-renderer";

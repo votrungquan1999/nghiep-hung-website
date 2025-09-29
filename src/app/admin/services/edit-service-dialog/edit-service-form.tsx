@@ -15,8 +15,8 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
-import type { Service } from "src/server/services/service.type";
-import { ServiceStatus } from "src/server/services/service.type";
+import type { Service } from "src/server/services";
+import { ServiceStatus } from "src/server/services";
 import { updateService } from "./";
 
 interface EditServiceFormProps {

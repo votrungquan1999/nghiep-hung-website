@@ -23,7 +23,7 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
-import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects/project.type";
+import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects";
 import { createProject } from "./create-project-dialog.actions";
 import { HiddenSelectedImageInput } from "./hidden-selected-image-input";
 import { HiddenSpecsInput } from "./hidden-specs-input";
