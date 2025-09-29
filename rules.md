@@ -805,6 +805,51 @@ useEffect(() => {
 
 - ALWAYS use `createReducerContext` when possible.
 
+- ALWAYS pass initial data directly to the provider as props instead of using initializer components or useEffect.
+
+✅ Correct (passing data directly to provider):
+
+```tsx
+// context.tsx
+const [ProviderBase, useState, useDispatch] = createReducerContext(reducer, initialState);
+
+export function MyProvider({ children, initialData }: { children: React.ReactNode; initialData?: MyData[] }) {
+  return <ProviderBase data={initialData}>{children}</ProviderBase>;
+}
+
+// page.tsx (Server Component)
+export default function MyPage() {
+  const data = await getData();
+  
+  return (
+    <MyProvider initialData={data}>
+      <MyContent />
+    </MyProvider>
+  );
+}
+```
+
+❌ Incorrect (using initializer components or useEffect):
+
+```javascript
+// DON'T DO THIS - using initializer component
+<MyProvider>
+  <MyInitializer data={data} />
+  <MyContent />
+</MyProvider>
+
+// DON'T DO THIS - using useEffect in provider
+export function MyProvider({ children, data }: { children: React.ReactNode; data: MyData[] }) {
+  const [state, setState] = useState(initialState);
+  
+  useEffect(() => {
+    setState(prev => ({ ...prev, data }));
+  }, [data]);
+  
+  return <Context.Provider value={state}>{children}</Context.Provider>;
+}
+```
+
 - ALWAYS reuse existing providers when they serve the same internal state. DO NOT create separate providers for related functionality.
 
 ✅ Correct (reusing existing provider):
