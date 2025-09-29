@@ -1,6 +1,6 @@
 import { ImageIcon } from "lucide-react";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
-import type { Service } from "src/server/services/service.type";
+import type { Service } from "src/server/services";
 import { ServiceImageManagementProvider } from "./edit-service-images/image-management-dialog.state";
 import type { ExistingImage } from "./edit-service-images/image-management-dialog.type";
 import { ServiceImageManagementContent } from "./edit-service-images/image-management-dialog.ui";

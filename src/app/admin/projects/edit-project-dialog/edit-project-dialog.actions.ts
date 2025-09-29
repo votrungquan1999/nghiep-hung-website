@@ -1,10 +1,10 @@
 "use server";
 
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import type { MultilingualText } from "src/lib/types/common.type";
-import type { Project, ProjectDocument } from "src/server/projects/project.type";
-import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects/project.type";
+import type { Project, ProjectDocument } from "src/server/projects";
+import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects";
 
 /**
  * Server action to update an existing project (without image handling)
@@ -48,22 +48,45 @@ export async function updateProject(formData: FormData): Promise<FormResult> {
 			};
 		}
 
-		// Validate required fields, these are validated in the client already, no need to handle errors here
-		if (
-			!projectNameEn ||
-			!projectNameVi ||
-			!projectCategoryEn ||
-			!projectCategoryVi ||
-			!projectLocation ||
-			!projectYear ||
-			!projectDescriptionEn ||
-			!projectDescriptionVi ||
-			!projectVisibilityStatus ||
-			!projectCompletionStatus
-		) {
-			throw new Error(
-				"All required fields must be filled: name, category, location, year, description, visibility status, and completion status",
-			);
+		// Validate required fields and collect missing field names
+		const missingFields: string[] = [];
+
+		if (!projectNameEn) {
+			missingFields.push("Project Name (English)");
+		}
+		if (!projectNameVi) {
+			missingFields.push("Project Name (Vietnamese)");
+		}
+		if (!projectCategoryEn) {
+			missingFields.push("Project Category (English)");
+		}
+		if (!projectCategoryVi) {
+			missingFields.push("Project Category (Vietnamese)");
+		}
+		if (!projectLocation) {
+			missingFields.push("Location");
+		}
+		if (!projectYear) {
+			missingFields.push("Year");
+		}
+		if (!projectDescriptionEn) {
+			missingFields.push("Project Description (English)");
+		}
+		if (!projectDescriptionVi) {
+			missingFields.push("Project Description (Vietnamese)");
+		}
+		if (!projectVisibilityStatus) {
+			missingFields.push("Visibility Status");
+		}
+		if (!projectCompletionStatus) {
+			missingFields.push("Completion Status");
+		}
+
+		if (missingFields.length > 0) {
+			return {
+				success: false,
+				error: `Please fill in the following required fields: ${missingFields.join(", ")}`,
+			};
 		}
 
 		// Validate status values, these are validated in the client already, no need to handle errors here

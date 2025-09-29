@@ -1,12 +1,12 @@
 "use server";
 
 import { chunk } from "lodash";
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import type { S3UploadResult } from "src/lib/s3";
 import { deleteFromS3, uploadToS3 } from "src/lib/s3";
+import type { ServiceDocument, ServiceImage } from "src/server/services";
 import { getServiceById } from "src/server/services";
-import type { ServiceDocument, ServiceImage } from "src/server/services/service.type";
 import type { ExistingImage } from "./image-management-dialog.type";
 
 // ============================================================================

@@ -23,7 +23,7 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
-import { ProductStatus } from "src/server/products/product.type";
+import { ProductStatus } from "src/server/products";
 import { createProduct } from "./create-product-dialog.actions";
 import { HiddenSelectedImageInput } from "./hidden-selected-image-input";
 import { ProductImageRenderer } from "./product-image-renderer";
@@ -39,76 +39,72 @@ export function CreateProductForm() {
 			<div className="space-y-6">
 				{/* Product Name - Multilingual */}
 				<div className="space-y-4">
-					<div className="text-sm font-medium text-foreground">Product Name</div>
-					<VisualTabs defaultValue="en" className="w-full">
-						<VisualTabsList className="grid w-full grid-cols-2">
-							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
-							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
-						</VisualTabsList>
-						<VisualTabsContent value="en">
-							<FormField
-								fieldId="productNameEn"
-								name="productNameEn"
-								placeholder="Enter product name in English"
-								required
-							>
-								<FormLabel>Product Name (English)</FormLabel>
-								<FormInput />
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-						<VisualTabsContent value="vi">
-							<FormField
-								fieldId="productNameVi"
-								name="productNameVi"
-								placeholder="Nhập tên sản phẩm bằng tiếng Việt"
-								required
-							>
-								<FormLabel>Tên sản phẩm (Tiếng Việt)</FormLabel>
-								<FormInput />
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-					</VisualTabs>
+					<FormField>
+						<FormLabel>Product Name</FormLabel>
+						<VisualTabs defaultValue="en" className="w-full">
+							<VisualTabsList className="grid w-full grid-cols-2">
+								<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+								<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+							</VisualTabsList>
+							<VisualTabsContent value="en">
+								<FormField
+									fieldId="productNameEn"
+									name="productNameEn"
+									placeholder="Enter product name in English"
+								>
+									<FormInput />
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+							<VisualTabsContent value="vi">
+								<FormField
+									fieldId="productNameVi"
+									name="productNameVi"
+									placeholder="Nhập tên sản phẩm bằng tiếng Việt"
+								>
+									<FormInput />
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+						</VisualTabs>
+					</FormField>
 				</div>
 
 				{/* Product Description - Multilingual */}
 				<div className="space-y-4">
-					<div className="text-sm font-medium text-foreground">Product Description</div>
-					<VisualTabs defaultValue="en" className="w-full">
-						<VisualTabsList className="grid w-full grid-cols-2">
-							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
-							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
-						</VisualTabsList>
-						<VisualTabsContent value="en">
-							<FormField
-								fieldId="productDescriptionEn"
-								name="productDescriptionEn"
-								placeholder="Enter product description in English"
-								required
-							>
-								<FormLabel>Product Description (English)</FormLabel>
-								<FormInput asChild>
-									<Textarea rows={4} />
-								</FormInput>
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-						<VisualTabsContent value="vi">
-							<FormField
-								fieldId="productDescriptionVi"
-								name="productDescriptionVi"
-								placeholder="Nhập mô tả sản phẩm bằng tiếng Việt"
-								required
-							>
-								<FormLabel>Mô tả sản phẩm (Tiếng Việt)</FormLabel>
-								<FormInput asChild>
-									<Textarea rows={4} />
-								</FormInput>
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-					</VisualTabs>
+					<FormField>
+						<FormLabel>Product Description</FormLabel>
+						<VisualTabs defaultValue="en" className="w-full">
+							<VisualTabsList className="grid w-full grid-cols-2">
+								<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+								<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+							</VisualTabsList>
+							<VisualTabsContent value="en">
+								<FormField
+									fieldId="productDescriptionEn"
+									name="productDescriptionEn"
+									placeholder="Enter product description in English"
+								>
+									<FormInput asChild>
+										<Textarea rows={4} />
+									</FormInput>
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+							<VisualTabsContent value="vi">
+								<FormField
+									fieldId="productDescriptionVi"
+									name="productDescriptionVi"
+									placeholder="Nhập mô tả sản phẩm bằng tiếng Việt"
+								>
+									<FormInput asChild>
+										<Textarea rows={4} />
+									</FormInput>
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+						</VisualTabs>
+					</FormField>
 				</div>
 			</div>
 

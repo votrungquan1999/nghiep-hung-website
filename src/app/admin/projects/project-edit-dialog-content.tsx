@@ -1,7 +1,7 @@
 import { Edit } from "lucide-react";
-import { FormBoundaryProvider } from "src/components/form-state/form-state.state";
+import { FormBoundaryProvider } from "src/components/form-state";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
-import type { Project } from "src/server/projects/project.type";
+import type { Project } from "src/server/projects";
 import { EditProjectForm } from "./edit-project-dialog/edit-project-form";
 
 interface ProjectEditDialogContentProps {

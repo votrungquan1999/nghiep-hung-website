@@ -1,4 +1,4 @@
-import { FormBoundaryProvider } from "src/components/form-state/form-state.state";
+import { FormBoundaryProvider } from "src/components/form-state";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "src/components/ui/card";
 import { ProductRow } from "./product-row";
 import { ProductRowProvider } from "./product-row-context.state";

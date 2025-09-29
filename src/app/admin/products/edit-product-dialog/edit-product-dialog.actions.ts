@@ -1,9 +1,9 @@
 "use server";
 
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
-import type { Product, ProductDocument } from "src/server/products/product.type";
-import { ProductStatus } from "src/server/products/product.type";
+import type { Product, ProductDocument } from "src/server/products";
+import { ProductStatus } from "src/server/products";
 
 /**
  * Server action to update an existing product (without image handling)
@@ -28,17 +28,30 @@ export async function updateProduct(formData: FormData): Promise<FormResult> {
 			};
 		}
 
-		// Validate required fields, these are validated in the client already, no need to handle errors here
-		if (
-			!productNameEn ||
-			!productNameVi ||
-			!productDescriptionEn ||
-			!productDescriptionVi ||
-			!productStatus
-		) {
-			throw new Error(
-				"Product name (both languages), description (both languages), and status are required",
-			);
+		// Validate required fields and collect missing field names
+		const missingFields: string[] = [];
+
+		if (!productNameEn) {
+			missingFields.push("Product Name (English)");
+		}
+		if (!productNameVi) {
+			missingFields.push("Product Name (Vietnamese)");
+		}
+		if (!productDescriptionEn) {
+			missingFields.push("Product Description (English)");
+		}
+		if (!productDescriptionVi) {
+			missingFields.push("Product Description (Vietnamese)");
+		}
+		if (!productStatus) {
+			missingFields.push("Product Status");
+		}
+
+		if (missingFields.length > 0) {
+			return {
+				success: false,
+				error: `Please fill in the following required fields: ${missingFields.join(", ")}`,
+			};
 		}
 
 		// Validate status value, these are validated in the client already, no need to handle errors here

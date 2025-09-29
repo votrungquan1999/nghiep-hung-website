@@ -9,9 +9,25 @@ import {
 	Trash2,
 } from "lucide-react";
 import Image from "next/image";
+import {
+	CancelButton,
+	ConfirmButton,
+	ConfirmDialog,
+	Form,
+	FormErrorDisplay,
+	FormPendingMessage,
+	FormSubmitMessage,
+	SubmitButton,
+} from "src/components/form-state";
 import { Badge } from "src/components/ui/badge";
 import { Button } from "src/components/ui/button";
-import { DialogContent, DialogTitle } from "src/components/ui/dialog";
+import {
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "src/components/ui/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -23,12 +39,14 @@ import {
 	ProjectCompletionStatus,
 	ProjectVisibilityStatus,
 } from "src/server/projects";
+import { deleteProjectAction } from "./delete-project.actions";
 import {
 	ProjectEditTrigger,
 	ProjectImageTrigger,
 	ProjectPreviewTrigger,
 } from "./project-dialog-triggers";
 import { ProjectEditDialogContent } from "./project-edit-dialog-content";
+import { ProjectImageDialogContent } from "./project-image-dialog-content";
 import { ProjectPreviewDialogContent } from "./project-preview-dialog-content";
 import { ProjectRowDialog } from "./project-row-context.ui";
 
@@ -148,32 +166,93 @@ export async function ProjectRow({ projectId }: ProjectRowProps) {
 
 				{/* Actions */}
 				<div className="self-stretch flex items-start">
-					{/* Actions Dropdown */}
-					<DropdownMenu>
-						<DropdownMenuTrigger asChild>
-							<Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
-								<MoreVertical className="size-4" />
-							</Button>
-						</DropdownMenuTrigger>
-						<DropdownMenuContent align="end">
-							<ProjectPreviewTrigger className="flex items-center gap-2 w-full">
-								<Eye className="size-4" />
-								View Details
-							</ProjectPreviewTrigger>
-							<ProjectEditTrigger className="flex items-center gap-2 w-full">
-								<Edit className="size-4" />
-								Edit Project Info
-							</ProjectEditTrigger>
-							<ProjectImageTrigger className="flex items-center gap-2 w-full">
-								<FolderOpen className="size-4" />
-								Edit Images
-							</ProjectImageTrigger>
-							<DropdownMenuItem className="text-destructive focus:text-destructive">
-								<Trash2 className="mr-2 size-4" />
-								Delete Project
-							</DropdownMenuItem>
-						</DropdownMenuContent>
-					</DropdownMenu>
+					<Form action={deleteProjectAction} confirmBeforeSubmit>
+						<input type="hidden" name="projectId" value={project.id} />
+						{/* Actions Dropdown */}
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button type="button" variant="ghost" size="sm" className="h-8 w-8 p-0">
+									<MoreVertical className="size-4" />
+								</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent align="end">
+								<ProjectPreviewTrigger className="flex items-center gap-2 w-full">
+									<Eye className="size-4" />
+									View Details
+								</ProjectPreviewTrigger>
+								<ProjectEditTrigger className="flex items-center gap-2 w-full">
+									<Edit className="size-4" />
+									Edit Project Info
+								</ProjectEditTrigger>
+								<ProjectImageTrigger className="flex items-center gap-2 w-full">
+									<FolderOpen className="size-4" />
+									Edit Images
+								</ProjectImageTrigger>
+								<SubmitButton asChild>
+									<DropdownMenuItem className="text-destructive focus:text-destructive">
+										<Trash2 className="mr-2 size-4" />
+										Delete Project
+									</DropdownMenuItem>
+								</SubmitButton>
+							</DropdownMenuContent>
+						</DropdownMenu>
+
+						{/* Delete Confirm Dialog */}
+						<ConfirmDialog>
+							<DialogContent className="sm:max-w-2xl bg-white">
+								<DialogHeader className="space-y-3">
+									<div className="flex items-start gap-3">
+										<div className="p-2 rounded-full bg-destructive/10 flex-shrink-0">
+											<Trash2 className="size-5 text-destructive" />
+										</div>
+										<div className="space-y-1">
+											<DialogTitle>Delete Project</DialogTitle>
+											<DialogDescription>
+												This action cannot be undone. The project will be permanently removed.
+											</DialogDescription>
+										</div>
+									</div>
+								</DialogHeader>
+								<div className="space-y-3">
+									<div className="p-4 bg-muted/50 rounded-lg border">
+										<div className="mb-2">
+											<p className="font-medium text-foreground">{project.name.en}</p>
+											<p className="text-sm text-muted-foreground">{project.name.vi}</p>
+										</div>
+										<div className="text-sm text-muted-foreground leading-relaxed mb-3">
+											<p className="mb-1">
+												<strong>EN:</strong> {project.description.en}
+											</p>
+											<p>
+												<strong>VI:</strong> {project.description.vi}
+											</p>
+										</div>
+										<div className="flex items-center gap-4 text-xs text-muted-foreground">
+											<span className="flex items-center gap-1">
+												<span className="size-2 rounded-full bg-destructive"></span>
+												{project.gallery.length} image{project.gallery.length !== 1 ? "s" : ""} will
+												be deleted
+											</span>
+											<span className="flex items-center gap-1">
+												<span className="size-2 rounded-full bg-destructive"></span>
+												{project.specs.length} specification{project.specs.length !== 1 ? "s" : ""}{" "}
+												will be deleted
+											</span>
+										</div>
+									</div>
+									<FormErrorDisplay />
+								</div>
+
+								<DialogFooter className="gap-2">
+									<CancelButton>Cancel</CancelButton>
+									<ConfirmButton variant="destructive">
+										<FormSubmitMessage>Delete Project</FormSubmitMessage>
+										<FormPendingMessage>Deleting...</FormPendingMessage>
+									</ConfirmButton>
+								</DialogFooter>
+							</DialogContent>
+						</ConfirmDialog>
+					</Form>
 				</div>
 			</div>
 
@@ -186,12 +265,9 @@ export async function ProjectRow({ projectId }: ProjectRowProps) {
 				<ProjectEditDialogContent project={project} />
 			</ProjectRowDialog>
 
-			{/* Image Management Dialog - placeholder for future implementation */}
+			{/* Image Management Dialog */}
 			<ProjectRowDialog type="image">
-				{/* TODO: Implement ProjectImageDialogContent */}
-				<DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-white">
-					<DialogTitle>Image management coming soon</DialogTitle>
-				</DialogContent>
+				<ProjectImageDialogContent project={project} />
 			</ProjectRowDialog>
 		</div>
 	);

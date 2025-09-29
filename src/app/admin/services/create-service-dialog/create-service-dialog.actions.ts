@@ -2,12 +2,12 @@
 
 import { chunk } from "lodash";
 import { nanoid } from "nanoid";
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import type { S3UploadResult } from "src/lib/s3";
 import { uploadToS3 } from "src/lib/s3";
-import type { Service, ServiceDocument, ServiceImage } from "src/server/services/service.type";
-import { ServiceStatus } from "src/server/services/service.type";
+import type { Service, ServiceDocument, ServiceImage } from "src/server/services";
+import { ServiceStatus } from "src/server/services";
 
 /**
  * Generate a unique S3 key for service images
@@ -55,17 +55,30 @@ export async function createService(formData: FormData): Promise<FormResult> {
 			};
 		}
 
-		// Validate required fields, these are validated in the client already, no need to handle errors here
-		if (
-			!serviceNameEn ||
-			!serviceNameVi ||
-			!serviceDescriptionEn ||
-			!serviceDescriptionVi ||
-			!serviceStatus
-		) {
-			throw new Error(
-				"Service name (both languages), description (both languages), and status are required",
-			);
+		// Validate required fields and collect missing field names
+		const missingFields: string[] = [];
+
+		if (!serviceNameEn) {
+			missingFields.push("Service Name (English)");
+		}
+		if (!serviceNameVi) {
+			missingFields.push("Service Name (Vietnamese)");
+		}
+		if (!serviceDescriptionEn) {
+			missingFields.push("Service Description (English)");
+		}
+		if (!serviceDescriptionVi) {
+			missingFields.push("Service Description (Vietnamese)");
+		}
+		if (!serviceStatus) {
+			missingFields.push("Service Status");
+		}
+
+		if (missingFields.length > 0) {
+			return {
+				success: false,
+				error: `Please fill in the following required fields: ${missingFields.join(", ")}`,
+			};
 		}
 
 		// Validate status value, these are validated in the client already, no need to handle errors here

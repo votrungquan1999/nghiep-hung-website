@@ -2,11 +2,11 @@
 
 import { chunk } from "lodash";
 import { nanoid } from "nanoid";
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
 import { uploadToS3 } from "src/lib/s3";
-import type { ProjectDocument, ProjectImageDocument } from "src/server/projects/project.type";
-import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects/project.type";
+import type { ProjectDocument, ProjectImageDocument } from "src/server/projects";
+import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects";
 
 /**
  * Generates a unique S3 key for project images
@@ -85,21 +85,21 @@ export async function createProject(formData: FormData): Promise<FormResult> {
 		// Check for missing required fields and provide specific error messages
 		const missingFields: string[] = [];
 
-		if (!trimmedNameEn) missingFields.push("Project name (English)");
-		if (!trimmedNameVi) missingFields.push("Project name (Vietnamese)");
-		if (!trimmedCategoryEn) missingFields.push("Project category (English)");
-		if (!trimmedCategoryVi) missingFields.push("Project category (Vietnamese)");
-		if (!trimmedLocation) missingFields.push("Project location");
-		if (!trimmedYear) missingFields.push("Project year");
-		if (!trimmedDescriptionEn) missingFields.push("Project description (English)");
-		if (!trimmedDescriptionVi) missingFields.push("Project description (Vietnamese)");
-		if (!visibilityStatus) missingFields.push("Visibility status");
-		if (!completionStatus) missingFields.push("Completion status");
+		if (!trimmedNameEn) missingFields.push("Project Name (English)");
+		if (!trimmedNameVi) missingFields.push("Project Name (Vietnamese)");
+		if (!trimmedCategoryEn) missingFields.push("Project Category (English)");
+		if (!trimmedCategoryVi) missingFields.push("Project Category (Vietnamese)");
+		if (!trimmedLocation) missingFields.push("Location");
+		if (!trimmedYear) missingFields.push("Year");
+		if (!trimmedDescriptionEn) missingFields.push("Project Description (English)");
+		if (!trimmedDescriptionVi) missingFields.push("Project Description (Vietnamese)");
+		if (!visibilityStatus) missingFields.push("Visibility Status");
+		if (!completionStatus) missingFields.push("Completion Status");
 
 		if (missingFields.length > 0) {
 			return {
 				success: false,
-				error: `The following fields are required: ${missingFields.join(", ")}`,
+				error: `Please fill in the following required fields: ${missingFields.join(", ")}`,
 			};
 		}
 

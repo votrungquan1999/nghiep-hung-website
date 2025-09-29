@@ -1,9 +1,9 @@
 "use server";
 
-import type { FormResult } from "src/components/form-state/form-state.type";
+import type { FormResult } from "src/components/form-state";
 import { getDatabase } from "src/lib/database";
-import type { Service, ServiceDocument } from "src/server/services/service.type";
-import { ServiceStatus } from "src/server/services/service.type";
+import type { Service, ServiceDocument } from "src/server/services";
+import { ServiceStatus } from "src/server/services";
 
 /**
  * Update a service by ID
@@ -27,16 +27,29 @@ export async function updateService(formData: FormData): Promise<FormResult> {
 			};
 		}
 
-		if (
-			!serviceNameEn ||
-			!serviceNameVi ||
-			!serviceDescriptionEn ||
-			!serviceDescriptionVi ||
-			!serviceStatus
-		) {
+		// Validate required fields and collect missing field names
+		const missingFields: string[] = [];
+
+		if (!serviceNameEn) {
+			missingFields.push("Service Name (English)");
+		}
+		if (!serviceNameVi) {
+			missingFields.push("Service Name (Vietnamese)");
+		}
+		if (!serviceDescriptionEn) {
+			missingFields.push("Service Description (English)");
+		}
+		if (!serviceDescriptionVi) {
+			missingFields.push("Service Description (Vietnamese)");
+		}
+		if (!serviceStatus) {
+			missingFields.push("Service Status");
+		}
+
+		if (missingFields.length > 0) {
 			return {
 				success: false,
-				error: "All fields are required",
+				error: `Please fill in the following required fields: ${missingFields.join(", ")}`,
 			};
 		}
 

@@ -1,6 +1,6 @@
 import { Edit } from "lucide-react";
 import { DialogContent, DialogHeader, DialogTitle } from "src/components/ui/dialog";
-import type { Product } from "src/server/products/product.type";
+import type { Product } from "src/server/products";
 import { EditProductForm } from "./edit-product-dialog/edit-product-form";
 
 interface ProductEditDialogContentProps {

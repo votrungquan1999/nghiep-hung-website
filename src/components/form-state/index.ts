@@ -5,7 +5,7 @@
 
 // State management
 export {
-	FormProvider,
+	FormBoundaryProvider,
 	useConfirmDialogActions,
 	useConfirmDialogOpen,
 	useFieldError,
@@ -15,7 +15,13 @@ export {
 	useFormRef,
 } from "./form-state.state";
 // Types
-export type { FormAction, FormProps, FormState, FormSubmitHandler } from "./form-state.type";
+export type {
+	FormAction,
+	FormProps,
+	FormResult,
+	FormState,
+	FormSubmitHandler,
+} from "./form-state.type";
 export { FormActionType } from "./form-state.type";
 // Main form component
 // UI components
@@ -28,4 +34,5 @@ export {
 	FormPendingMessage,
 	FormResetButton,
 	FormSubmitMessage,
+	SubmitButton,
 } from "./form-state.ui";

@@ -23,7 +23,7 @@ import {
 	VisualTabsList,
 	VisualTabsTrigger,
 } from "src/components/ui/visual-tabs";
-import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects/project.type";
+import { ProjectCompletionStatus, ProjectVisibilityStatus } from "src/server/projects";
 import { createProject } from "./create-project-dialog.actions";
 import { HiddenSelectedImageInput } from "./hidden-selected-image-input";
 import { HiddenSpecsInput } from "./hidden-specs-input";
@@ -41,68 +41,68 @@ export function CreateProjectForm() {
 			<div className="space-y-6">
 				{/* Project Name - Multilingual */}
 				<div className="space-y-4">
-					<div className="text-sm font-medium text-foreground">Project Name</div>
-					<VisualTabs defaultValue="en" className="w-full">
-						<VisualTabsList className="grid w-full grid-cols-2">
-							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
-							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
-						</VisualTabsList>
-						<VisualTabsContent value="en">
-							<FormField
-								fieldId="projectNameEn"
-								name="projectNameEn"
-								placeholder="Enter project name in English"
-							>
-								<FormLabel>Project Name (English)</FormLabel>
-								<FormInput />
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-						<VisualTabsContent value="vi">
-							<FormField
-								fieldId="projectNameVi"
-								name="projectNameVi"
-								placeholder="Nhập tên dự án bằng tiếng Việt"
-							>
-								<FormLabel>Tên dự án (Tiếng Việt)</FormLabel>
-								<FormInput />
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-					</VisualTabs>
+					<FormField>
+						<FormLabel>Project Name</FormLabel>
+						<VisualTabs defaultValue="en" className="w-full">
+							<VisualTabsList className="grid w-full grid-cols-2">
+								<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+								<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+							</VisualTabsList>
+							<VisualTabsContent value="en">
+								<FormField
+									fieldId="projectNameEn"
+									name="projectNameEn"
+									placeholder="Enter project name in English"
+								>
+									<FormInput />
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+							<VisualTabsContent value="vi">
+								<FormField
+									fieldId="projectNameVi"
+									name="projectNameVi"
+									placeholder="Nhập tên dự án bằng tiếng Việt"
+								>
+									<FormInput />
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+						</VisualTabs>
+					</FormField>
 				</div>
 
 				{/* Project Category - Multilingual */}
 				<div className="space-y-4">
-					<div className="text-sm font-medium text-foreground">Project Category</div>
-					<VisualTabs defaultValue="en" className="w-full">
-						<VisualTabsList className="grid w-full grid-cols-2">
-							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
-							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
-						</VisualTabsList>
-						<VisualTabsContent value="en">
-							<FormField
-								fieldId="projectCategoryEn"
-								name="projectCategoryEn"
-								placeholder="Enter project category in English"
-							>
-								<FormLabel>Project Category (English)</FormLabel>
-								<FormInput />
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-						<VisualTabsContent value="vi">
-							<FormField
-								fieldId="projectCategoryVi"
-								name="projectCategoryVi"
-								placeholder="Nhập loại dự án bằng tiếng Việt"
-							>
-								<FormLabel>Loại dự án (Tiếng Việt)</FormLabel>
-								<FormInput />
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-					</VisualTabs>
+					<FormField>
+						<FormLabel>Project Category</FormLabel>
+						<VisualTabs defaultValue="en" className="w-full">
+							<VisualTabsList className="grid w-full grid-cols-2">
+								<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+								<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+							</VisualTabsList>
+							<VisualTabsContent value="en">
+								<FormField
+									fieldId="projectCategoryEn"
+									name="projectCategoryEn"
+									placeholder="Enter project category in English"
+								>
+									<FormInput />
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+							<VisualTabsContent value="vi">
+								<FormField
+									fieldId="projectCategoryVi"
+									name="projectCategoryVi"
+									placeholder="Nhập loại dự án bằng tiếng Việt"
+								>
+									<FormInput />
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+						</VisualTabs>
+					</FormField>
 				</div>
 
 				{/* Location and Year */}
@@ -131,39 +131,39 @@ export function CreateProjectForm() {
 
 				{/* Project Description - Multilingual */}
 				<div className="space-y-4">
-					<div className="text-sm font-medium text-foreground">Project Description</div>
-					<VisualTabs defaultValue="en" className="w-full">
-						<VisualTabsList className="grid w-full grid-cols-2">
-							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
-							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
-						</VisualTabsList>
-						<VisualTabsContent value="en">
-							<FormField
-								fieldId="projectDescriptionEn"
-								name="projectDescriptionEn"
-								placeholder="Enter project description in English"
-							>
-								<FormLabel>Project Description (English)</FormLabel>
-								<FormInput asChild>
-									<Textarea className="min-h-[100px]" />
-								</FormInput>
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-						<VisualTabsContent value="vi">
-							<FormField
-								fieldId="projectDescriptionVi"
-								name="projectDescriptionVi"
-								placeholder="Nhập mô tả dự án bằng tiếng Việt"
-							>
-								<FormLabel>Mô tả dự án (Tiếng Việt)</FormLabel>
-								<FormInput asChild>
-									<Textarea className="min-h-[100px]" />
-								</FormInput>
-								<FieldError />
-							</FormField>
-						</VisualTabsContent>
-					</VisualTabs>
+					<FormField>
+						<FormLabel>Project Description</FormLabel>
+						<VisualTabs defaultValue="en" className="w-full">
+							<VisualTabsList className="grid w-full grid-cols-2">
+								<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+								<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+							</VisualTabsList>
+							<VisualTabsContent value="en">
+								<FormField
+									fieldId="projectDescriptionEn"
+									name="projectDescriptionEn"
+									placeholder="Enter project description in English"
+								>
+									<FormInput asChild>
+										<Textarea className="min-h-[100px]" />
+									</FormInput>
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+							<VisualTabsContent value="vi">
+								<FormField
+									fieldId="projectDescriptionVi"
+									name="projectDescriptionVi"
+									placeholder="Nhập mô tả dự án bằng tiếng Việt"
+								>
+									<FormInput asChild>
+										<Textarea className="min-h-[100px]" />
+									</FormInput>
+									<FieldError />
+								</FormField>
+							</VisualTabsContent>
+						</VisualTabs>
+					</FormField>
 				</div>
 
 				{/* Project Specifications - Dynamic Array */}
