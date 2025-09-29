@@ -7,7 +7,9 @@ import HeroSection from "src/components/hero-section";
 import ProductsSection from "src/components/products-section";
 import ProductsSectionDatabase from "src/components/products-section-database";
 import ProjectsSection from "src/components/projects-section";
+import ProjectsSectionDatabase from "src/components/projects-section-database";
 import ServicesSection from "src/components/services-section";
+import ServicesSectionDatabase from "src/components/services-section-database";
 import { FeatureFlag, getFeatureFlag } from "src/lib/cookies";
 
 /**
@@ -15,7 +17,7 @@ import { FeatureFlag, getFeatureFlag } from "src/lib/cookies";
  * based on the use_database_value feature flag cookie
  */
 export default async function HomePage() {
-	// Read the feature flag to determine which products section to display
+	// Read the feature flag to determine which sections to display
 	const useDatabaseValue = await getFeatureFlag(FeatureFlag.USE_DATABASE_VALUE, false);
 
 	return (
@@ -26,8 +28,8 @@ export default async function HomePage() {
 					<HeroSection />
 					<AboutSection />
 					{useDatabaseValue ? <ProductsSectionDatabase /> : <ProductsSection />}
-					<ServicesSection />
-					<ProjectsSection />
+					{useDatabaseValue ? <ServicesSectionDatabase /> : <ServicesSection />}
+					{useDatabaseValue ? <ProjectsSectionDatabase /> : <ProjectsSection />}
 					<ContactSection />
 				</main>
 				<Footer />
