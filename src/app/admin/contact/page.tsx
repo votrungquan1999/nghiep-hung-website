@@ -1,4 +1,6 @@
 import { Save } from "lucide-react";
+import type { Metadata } from "next";
+import { connection } from "next/server";
 import {
 	Form,
 	FormErrorDisplay,
@@ -13,12 +15,19 @@ import { ContactDetailsFormCard, WorkingHoursFormCard } from "./contact-form-car
 import { PreviewSection } from "./contact-preview";
 import { SocialMediaFormCard } from "./social-media/social-media-form-card";
 
+export const metadata: Metadata = {
+	title: "Contact Management - Admin - Nghiệp Hưng",
+	description:
+		"Update contact information, working hours, and social media links in the admin panel",
+};
+
 /**
  * Contact info management page
  * Manages editable contact information that appears in the contact section and footer
  * Updates contact details, working hours, and social media links (company info is static)
  */
 export default async function ContactPage() {
+	await connection();
 	// Fetch contact information from database
 	const contactInfo = await getContactInfo();
 

@@ -1,9 +1,16 @@
 import { Package } from "lucide-react";
+import type { Metadata } from "next";
+import { connection } from "next/server";
 import { Card, CardContent } from "src/components/ui/card";
 import { getProductCounts, getProductIds } from "src/server/products";
 import CreateProductDialog from "./create-product-dialog/create-product-dialog";
 import { EmptyStateWithDialog } from "./empty-state-with-dialog";
 import { ProductsList } from "./products-list";
+
+export const metadata: Metadata = {
+	title: "Products Management - Admin - Nghiệp Hưng",
+	description: "Manage air duct products and inventory in the admin panel",
+};
 
 /**
  * Products management page
@@ -11,6 +18,7 @@ import { ProductsList } from "./products-list";
  * Uses efficient queries to check for products and display them
  */
 export default async function ProductsPage() {
+	await connection();
 	// Fetch product IDs and counts efficiently
 	const [productIds, productCounts] = await Promise.all([getProductIds(), getProductCounts()]);
 
