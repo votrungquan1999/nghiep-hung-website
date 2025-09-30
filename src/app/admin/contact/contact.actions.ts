@@ -13,8 +13,20 @@ import { SocialMediaPlatformId } from "./social-media/social-media.type";
  * Validates all contact form fields including social media links
  */
 const contactInfoSchema = z.object({
-	phone1: z.string().min(1, "Primary phone is required"),
-	phone2: z.string().optional(),
+	phone1: z
+		.string()
+		.min(1, "Primary phone is required")
+		.regex(
+			/^[0-9+\-\s()]+$/,
+			"Primary phone must contain only numbers, spaces, hyphens, parentheses, and plus signs",
+		),
+	phone2: z
+		.string()
+		.optional()
+		.refine(
+			(val) => !val || /^[0-9+\-\s()]+$/.test(val),
+			"Secondary phone must contain only numbers, spaces, hyphens, parentheses, and plus signs",
+		),
 	email1: z.string().email("Invalid primary email").min(1, "Primary email is required"),
 	email2: z.string().email("Invalid secondary email").optional(),
 	address: z.string().min(1, "Address is required"),
