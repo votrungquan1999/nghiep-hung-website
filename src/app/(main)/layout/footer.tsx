@@ -1,9 +1,17 @@
 import { Facebook, Linkedin, Mail, MapPin, Phone, Youtube } from "lucide-react";
+import { unstable_cacheTag as cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "src/components/ui/button";
+import { CACHE_TAGS } from "src/lib/cache-tags";
+import { getContactInfo } from "src/server/contact";
 
 export default async function Footer() {
+	"use cache";
+	cacheTag(CACHE_TAGS.CONTACT);
+
+	const contactInfo = await getContactInfo();
+
 	return (
 		<footer className="bg-primary text-primary-foreground">
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -95,20 +103,36 @@ export default async function Footer() {
 					<div>
 						<h4 className="text-lg font-serif font-bold mb-6">{"Thông tin liên hệ"}</h4>
 						<div className="space-y-4">
-							<div className="flex items-start">
-								<MapPin className="h-5 w-5 mt-1 mr-3 flex-shrink-0" />
-								<p className="text-primary-foreground/80 text-sm">
-									{"123 Đường ABC, Phường XYZ, Quận 1, TP. Hồ Chí Minh"}
-								</p>
-							</div>
-							<div className="flex items-center">
-								<Phone className="h-5 w-5 mr-3 flex-shrink-0" />
-								<p className="text-primary-foreground/80 text-sm">{"0123 456 789"}</p>
-							</div>
-							<div className="flex items-center">
-								<Mail className="h-5 w-5 mr-3 flex-shrink-0" />
-								<p className="text-primary-foreground/80 text-sm">{"info@nghiephung.com"}</p>
-							</div>
+							{contactInfo.address && (
+								<div className="flex items-start">
+									<MapPin className="h-5 w-5 mt-1 mr-3 flex-shrink-0" />
+									<p className="text-primary-foreground/80 text-sm">{contactInfo.address}</p>
+								</div>
+							)}
+							{contactInfo.phone1 && (
+								<div className="flex items-center">
+									<Phone className="h-5 w-5 mr-3 flex-shrink-0" />
+									<p className="text-primary-foreground/80 text-sm">{contactInfo.phone1}</p>
+								</div>
+							)}
+							{contactInfo.phone2 && (
+								<div className="flex items-center">
+									<Phone className="h-5 w-5 mr-3 flex-shrink-0" />
+									<p className="text-primary-foreground/80 text-sm">{contactInfo.phone2}</p>
+								</div>
+							)}
+							{contactInfo.email1 && (
+								<div className="flex items-center">
+									<Mail className="h-5 w-5 mr-3 flex-shrink-0" />
+									<p className="text-primary-foreground/80 text-sm">{contactInfo.email1}</p>
+								</div>
+							)}
+							{contactInfo.email2 && (
+								<div className="flex items-center">
+									<Mail className="h-5 w-5 mr-3 flex-shrink-0" />
+									<p className="text-primary-foreground/80 text-sm">{contactInfo.email2}</p>
+								</div>
+							)}
 						</div>
 					</div>
 				</div>

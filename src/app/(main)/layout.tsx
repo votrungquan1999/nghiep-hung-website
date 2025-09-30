@@ -1,7 +1,10 @@
 import type React from "react";
-import Footer from "src/components/footer";
-import Header from "src/components/header";
+import { Suspense } from "react";
 import SplashScreenProvider from "../splash-screen-provider";
+import Footer from "./layout/footer";
+import FooterLoading from "./layout/footer-loading";
+import Header from "./layout/header";
+import HeaderLoading from "./layout/header-loading";
 
 /**
  * Layout for the main route group that includes header and footer
@@ -15,9 +18,13 @@ export default function MainLayout({
 	return (
 		<SplashScreenProvider>
 			<div className="min-h-screen">
-				<Header />
+				<Suspense fallback={<HeaderLoading />}>
+					<Header />
+				</Suspense>
 				<main>{children}</main>
-				<Footer />
+				<Suspense fallback={<FooterLoading />}>
+					<Footer />
+				</Suspense>
 			</div>
 		</SplashScreenProvider>
 	);
