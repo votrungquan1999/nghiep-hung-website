@@ -37,6 +37,7 @@ export function FormField({
 	step,
 	maxLength,
 	pattern,
+	title,
 	autoComplete,
 	children,
 	className,
@@ -64,6 +65,7 @@ export function FormField({
 		step,
 		maxLength,
 		pattern,
+		title,
 		autoComplete,
 		invalid: Boolean(error),
 	};
@@ -108,7 +110,8 @@ export function FormLabel({ children, asChild = false, className }: FormLabelPro
  * Automatically applies field properties from context
  */
 export function FormInput({ children, asChild = false, className, ...inputProps }: FormInputProps) {
-	const { id, name, value, disabled, readOnly, required, invalid } = useFormFieldContext();
+	const { id, name, value, disabled, readOnly, required, invalid, pattern, title } =
+		useFormFieldContext();
 	const formState = useForm();
 
 	const inputElementProps = {
@@ -118,6 +121,8 @@ export function FormInput({ children, asChild = false, className, ...inputProps 
 		disabled: disabled || formState.isSubmitting,
 		readOnly,
 		required,
+		pattern,
+		title,
 		"aria-invalid": invalid,
 		"aria-describedby": invalid ? `${id}-error` : undefined,
 		...inputProps,

@@ -176,6 +176,7 @@ function CustomErrorForm() {
 | `step` | `number` | - | Step value for number inputs |
 | `maxLength` | `number` | - | Maximum length for text inputs |
 | `pattern` | `string` | - | Pattern for input validation |
+| `title` | `string` | - | Title attribute for input validation tooltip |
 | `autoComplete` | `string` | - | Auto-complete attribute |
 | `className` | `string` | - | Additional CSS classes |
 
