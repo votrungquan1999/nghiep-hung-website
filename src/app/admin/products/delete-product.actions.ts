@@ -1,7 +1,9 @@
 "use server";
 
 import { chunk } from "lodash";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { FormResult } from "src/components/form-state";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getDatabase } from "src/lib/database";
 import { deleteFromS3 } from "src/lib/s3";
 import type { ProductDocument, ProductImageDocument } from "src/server/products";
@@ -62,6 +64,10 @@ export async function deleteProductAction(formData: FormData): Promise<FormResul
 				error: "Failed to delete product",
 			};
 		}
+
+		// Revalidate products cache
+		revalidateTag(CACHE_TAGS.PRODUCTS);
+		revalidatePath("/admin/products");
 
 		// Return success with refresh to update the UI
 		return {

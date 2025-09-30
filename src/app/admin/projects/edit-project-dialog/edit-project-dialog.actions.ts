@@ -1,6 +1,8 @@
 "use server";
 
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { FormResult } from "src/components/form-state";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getDatabase } from "src/lib/database";
 import type { MultilingualText } from "src/lib/types/common.type";
 import type { Project, ProjectDocument } from "src/server/projects";
@@ -152,6 +154,10 @@ export async function updateProject(formData: FormData): Promise<FormResult> {
 				error: "Project not found",
 			};
 		}
+
+		// Revalidate projects cache
+		revalidateTag(CACHE_TAGS.PROJECTS);
+		revalidatePath("/admin/projects");
 
 		return {
 			success: true,

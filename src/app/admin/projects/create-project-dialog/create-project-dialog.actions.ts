@@ -2,7 +2,9 @@
 
 import { chunk } from "lodash";
 import { nanoid } from "nanoid";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { FormResult } from "src/components/form-state";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getDatabase } from "src/lib/database";
 import { uploadToS3 } from "src/lib/s3";
 import type { ProjectDocument, ProjectImageDocument } from "src/server/projects";
@@ -209,6 +211,10 @@ export async function createProject(formData: FormData): Promise<FormResult> {
 		// Save to database
 		const db = await getDatabase();
 		await db.collection<ProjectDocument>("projects").insertOne(projectDoc);
+
+		// Revalidate projects cache
+		revalidateTag(CACHE_TAGS.PROJECTS);
+		revalidatePath("/admin/projects");
 
 		return {
 			success: true,

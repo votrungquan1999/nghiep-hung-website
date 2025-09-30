@@ -1,6 +1,8 @@
 "use server";
 
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { FormResult } from "src/components/form-state";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { updateContactInfo } from "src/server/contact";
 import { z } from "zod";
 import type { ContactInfoFormData, WorkingHours } from "./contact.type";
@@ -116,6 +118,10 @@ export async function updateContactInformation(formData: FormData): Promise<Form
 		const result = await updateContactInfo(validatedData);
 
 		if (result.success) {
+			// Revalidate contact cache
+			revalidateTag(CACHE_TAGS.CONTACT);
+			revalidatePath("/admin/contact");
+
 			return {
 				success: true,
 				refresh: true,
