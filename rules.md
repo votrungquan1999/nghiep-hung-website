@@ -251,7 +251,9 @@ type ContributionPeriod = 'weekly' | 'monthly' | 'quarterly' | 'semi-annually' |
 
 - ALWAYS use shadcn/ui components unless explicitly told otherwise.
 - NEVER create custom UI components when shadcn equivalents exist.
+- ALWAYS install shadcn components using the CLI: `npx shadcn@latest add [component-name]`
 - ALWAYS import shadcn components from `src/components/ui/`.
+- If a component doesn't exist in shadcn, check the registry first before creating custom components.
 
 ✅ Correct:
 
@@ -280,7 +282,7 @@ export function LoginForm() {
 
 ❌ Incorrect (creating custom components when shadcn exists):
 
-```tsx
+```javascript
 // DON'T DO THIS - use shadcn Button instead
 function CustomButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
   return (
