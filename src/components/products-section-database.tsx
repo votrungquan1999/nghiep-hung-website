@@ -3,6 +3,8 @@
  * Has the same structure as the static products-section.tsx
  */
 
+import { unstable_cacheTag as cacheTag } from "next/cache";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getActiveProductIds } from "src/server/products";
 import ProductDialog from "./product-dialog";
 
@@ -11,7 +13,12 @@ import ProductDialog from "./product-dialog";
  * Has the exact same structure as the static products-section.tsx
  */
 export default async function ProductsSectionDatabase() {
+	"use cache";
+	cacheTag(CACHE_TAGS.PRODUCTS);
+
 	const productIds: string[] = await getActiveProductIds();
+
+	console.log("get product ids from database", Date.now());
 
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links

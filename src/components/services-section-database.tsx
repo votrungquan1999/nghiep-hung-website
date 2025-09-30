@@ -3,6 +3,8 @@
  * Has the same structure as the static services-section.tsx
  */
 
+import { unstable_cacheTag as cacheTag } from "next/cache";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getActiveServiceIds } from "src/server/services";
 import ServiceDialog from "./service-dialog";
 
@@ -11,6 +13,9 @@ import ServiceDialog from "./service-dialog";
  * Has the exact same structure as the static services-section.tsx
  */
 export default async function ServicesSectionDatabase() {
+	"use cache";
+	cacheTag(CACHE_TAGS.SERVICES);
+
 	const serviceIds: string[] = await getActiveServiceIds();
 
 	return (

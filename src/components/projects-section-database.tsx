@@ -3,6 +3,8 @@
  * Has the same structure as the static projects-section.tsx
  */
 
+import { unstable_cacheTag as cacheTag } from "next/cache";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getActiveProjectIds } from "src/server/projects";
 import ProjectDialog from "./project-dialog";
 
@@ -11,6 +13,9 @@ import ProjectDialog from "./project-dialog";
  * Has the exact same structure as the static projects-section.tsx
  */
 export default async function ProjectsSectionDatabase() {
+	"use cache";
+	cacheTag(CACHE_TAGS.PROJECTS);
+
 	const projectIds: string[] = await getActiveProjectIds();
 
 	return (
