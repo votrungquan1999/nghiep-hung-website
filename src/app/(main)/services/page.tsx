@@ -1,14 +1,14 @@
 import { Suspense } from "react";
-import ContactDialog from "src/components/contact-dialog";
+import ContactDialog from "src/app/(main)/contact/contact-dialog";
 import ScrollToTopHandler from "src/components/scroll-to-top-handler";
-import ServicesSection from "src/components/services-section";
-import ServicesSectionDatabase from "src/components/services-section-database";
-import { Button } from "src/components/ui/button";
 import { FeatureFlag, getFeatureFlag } from "src/lib/feature-flag";
+import ServicesPageLoading from "./services-page-loading";
+import ServicesSection from "./services-section";
+import ServicesSectionDatabase from "./services-section-database";
 
 export default function SuspendedServicesPage() {
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<Suspense fallback={<ServicesPageLoading />}>
 			<ServicesPage />
 		</Suspense>
 	);
@@ -27,11 +27,7 @@ async function ServicesPage() {
 			<ScrollToTopHandler />
 			{useDatabaseValue ? <ServicesSectionDatabase /> : <ServicesSection />}
 			<div className="text-center mb-12">
-				<ContactDialog>
-					<Button size="lg" className="text-lg px-8">
-						{"Liên hệ tư vấn"}
-					</Button>
-				</ContactDialog>
+				<ContactDialog />
 			</div>
 		</>
 	);

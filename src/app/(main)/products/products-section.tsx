@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import ProductGalleryDialog from "src/components/product-gallery-dialog";
 import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card";
+import ProductGalleryDialog from "./product-gallery-dialog";
 
 export default function ProductsSection() {
 	const products = [

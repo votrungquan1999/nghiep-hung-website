@@ -1,12 +1,13 @@
 import { Suspense } from "react";
-import ContactSection from "src/components/contact-section";
-import ContactSectionDatabase from "src/components/contact-section-database";
 import ScrollToTopHandler from "src/components/scroll-to-top-handler";
 import { FeatureFlag, getFeatureFlag } from "src/lib/feature-flag";
+import ContactPageLoading from "./contact-page-loading";
+import ContactSection from "./contact-section";
+import ContactSectionDatabase from "./contact-section-database";
 
 export default function SuspendedContactPage() {
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<Suspense fallback={<ContactPageLoading />}>
 			<ContactPage />
 		</Suspense>
 	);

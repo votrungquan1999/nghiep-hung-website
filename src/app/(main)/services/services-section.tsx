@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card";
-import ProductGalleryDialog from "./product-gallery-dialog";
+import ProductGalleryDialog from "../products/product-gallery-dialog";
 
 /**
  * ServicesSection component displays the services offered by the company
