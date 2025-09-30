@@ -37,7 +37,12 @@ interface GalleryButtonProps {
  * Gallery next button component
  */
 export function GalleryNextButton({ children, asChild = false, className }: GalleryButtonProps) {
+	const state = useImageGalleryState();
 	const dispatch = useImageGalleryDispatch();
+
+	const hasMultipleImages = state.images.length > 1;
+
+	if (!hasMultipleImages) return null;
 
 	const handleClick = () => {
 		dispatch({ type: ImageGalleryActionType.NextImage });
@@ -62,7 +67,12 @@ export function GalleryNextButton({ children, asChild = false, className }: Gall
  * Gallery back button component
  */
 export function GalleryBackButton({ children, asChild = false, className }: GalleryButtonProps) {
+	const state = useImageGalleryState();
 	const dispatch = useImageGalleryDispatch();
+
+	const hasMultipleImages = state.images.length > 1;
+
+	if (!hasMultipleImages) return null;
 
 	const handleClick = () => {
 		dispatch({ type: ImageGalleryActionType.PrevImage });
