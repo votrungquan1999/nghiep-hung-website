@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import type React from "react";
 import { Card, CardContent } from "src/components/ui/card";
 import {
 	Dialog,
@@ -12,13 +13,19 @@ interface FeatureCardProps {
 	icon: LucideIcon;
 	title: string;
 	description: string;
+	customDialogContent?: React.ReactNode;
 }
 
 /**
  * Interactive feature card component that opens a dialog when clicked
  * Displays icon and title in the card, with full description shown in dialog
  */
-export default function FeatureCard({ icon: Icon, title, description }: FeatureCardProps) {
+export default function FeatureCard({
+	icon: Icon,
+	title,
+	description,
+	customDialogContent,
+}: FeatureCardProps) {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
@@ -31,7 +38,7 @@ export default function FeatureCard({ icon: Icon, title, description }: FeatureC
 					</CardContent>
 				</Card>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-md">
+			<DialogContent className="sm:max-w-2xl bg-white">
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-3 text-2xl font-serif">
 						<div className="inline-flex items-center justify-center size-12 bg-primary/10 rounded-full">
@@ -41,7 +48,9 @@ export default function FeatureCard({ icon: Icon, title, description }: FeatureC
 					</DialogTitle>
 				</DialogHeader>
 				<div className="mt-6">
-					<p className="text-muted-foreground leading-relaxed text-base">{description}</p>
+					{customDialogContent || (
+						<p className="text-muted-foreground leading-relaxed text-base">{description}</p>
+					)}
 				</div>
 			</DialogContent>
 		</Dialog>
