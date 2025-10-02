@@ -69,7 +69,7 @@ export default function HomepageLoading() {
 						{/* Hero Image - Static */}
 						<div className="relative">
 							<Image
-								src="/placeholder-gtu1v.png"
+								src="/Hero-Image.png"
 								alt="Hệ thống ống gió chuyên nghiệp"
 								width={600}
 								height={400}
@@ -90,8 +90,8 @@ export default function HomepageLoading() {
 				{/* About Image - Static */}
 				<div>
 					<Image
-						src="/placeholder-gtu1v.png"
-						alt="Hình ảnh công ty - sẽ được cập nhật sau"
+						src="/about-image.png"
+						alt="Hình ảnh công ty Nghiệp Hưng"
 						width={1200}
 						height={600}
 						className="w-full h-64 lg:h-80 object-cover rounded-lg"
