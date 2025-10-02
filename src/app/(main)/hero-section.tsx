@@ -38,22 +38,22 @@ export default function HeroSection() {
 						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 							<div className="flex items-center">
 								<CheckCircle className="h-5 w-5 text-primary mr-2" />
-								<span className="text-sm font-medium">{"Chất lượng cao"}</span>
+								<span className="text-sm font-medium">{"Ống gió chuẩn"}</span>
 							</div>
 							<div className="flex items-center">
 								<CheckCircle className="h-5 w-5 text-primary mr-2" />
-								<span className="text-sm font-medium">{"Thi công nhanh"}</span>
+								<span className="text-sm font-medium">{"Dịch vụ nhanh"}</span>
 							</div>
 							<div className="flex items-center">
 								<CheckCircle className="h-5 w-5 text-primary mr-2" />
-								<span className="text-sm font-medium">{"Bảo hành dài hạn"}</span>
+								<span className="text-sm font-medium">{"Giá thành tốt"}</span>
 							</div>
 						</div>
 					</div>
 
 					<div className="relative">
 						<Image
-							src="/placeholder-gtu1v.png"
+							src="/Hero-Image.png"
 							alt="Hệ thống ống gió chuyên nghiệp"
 							width={600}
 							height={400}
