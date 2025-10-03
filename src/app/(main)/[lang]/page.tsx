@@ -27,7 +27,7 @@ export default async function HomePage({ params }: { params: Promise<{ lang: Loc
 async function HomePageContent({ locale }: { locale: Locale }) {
 	return (
 		<>
-			<HeroSection />
+			<HeroSection locale={locale} />
 
 			<AboutSection locale={locale} />
 

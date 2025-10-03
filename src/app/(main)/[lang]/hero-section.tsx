@@ -1,8 +1,15 @@
 import { ArrowRight, CheckCircle } from "lucide-react";
 import Image from "next/image";
 import { Button } from "src/components/ui/button";
+import type { Locale } from "src/lib/i18n/config";
+import { getDictionary } from "src/lib/i18n/dictionaries";
 
-export default function HeroSection() {
+interface HeroSectionProps {
+	locale: Locale;
+}
+
+export default function HeroSection({ locale }: HeroSectionProps) {
+	const dictionary = getDictionary(locale);
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
 		<section
@@ -13,24 +20,23 @@ export default function HeroSection() {
 				<div className="grid lg:grid-cols-2 gap-12 items-center">
 					<div>
 						<h1 className="text-4xl lg:text-6xl font-serif font-black text-foreground mb-6 leading-tight">
-							{"Hệ thống ống gió"} <span className="text-primary">{"chuyên nghiệp"}</span>
+							{dictionary.hero.title}{" "}
+							<span className="text-primary">{dictionary.hero.titleHighlight}</span>
 						</h1>
 						<p className="text-xl text-muted-foreground mb-8 leading-relaxed">
-							{
-								"Với hơn 10 năm kinh nghiệm, chúng tôi chuyên sản xuất và thi công các hệ thống ống gió chất lượng cao cho các dự án công nghiệp và dân dụng."
-							}
+							{dictionary.hero.description}
 						</p>
 
 						<div className="flex flex-col sm:flex-row gap-4 mb-8">
 							<a href="/products" className="inline-block">
 								<Button size="lg" className="text-lg px-8 w-full">
-									{"Xem sản phẩm"}
+									{dictionary.hero.buttons.viewProducts}
 									<ArrowRight className="ml-2 h-5 w-5" />
 								</Button>
 							</a>
 							<a href="/contact" className="inline-block">
 								<Button variant="outline" size="lg" className="text-lg px-8 bg-transparent w-full">
-									{"Liên hệ tư vấn"}
+									{dictionary.hero.buttons.contactConsultation}
 								</Button>
 							</a>
 						</div>
@@ -38,15 +44,17 @@ export default function HeroSection() {
 						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
 							<div className="flex items-center">
 								<CheckCircle className="h-5 w-5 text-primary mr-2" />
-								<span className="text-sm font-medium">{"Ống gió chuẩn"}</span>
+								<span className="text-sm font-medium">
+									{dictionary.hero.features.standardDucts}
+								</span>
 							</div>
 							<div className="flex items-center">
 								<CheckCircle className="h-5 w-5 text-primary mr-2" />
-								<span className="text-sm font-medium">{"Dịch vụ nhanh"}</span>
+								<span className="text-sm font-medium">{dictionary.hero.features.fastService}</span>
 							</div>
 							<div className="flex items-center">
 								<CheckCircle className="h-5 w-5 text-primary mr-2" />
-								<span className="text-sm font-medium">{"Giá thành tốt"}</span>
+								<span className="text-sm font-medium">{dictionary.hero.features.goodPrice}</span>
 							</div>
 						</div>
 					</div>
@@ -54,15 +62,15 @@ export default function HeroSection() {
 					<div className="relative">
 						<Image
 							src="/Hero-Image.png"
-							alt="Hệ thống ống gió chuyên nghiệp"
+							alt={dictionary.hero.imageAlt}
 							width={600}
 							height={400}
 							className="rounded-lg shadow-2xl"
 							loading="eager"
 						/>
 						<div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-lg shadow-lg">
-							<div className="text-3xl font-bold">{"10+"}</div>
-							<div className="text-sm">{"Năm kinh nghiệm"}</div>
+							<div className="text-3xl font-bold">{dictionary.hero.experience.years}</div>
+							<div className="text-sm">{dictionary.hero.experience.label}</div>
 						</div>
 					</div>
 				</div>

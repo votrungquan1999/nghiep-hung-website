@@ -200,6 +200,27 @@ export interface Dictionary {
 		};
 	};
 
+	// Hero section
+	hero: {
+		title: string;
+		titleHighlight: string;
+		description: string;
+		buttons: {
+			viewProducts: string;
+			contactConsultation: string;
+		};
+		features: {
+			standardDucts: string;
+			fastService: string;
+			goodPrice: string;
+		};
+		experience: {
+			years: string;
+			label: string;
+		};
+		imageAlt: string;
+	};
+
 	// Meta information
 	meta: {
 		title: string;

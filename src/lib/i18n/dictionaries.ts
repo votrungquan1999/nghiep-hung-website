@@ -305,6 +305,26 @@ export const dictionaries: DictionaryForLocale = {
 				trigger: "Liên hệ với chúng tôi",
 			},
 		},
+		hero: {
+			title: "Hệ thống ống gió",
+			titleHighlight: "chuyên nghiệp",
+			description:
+				"Với hơn 10 năm kinh nghiệm, chúng tôi chuyên sản xuất và thi công các hệ thống ống gió chất lượng cao cho các dự án công nghiệp và dân dụng.",
+			buttons: {
+				viewProducts: "Xem sản phẩm",
+				contactConsultation: "Liên hệ tư vấn",
+			},
+			features: {
+				standardDucts: "Ống gió chuẩn",
+				fastService: "Dịch vụ nhanh",
+				goodPrice: "Giá thành tốt",
+			},
+			experience: {
+				years: "10+",
+				label: "Năm kinh nghiệm",
+			},
+			imageAlt: "Hệ thống ống gió chuyên nghiệp",
+		},
 		meta: {
 			title: "Công ty TNHH Nghiệp Hưng - Hệ thống ống gió chuyên nghiệp",
 			description:
@@ -609,6 +629,26 @@ export const dictionaries: DictionaryForLocale = {
 			dialog: {
 				trigger: "Contact Us",
 			},
+		},
+		hero: {
+			title: "Professional",
+			titleHighlight: "ductwork systems",
+			description:
+				"With over 10 years of experience, we specialize in manufacturing and installing high-quality ductwork systems for industrial and residential projects.",
+			buttons: {
+				viewProducts: "View Products",
+				contactConsultation: "Contact Consultation",
+			},
+			features: {
+				standardDucts: "Standard Ducts",
+				fastService: "Fast Service",
+				goodPrice: "Good Price",
+			},
+			experience: {
+				years: "10+",
+				label: "Years Experience",
+			},
+			imageAlt: "Professional ductwork systems",
 		},
 		meta: {
 			title: "Nghiep Hung Co., Ltd - Professional Ductwork Systems",
