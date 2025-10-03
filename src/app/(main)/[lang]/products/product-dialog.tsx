@@ -12,34 +12,42 @@ import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "src/components/ui/dialog";
+import type { Locale } from "src/lib/i18n/config";
+import { getDictionary } from "src/lib/i18n/dictionaries";
 import type { Product } from "src/server/products";
 import { getProductById } from "src/server/products";
 
 interface ProductDialogProps {
 	productId: string;
+	locale: Locale;
 }
 
 /**
  * Server component that fetches product data by ID and renders the product dialog with card trigger
  * Uses the newer image gallery system for consistent UI across admin and public interfaces
  * @param productId - The ID of the product to display
+ * @param locale - The current locale for internationalization
  */
-export default async function ProductDialog({ productId }: ProductDialogProps) {
+export default async function ProductDialog({ productId, locale }: ProductDialogProps) {
 	const product: Product | null = await getProductById(productId);
 
 	if (!product) {
-		return <NotFoundProductDialog />;
+		return <NotFoundProductDialog locale={locale} />;
 	}
 
 	const galleryImages = product.gallery || [];
+	const productName = product.name[locale];
+	const productDescription = product.description[locale];
+
 	const convertedImages = convertToGalleryImages(
 		galleryImages.map((image, index) => ({
 			src: image.url,
-			alt: `${product.name.vi} - ${index + 1}`,
+			alt: `${productName} - ${index + 1}`,
 		})),
 	);
 
@@ -52,7 +60,7 @@ export default async function ProductDialog({ productId }: ProductDialogProps) {
 					<div className="aspect-video overflow-hidden rounded-t-lg px-0">
 						<Image
 							src={mainImage?.url || "/placeholder.svg"}
-							alt={product.name.vi}
+							alt={productName}
 							width={400}
 							height={300}
 							className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -60,19 +68,22 @@ export default async function ProductDialog({ productId }: ProductDialogProps) {
 					</div>
 					<CardHeader>
 						<CardTitle className="text-xl font-serif font-bold text-foreground">
-							{product.name.vi}
+							{productName}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-muted-foreground mb-4 leading-relaxed">{product.description.vi}</p>
+						<p className="text-muted-foreground mb-4 leading-relaxed">{productDescription}</p>
 					</CardContent>
 				</Card>
 			</DialogTrigger>
 			<DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] overflow-y-auto p-0">
 				<DialogHeader className="p-6 pb-0 sticky top-0 bg-background z-10">
 					<DialogTitle className="text-2xl font-serif font-bold text-foreground pr-8">
-						{product.name.vi}
+						{productName}
 					</DialogTitle>
+					<DialogDescription className="text-muted-foreground">
+						{productDescription}
+					</DialogDescription>
 				</DialogHeader>
 
 				<div className="px-6 pb-6">
@@ -88,31 +99,36 @@ export default async function ProductDialog({ productId }: ProductDialogProps) {
 						</div>
 						<GalleryThumbnails />
 					</GalleryRoot>
-
-					<p className="text-muted-foreground leading-relaxed text-lg">{product.description.vi}</p>
 				</div>
 			</DialogContent>
 		</Dialog>
 	);
 }
 
+interface NotFoundProductDialogProps {
+	locale: Locale;
+}
+
 /**
  * Fallback component for when product is not found
+ * @param locale - The current locale for internationalization
  */
-function NotFoundProductDialog() {
+function NotFoundProductDialog({ locale }: NotFoundProductDialogProps) {
+	const dictionary = getDictionary(locale);
+
 	return (
 		<Card className="group hover:shadow-xl transition-all duration-300 py-0 hover:-translate-y-1 cursor-pointer">
 			<div className="aspect-video overflow-hidden rounded-t-lg px-0 bg-muted flex items-center justify-center">
-				<p className="text-muted-foreground">Product Not Found</p>
+				<p className="text-muted-foreground">{dictionary.products.notFound.title}</p>
 			</div>
 			<CardHeader>
 				<CardTitle className="text-xl font-serif font-bold text-foreground">
-					Product Not Found
+					{dictionary.products.notFound.title}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<p className="text-muted-foreground mb-4 leading-relaxed">
-					The requested product could not be found.
+					{dictionary.products.notFound.description}
 				</p>
 			</CardContent>
 		</Card>
