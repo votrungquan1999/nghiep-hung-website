@@ -60,15 +60,13 @@ function getLocale(request: NextRequest): Locale {
 export function middleware(request: NextRequest) {
 	const pathname = request.nextUrl.pathname;
 
-	console.log("middleware processing:", pathname);
-
-	// Skip processing for static assets
+	// Skip processing for static assets and specific files
 	const staticExtensions = [".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp", ".avif"];
 	const isStaticAsset = staticExtensions.some((ext) => pathname.endsWith(ext));
 
-	if (isStaticAsset) {
-		console.log("static asset detected, skipping middleware");
-		return;
+	// Skip favicon.ico specifically
+	if (pathname === "/favicon.ico" || isStaticAsset) {
+		return NextResponse.next();
 	}
 
 	// Check if there is any supported locale in the pathname
@@ -77,13 +75,11 @@ export function middleware(request: NextRequest) {
 	);
 
 	if (pathnameHasLocale) {
-		console.log("pathname has locale, allowing through");
-		return;
+		return NextResponse.next();
 	}
 
 	// Redirect if there is no locale
 	const locale = getLocale(request);
-	console.log("redirecting to locale:", locale);
 	request.nextUrl.pathname = `/${locale}${pathname}`;
 	// e.g. incoming request is /products
 	// The new URL is now /en/products
