@@ -12,34 +12,42 @@ import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "src/components/ui/dialog";
+import type { Locale } from "src/lib/i18n/config";
+import { getDictionary } from "src/lib/i18n/dictionaries";
 import type { Service } from "src/server/services";
 import { getServiceById } from "src/server/services";
 
 interface ServiceDialogProps {
 	serviceId: string;
+	locale: Locale;
 }
 
 /**
  * Server component that fetches service data by ID and renders the service dialog with card trigger
  * Uses the newer image gallery system for consistent UI across admin and public interfaces
  * @param serviceId - The ID of the service to display
+ * @param locale - The current locale for internationalization
  */
-export default async function ServiceDialog({ serviceId }: ServiceDialogProps) {
+export default async function ServiceDialog({ serviceId, locale }: ServiceDialogProps) {
 	const service: Service | null = await getServiceById(serviceId);
 
 	if (!service) {
-		return <NotFoundServiceDialog />;
+		return <NotFoundServiceDialog locale={locale} />;
 	}
 
 	const galleryImages = service.gallery || [];
+	const serviceName = service.name[locale];
+	const serviceDescription = service.description[locale];
+
 	const convertedImages = convertToGalleryImages(
 		galleryImages.map((image, index) => ({
 			src: image.url,
-			alt: `${service.name.vi} - ${index + 1}`,
+			alt: `${serviceName} - ${index + 1}`,
 		})),
 	);
 
@@ -52,7 +60,7 @@ export default async function ServiceDialog({ serviceId }: ServiceDialogProps) {
 					<div className="aspect-video overflow-hidden rounded-t-lg px-0">
 						<Image
 							src={mainImage?.url || "/placeholder.svg"}
-							alt={service.name.vi}
+							alt={serviceName}
 							width={400}
 							height={300}
 							className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -60,19 +68,22 @@ export default async function ServiceDialog({ serviceId }: ServiceDialogProps) {
 					</div>
 					<CardHeader>
 						<CardTitle className="text-xl font-serif font-bold text-foreground">
-							{service.name.vi}
+							{serviceName}
 						</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-muted-foreground mb-4 leading-relaxed">{service.description.vi}</p>
+						<p className="text-muted-foreground mb-4 leading-relaxed">{serviceDescription}</p>
 					</CardContent>
 				</Card>
 			</DialogTrigger>
 			<DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] overflow-y-auto p-0">
 				<DialogHeader className="p-6 pb-0 sticky top-0 bg-background z-10">
 					<DialogTitle className="text-2xl font-serif font-bold text-foreground pr-8">
-						{service.name.vi}
+						{serviceName}
 					</DialogTitle>
+					<DialogDescription className="text-muted-foreground">
+						{serviceDescription}
+					</DialogDescription>
 				</DialogHeader>
 
 				<div className="px-6 pb-6">
@@ -88,8 +99,6 @@ export default async function ServiceDialog({ serviceId }: ServiceDialogProps) {
 						</div>
 						<GalleryThumbnails />
 					</GalleryRoot>
-
-					<p className="text-muted-foreground leading-relaxed text-lg">{service.description.vi}</p>
 				</div>
 			</DialogContent>
 		</Dialog>
@@ -99,28 +108,25 @@ export default async function ServiceDialog({ serviceId }: ServiceDialogProps) {
 /**
  * Fallback component displayed when a service is not found
  * Shows a placeholder card with "Service Not Found" message
+ * @param locale - The current locale for internationalization
  * @returns JSX element displaying not found service card
  */
-function NotFoundServiceDialog() {
+function NotFoundServiceDialog({ locale }: { locale: Locale }) {
+	const dictionary = getDictionary(locale);
+
 	return (
 		<Card className="group hover:shadow-xl transition-all duration-300 py-0 hover:-translate-y-1 cursor-pointer">
-			<div className="aspect-video overflow-hidden rounded-t-lg px-0">
-				<Image
-					src="/placeholder.svg"
-					alt="Service not found"
-					width={400}
-					height={300}
-					className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-				/>
+			<div className="aspect-video overflow-hidden rounded-t-lg px-0 bg-muted flex items-center justify-center">
+				<p className="text-muted-foreground">{dictionary.services.notFound.title}</p>
 			</div>
 			<CardHeader>
 				<CardTitle className="text-xl font-serif font-bold text-foreground">
-					Service Not Found
+					{dictionary.services.notFound.title}
 				</CardTitle>
 			</CardHeader>
 			<CardContent>
 				<p className="text-muted-foreground mb-4 leading-relaxed">
-					The requested service could not be found.
+					{dictionary.services.notFound.description}
 				</p>
 			</CardContent>
 		</Card>
