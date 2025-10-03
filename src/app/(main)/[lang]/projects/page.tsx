@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import ContactDialog from "src/app/(main)/contact/contact-dialog";
+import ContactDialog from "src/app/(main)/[lang]/contact/contact-dialog";
 import ScrollToTopHandler from "src/components/scroll-to-top-handler";
 import ProjectsPageLoading from "./projects-page-loading";
 import ProjectsSectionDatabase from "./projects-section-database";
@@ -27,3 +27,4 @@ async function ProjectsPage() {
 		</>
 	);
 }
+

@@ -18,8 +18,6 @@ export default async function ProductsSectionDatabase() {
 
 	const productIds: string[] = await getActiveProductIds();
 
-	console.log("get product ids from database", Date.now());
-
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
 		<section id="products" className="py-20 bg-background">

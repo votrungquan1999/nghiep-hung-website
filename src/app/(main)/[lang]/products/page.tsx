@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import ContactDialog from "src/app/(main)/contact/contact-dialog";
+import ContactDialog from "src/app/(main)/[lang]/contact/contact-dialog";
 import ScrollToTopHandler from "src/components/scroll-to-top-handler";
 import ProductsPageLoading from "./products-page-loading";
 import ProductsSectionDatabase from "./products-section-database";

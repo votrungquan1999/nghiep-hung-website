@@ -1,6 +1,6 @@
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { unstable_cacheTag as cacheTag } from "next/cache";
-import { ContactForm } from "src/app/(main)/contact/contact-form";
+import { ContactForm } from "src/app/(main)/[lang]/contact/contact-form";
 import { getSocialMediaPlatform } from "src/app/admin/contact/social-media.config";
 import { Button } from "src/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card";
