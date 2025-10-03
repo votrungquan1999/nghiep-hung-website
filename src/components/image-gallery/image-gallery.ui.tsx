@@ -37,7 +37,12 @@ interface GalleryButtonProps {
  * Gallery next button component
  */
 export function GalleryNextButton({ children, asChild = false, className }: GalleryButtonProps) {
+	const state = useImageGalleryState();
 	const dispatch = useImageGalleryDispatch();
+
+	const hasMultipleImages = state.images.length > 1;
+
+	if (!hasMultipleImages) return null;
 
 	const handleClick = () => {
 		dispatch({ type: ImageGalleryActionType.NextImage });
@@ -62,7 +67,12 @@ export function GalleryNextButton({ children, asChild = false, className }: Gall
  * Gallery back button component
  */
 export function GalleryBackButton({ children, asChild = false, className }: GalleryButtonProps) {
+	const state = useImageGalleryState();
 	const dispatch = useImageGalleryDispatch();
+
+	const hasMultipleImages = state.images.length > 1;
+
+	if (!hasMultipleImages) return null;
 
 	const handleClick = () => {
 		dispatch({ type: ImageGalleryActionType.PrevImage });
@@ -96,7 +106,7 @@ export function GalleryImage({ className = "", aspectRatio = "aspect-video" }: G
 
 	return (
 		<div className={`relative w-full bg-muted rounded-lg overflow-hidden ${className}`}>
-			<div className={`${aspectRatio} w-full`}>
+			<div className={`${aspectRatio} w-full relative`}>
 				{state.images.map((image, index) => (
 					<Image
 						key={`${image.src}-${index}`}

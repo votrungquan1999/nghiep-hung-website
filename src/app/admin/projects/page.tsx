@@ -1,9 +1,16 @@
 import { Building, Edit, FolderOpen } from "lucide-react";
+import type { Metadata } from "next";
+import { connection } from "next/server";
 import { Card, CardContent } from "src/components/ui/card";
 import { getProjectCounts, getProjectIds, ProjectVisibilityStatus } from "src/server/projects";
 import { CreateProjectDialog } from "./create-project-dialog";
 import { EmptyStateWithDialog } from "./empty-state-with-dialog";
 import { ProjectsList } from "./projects-list";
+
+export const metadata: Metadata = {
+	title: "Projects Management - Admin - Nghiệp Hưng",
+	description: "Manage and showcase completed projects and portfolio in the admin panel",
+};
 
 /**
  * Projects management page
@@ -11,6 +18,7 @@ import { ProjectsList } from "./projects-list";
  * Uses efficient queries to check for projects and display them
  */
 export default async function ProjectsPage() {
+	await connection();
 	// Fetch project IDs and counts efficiently
 	const [projectIds, projectCounts] = await Promise.all([getProjectIds(), getProjectCounts()]);
 

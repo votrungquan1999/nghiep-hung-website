@@ -34,6 +34,8 @@ export function ContactDetailsFormCard() {
 					value={phone1}
 					placeholder="0123 456 789"
 					helpText="Main contact number displayed prominently"
+					pattern="[0-9+\-\s()]+"
+					title="Phone number must contain only numbers, spaces, hyphens, parentheses, and plus signs"
 				>
 					<FormLabel>Primary Phone</FormLabel>
 					<FormInput onChange={(e) => updatePhone1(e.target.value)} />
@@ -46,6 +48,8 @@ export function ContactDetailsFormCard() {
 					value={phone2}
 					placeholder="0987 654 321"
 					helpText="Alternative contact number"
+					pattern="[0-9+\-\s()]+"
+					title="Phone number must contain only numbers, spaces, hyphens, parentheses, and plus signs"
 				>
 					<FormLabel>Secondary Phone</FormLabel>
 					<FormInput onChange={(e) => updatePhone2(e.target.value)} />

@@ -1,6 +1,8 @@
 "use server";
 
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { FormResult } from "src/components/form-state";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getDatabase } from "src/lib/database";
 import type { Product, ProductDocument } from "src/server/products";
 import { ProductStatus } from "src/server/products";
@@ -85,6 +87,10 @@ export async function updateProduct(formData: FormData): Promise<FormResult> {
 				error: "Product not found",
 			};
 		}
+
+		// Revalidate products cache
+		revalidateTag(CACHE_TAGS.PRODUCTS);
+		revalidatePath("/admin/products");
 
 		return {
 			success: true,

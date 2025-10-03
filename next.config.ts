@@ -28,6 +28,19 @@ const nextConfig: NextConfig = {
 		serverActions: {
 			bodySizeLimit: "100mb",
 		},
+		useCache: true,
+		cacheComponents: true,
+		cacheLife: {
+			default: {
+				stale: 300, // 5 minutes
+				revalidate: process.env.CACHE_LIFE_REVALIDATE
+					? Number.parseInt(process.env.CACHE_LIFE_REVALIDATE, 10)
+					: 60 * 60 * 24, // 1 day default
+				expire: process.env.CACHE_LIFE_EXPIRE
+					? Number.parseInt(process.env.CACHE_LIFE_EXPIRE, 10)
+					: 60 * 60 * 24 * 7, // 7 days default
+			},
+		},
 	},
 	async headers() {
 		return [

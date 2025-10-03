@@ -2,7 +2,9 @@
 
 import { chunk } from "lodash";
 import { nanoid } from "nanoid";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { FormResult } from "src/components/form-state";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getDatabase } from "src/lib/database";
 import type { S3UploadResult } from "src/lib/s3";
 import { uploadToS3 } from "src/lib/s3";
@@ -161,6 +163,10 @@ export async function createService(formData: FormData): Promise<FormResult> {
 				error: "Failed to save service to database",
 			};
 		}
+
+		// Revalidate services cache
+		revalidateTag(CACHE_TAGS.SERVICES);
+		revalidatePath("/admin/services");
 
 		return {
 			success: true,

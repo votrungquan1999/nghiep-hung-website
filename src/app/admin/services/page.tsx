@@ -1,9 +1,16 @@
 import { Wrench } from "lucide-react";
+import type { Metadata } from "next";
+import { connection } from "next/server";
 import { Card, CardContent } from "src/components/ui/card";
 import { getServiceCounts, getServiceIds } from "src/server/services";
 import CreateServiceDialog from "./create-service-dialog/create-service-dialog";
 import { EmptyStateWithDialog } from "./empty-state-with-dialog";
 import { ServicesList } from "./services-list";
+
+export const metadata: Metadata = {
+	title: "Services Management - Admin - Nghiệp Hưng",
+	description: "Manage company services and offerings in the admin panel",
+};
 
 /**
  * Services management page
@@ -11,6 +18,7 @@ import { ServicesList } from "./services-list";
  * Uses efficient queries to check for services and display them
  */
 export default async function ServicesPage() {
+	await connection();
 	// Fetch service IDs and counts efficiently
 	const [serviceIds, serviceCounts] = await Promise.all([getServiceIds(), getServiceCounts()]);
 

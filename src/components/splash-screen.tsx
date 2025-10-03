@@ -26,6 +26,7 @@ export default function SplashScreen() {
 						width={224}
 						height={224}
 						className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 mx-auto relative z-10 drop-shadow-2xl"
+						loading="eager"
 					/>
 				</motion.div>
 

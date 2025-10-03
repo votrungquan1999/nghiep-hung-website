@@ -83,6 +83,10 @@ export interface FormFieldContext {
 	 */
 	pattern?: string;
 	/**
+	 * Title attribute for input validation tooltip
+	 */
+	title?: string;
+	/**
 	 * Auto-complete attribute
 	 */
 	autoComplete?: string;
@@ -161,6 +165,10 @@ export interface FormFieldProps {
 	 * Pattern for input validation
 	 */
 	pattern?: string;
+	/**
+	 * Title attribute for input validation tooltip
+	 */
+	title?: string;
 	/**
 	 * Auto-complete attribute
 	 */

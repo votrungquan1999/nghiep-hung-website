@@ -1,7 +1,9 @@
 "use server";
 
 import { chunk } from "lodash";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { FormResult } from "src/components/form-state";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getDatabase } from "src/lib/database";
 import { deleteFromS3 } from "src/lib/s3";
 import type { ProjectDocument, ProjectImageDocument } from "src/server/projects";
@@ -62,6 +64,10 @@ export async function deleteProjectAction(formData: FormData): Promise<FormResul
 				error: "Failed to delete project",
 			};
 		}
+
+		// Revalidate projects cache
+		revalidateTag(CACHE_TAGS.PROJECTS);
+		revalidatePath("/admin/projects");
 
 		// Return success with refresh to update the UI
 		return {

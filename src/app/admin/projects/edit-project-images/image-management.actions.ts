@@ -1,7 +1,9 @@
 "use server";
 
 import { chunk } from "lodash";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { FormResult } from "src/components/form-state";
+import { CACHE_TAGS } from "src/lib/cache-tags";
 import { getDatabase } from "src/lib/database";
 import type { S3UploadResult } from "src/lib/s3";
 import { deleteFromS3, uploadToS3 } from "src/lib/s3";
@@ -194,6 +196,10 @@ export async function updateProjectImages(formData: FormData): Promise<FormResul
 				error: "Project not found",
 			};
 		}
+
+		// Revalidate projects cache
+		revalidateTag(CACHE_TAGS.PROJECTS);
+		revalidatePath("/admin/projects");
 
 		return {
 			success: true,
