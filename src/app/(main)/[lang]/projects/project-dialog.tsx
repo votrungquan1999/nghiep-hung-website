@@ -13,33 +13,43 @@ import { Card, CardContent } from "src/components/ui/card";
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "src/components/ui/dialog";
+import type { Locale } from "src/lib/i18n/config";
+import { getDictionary } from "src/lib/i18n/dictionaries";
 import type { Project } from "src/server/projects";
 import { getProjectById, ProjectCompletionStatus } from "src/server/projects";
 
 interface ProjectDialogProps {
 	projectId: string;
+	locale: Locale;
 }
 
 /**
  * Server component that fetches project data by ID and renders the project dialog with card trigger
  * Uses the newer image gallery system for consistent UI across admin and public interfaces
  * @param projectId - The ID of the project to display
+ * @param locale - The current locale for internationalization
  */
-export default async function ProjectDialog({ projectId }: ProjectDialogProps) {
+export default async function ProjectDialog({ projectId, locale }: ProjectDialogProps) {
 	const project: Project | null = await getProjectById(projectId);
 
 	if (!project) {
-		return <NotFoundProjectDialog />;
+		return <NotFoundProjectDialog locale={locale} />;
 	}
+
+	const dictionary = getDictionary(locale);
+	const projectName = project.name[locale];
+	const projectDescription = project.description[locale];
+	const projectCategory = project.category[locale];
 
 	const convertedImages = convertToGalleryImages(
 		project.gallery.map((image, index) => ({
 			src: image.url,
-			alt: `${project.name.vi} - ${index + 1}`,
+			alt: `${projectName} - ${index + 1}`,
 		})),
 	);
 
@@ -52,7 +62,7 @@ export default async function ProjectDialog({ projectId }: ProjectDialogProps) {
 					<div className="aspect-video overflow-hidden rounded-t-lg">
 						<Image
 							src={mainImage?.url || "/placeholder.svg"}
-							alt={project.name.vi}
+							alt={projectName}
 							width={400}
 							height={300}
 							className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -60,31 +70,34 @@ export default async function ProjectDialog({ projectId }: ProjectDialogProps) {
 					</div>
 					<CardContent className="p-6">
 						<div className="flex items-center justify-between mb-3">
-							<Badge variant="secondary">{project.category.vi}</Badge>
+							<Badge variant="secondary">{projectCategory}</Badge>
 							<span className="text-sm text-muted-foreground">{project.year}</span>
 						</div>
-						<h3 className="text-xl font-serif font-bold text-foreground mb-2">{project.name.vi}</h3>
+						<h3 className="text-xl font-serif font-bold text-foreground mb-2">{projectName}</h3>
 						<div className="flex items-center text-sm text-muted-foreground mb-3">
 							<MapPin className="h-4 w-4 mr-1" />
 							{project.location}
 						</div>
 						<p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-							{project.description.vi}
+							{projectDescription}
 						</p>
 					</CardContent>
 				</Card>
 			</DialogTrigger>
 
 			<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-				<DialogHeader>
-					<DialogTitle className="text-2xl font-serif font-bold">{project.name.vi}</DialogTitle>
+				<DialogHeader className="p-6 pb-0">
+					<DialogTitle className="text-2xl font-serif font-bold">{projectName}</DialogTitle>
+					<DialogDescription className="text-muted-foreground">
+						{projectDescription}
+					</DialogDescription>
 				</DialogHeader>
 
-				<div className="space-y-6">
+				<div className="space-y-6 px-6 pb-6">
 					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
 						<div className="flex items-center">
 							<Building className="size-4 mr-2 text-primary" />
-							<span>{project.category.vi}</span>
+							<span>{projectCategory}</span>
 						</div>
 						<div className="flex items-center">
 							<MapPin className="size-4 mr-2 text-primary" />
@@ -103,32 +116,38 @@ export default async function ProjectDialog({ projectId }: ProjectDialogProps) {
 							className="w-fit"
 						>
 							{project.completionStatus === ProjectCompletionStatus.Completed
-								? "Hoàn thành"
+								? dictionary.projects.completionStatus.completed
 								: project.completionStatus === ProjectCompletionStatus.InProgress
-									? "Đang thực hiện"
-									: "Đang lên kế hoạch"}
+									? dictionary.projects.completionStatus.inProgress
+									: dictionary.projects.completionStatus.planning}
 						</Badge>
 					</div>
 
 					<div>
-						<h4 className="font-serif font-bold text-lg mb-3">{"Mô tả dự án"}</h4>
-						<p className="text-muted-foreground leading-relaxed">{project.description.vi}</p>
+						<h4 className="font-serif font-bold text-lg mb-3">
+							{dictionary.projects.projectDescription}
+						</h4>
+						<p className="text-muted-foreground leading-relaxed">{projectDescription}</p>
 					</div>
 
 					<div>
-						<h4 className="font-serif font-bold text-lg mb-3">{"Thông số kỹ thuật"}</h4>
+						<h4 className="font-serif font-bold text-lg mb-3">
+							{dictionary.projects.technicalSpecs}
+						</h4>
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-2">
 							{project.specs.map((spec, index) => (
-								<div key={`spec-${index}-${spec.vi}`} className="flex items-start">
+								<div key={`spec-${index}-${spec[locale]}`} className="flex items-start">
 									<div className="size-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
-									<span className="text-muted-foreground text-sm">{spec.vi}</span>
+									<span className="text-muted-foreground text-sm">{spec[locale]}</span>
 								</div>
 							))}
 						</div>
 					</div>
 
 					<div>
-						<h4 className="font-serif font-bold text-lg mb-3">{"Hình ảnh dự án"}</h4>
+						<h4 className="font-serif font-bold text-lg mb-3">
+							{dictionary.projects.projectImages}
+						</h4>
 						<GalleryRoot images={convertedImages}>
 							<div className="relative">
 								<GalleryImage className="mb-6" />
@@ -151,15 +170,18 @@ export default async function ProjectDialog({ projectId }: ProjectDialogProps) {
 /**
  * Fallback component displayed when a project is not found
  * Shows a placeholder card with "Project Not Found" message
+ * @param locale - The current locale for internationalization
  * @returns JSX element displaying not found project card
  */
-function NotFoundProjectDialog() {
+function NotFoundProjectDialog({ locale }: { locale: Locale }) {
+	const dictionary = getDictionary(locale);
+
 	return (
 		<Card className="group cursor-pointer hover:shadow-xl transition-all duration-300 py-0 hover:-translate-y-1">
 			<div className="aspect-video overflow-hidden rounded-t-lg">
 				<Image
 					src="/placeholder.svg"
-					alt="Project not found"
+					alt={dictionary.projects.notFound.title}
 					width={400}
 					height={300}
 					className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
@@ -167,16 +189,18 @@ function NotFoundProjectDialog() {
 			</div>
 			<CardContent className="p-6">
 				<div className="flex items-center justify-between mb-3">
-					<Badge variant="secondary">Not Found</Badge>
+					<Badge variant="secondary">{dictionary.projects.notFound.title}</Badge>
 					<span className="text-sm text-muted-foreground">-</span>
 				</div>
-				<h3 className="text-xl font-serif font-bold text-foreground mb-2">Project Not Found</h3>
+				<h3 className="text-xl font-serif font-bold text-foreground mb-2">
+					{dictionary.projects.notFound.title}
+				</h3>
 				<div className="flex items-center text-sm text-muted-foreground mb-3">
 					<MapPin className="h-4 w-4 mr-1" />
 					Unknown
 				</div>
 				<p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-					The requested project could not be found.
+					{dictionary.projects.notFound.description}
 				</p>
 			</CardContent>
 		</Card>
