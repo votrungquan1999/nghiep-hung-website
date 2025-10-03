@@ -4,6 +4,7 @@ import { Button } from "src/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
+	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -27,12 +28,19 @@ export default function CreateProjectDialog() {
 							Add New Project
 						</Button>
 					</DialogTrigger>
-					<DialogContent className="max-w-6xl max-h-[90vh] overflow-y-auto bg-white">
-						<DialogHeader>
-							<DialogTitle>Create New Project</DialogTitle>
+					<DialogContent className="max-w-6xl w-[95vw] max-h-[95vh] overflow-y-auto p-0 bg-white">
+						<DialogHeader className="p-6 pb-0 sticky top-0 bg-background z-10">
+							<DialogTitle className="text-2xl font-serif font-bold text-foreground pr-8">
+								Create New Project
+							</DialogTitle>
+							<DialogDescription className="text-muted-foreground">
+								Add a new project to showcase your work and achievements
+							</DialogDescription>
 						</DialogHeader>
 
-						<CreateProjectForm />
+						<div className="px-6 pb-6">
+							<CreateProjectForm />
+						</div>
 					</DialogContent>
 				</Dialog>
 			</ProjectFormProvider>
