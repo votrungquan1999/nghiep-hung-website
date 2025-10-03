@@ -1,5 +1,7 @@
 import { Award, Target, Users, Wrench } from "lucide-react";
 import Image from "next/image";
+import type { Locale } from "src/lib/i18n/config";
+import { getDictionary } from "src/lib/i18n/dictionaries";
 import { CompanyHistoryTimeline } from "./company-history-timeline";
 import { CoreValuesCarousel } from "./core-values-carousel";
 import FeatureCard from "./feature-card.ui";
@@ -7,32 +9,33 @@ import FeatureCard from "./feature-card.ui";
 /**
  * About section component that displays company overview with interactive feature cards
  * Each feature card opens a dialog when clicked to show detailed description
+ * @param locale - The current locale for internationalization
  */
-export default function AboutSection() {
+export default function AboutSection({ locale }: { locale: Locale }) {
+	const dictionary = getDictionary(locale);
+
 	const features = [
 		{
 			icon: Users,
-			title: "Lịch sử hình thành",
-			description: "Mô tả về lịch sử hình thành của công ty sẽ được cập nhật sau.",
-			customDialogContent: <CompanyHistoryTimeline />,
+			title: dictionary.about.features.companyHistory.title,
+			description: dictionary.about.features.companyHistory.description,
+			customDialogContent: <CompanyHistoryTimeline locale={locale} />,
 		},
 		{
 			icon: Target,
-			title: "Tầm nhìn",
-			description:
-				"Công ty TNHH Nghiệp Hưng định hướng trở thành đơn vị dẫn đầu trong lĩnh vực cung cấp giải pháp thông gió và phòng cháy chữa cháy (PCCC) tại Việt Nam, không ngừng nâng cao năng lực thi công, chất lượng sản phẩm và dịch vụ nhằm đáp ứng nhu cầu ngày càng cao của thị trường",
+			title: dictionary.about.features.vision.title,
+			description: dictionary.about.features.vision.description,
 		},
 		{
 			icon: Award,
-			title: "Sứ mệnh",
-			description:
-				"Cung cấp giải pháp thông gió và PCCC chất lượng cao, an toàn và hiệu quả cho mọi công trình. Không ngừng nâng cao năng lực kỹ thuật, sản phẩm và dịch vụ, mang lại giá trị tối ưu cho khách hàng. Xây dựng thương hiệu uy tín, chuyên nghiệp, đóng góp vào sự phát triển bền vững của ngành cơ điện và xây dựng.",
+			title: dictionary.about.features.mission.title,
+			description: dictionary.about.features.mission.description,
 		},
 		{
 			icon: Wrench,
-			title: "Giá trị cốt lõi",
-			description: "7 giá trị cốt lõi định hướng hoạt động và phát triển của công ty",
-			customDialogContent: <CoreValuesCarousel />,
+			title: dictionary.about.features.coreValues.title,
+			description: dictionary.about.features.coreValues.description,
+			customDialogContent: <CoreValuesCarousel locale={locale} />,
 		},
 	];
 
@@ -43,7 +46,7 @@ export default function AboutSection() {
 			<div>
 				<Image
 					src="/about-image.png"
-					alt="Hình ảnh công ty Nghiệp Hưng"
+					alt={dictionary.about.imageAlt}
 					width={1200}
 					height={600}
 					className="w-full h-64 lg:h-80 object-cover rounded-lg"
@@ -54,12 +57,11 @@ export default function AboutSection() {
 			<div className="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8">
 				<div className="text-center mb-16">
 					<h2 className="text-3xl lg:text-5xl font-serif font-bold text-foreground mb-6">
-						{"Về Công ty"} <span className="text-primary">{"Nghiệp Hưng"}</span>
+						{dictionary.about.title}{" "}
+						<span className="text-primary">{dictionary.about.companyName}</span>
 					</h2>
 					<p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-						{
-							"Công ty TNHH Nghiệp Hưng được thành lập với sứ mệnh mang đến những giải pháp hệ thống ống gió tối ưu, góp phần nâng cao chất lượng không khí và môi trường sống."
-						}
+						{dictionary.about.description}
 					</p>
 				</div>
 
@@ -81,51 +83,24 @@ export default function AboutSection() {
 					<div className="grid lg:grid-cols-2 gap-12 items-center">
 						<div>
 							<h3 className="text-2xl lg:text-3xl font-serif font-bold text-foreground mb-6">
-								{"Cam kết của chúng tôi"}
+								{dictionary.about.commitment.title}
 							</h3>
 							<div className="space-y-4">
-								<div className="flex items-start">
-									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-									<p className="text-muted-foreground">
-										{
-											"An toàn tuyệt đối - Được kiểm định & chứng nhận bởi Trung tâm Nghiên cứu Ứng dụng KHKT PCCC & Viện Khoa học CNXD"
-										}
-									</p>
-								</div>
-								<div className="flex items-start">
-									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-									<p className="text-muted-foreground">
-										{"Trực tiếp sản xuất – Không qua trung gian"}
-									</p>
-								</div>
-								<div className="flex items-start">
-									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-									<p className="text-muted-foreground">
-										{"Xưởng hiện đại, năng lực lớn – hơn 12.000m² sản phẩm/ mỗi tháng"}
-									</p>
-								</div>
-								<div className="flex items-start">
-									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-									<p className="text-muted-foreground">
-										{"Đội ngũ kỹ thuật tay nghề cao, thi công tận nơi"}
-									</p>
-								</div>
-								<div className="flex items-start">
-									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-									<p className="text-muted-foreground">
-										{"Đảm bảo chất lượng - đúng tiến độ - giá thành hợp lý"}
-									</p>
-								</div>
-								<div className="flex items-start">
-									<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
-									<p className="text-muted-foreground">{"Hỗ trợ đo vẽ, tư vấn kỹ thuật từ A-Z"}</p>
-								</div>
+								{dictionary.about.commitment.items.map((item: string, index: number) => (
+									<div
+										key={`commitment-item-${item.slice(0, 20).replace(/\s+/g, "-")}-${index}`}
+										className="flex items-start"
+									>
+										<div className="w-2 h-2 bg-primary rounded-full mt-2 mr-4 flex-shrink-0"></div>
+										<p className="text-muted-foreground">{item}</p>
+									</div>
+								))}
 							</div>
 						</div>
 						<div>
 							<Image
 								src="/duct-installation-team.png"
-								alt="Đội ngũ chuyên nghiệp"
+								alt={dictionary.about.commitment.imageAlt}
 								width={600}
 								height={400}
 								className="rounded-lg shadow-lg"

@@ -7,16 +7,20 @@ import {
 	CarouselPrevButton,
 	CarouselRoot,
 } from "src/components/carousel";
-import { coreValues } from "./core-values.data";
+import type { Locale } from "src/lib/i18n/config";
+import { getDictionary } from "src/lib/i18n/dictionaries";
 
 /**
  * Core values carousel component that displays each core value in a slide
  * Users can navigate between the 7 core values using navigation controls
+ * @param locale - The current locale for internationalization
  */
-export function CoreValuesCarousel() {
+export function CoreValuesCarousel({ locale }: { locale: Locale }) {
+	const dictionary = getDictionary(locale);
+	const coreValues = dictionary.about.coreValues.values;
 	return (
 		<CarouselRoot>
-			<CarouselContent className="w-full max-w-sm sm:max-w-[622px]">
+			<CarouselContent className="w-full max-w-[360px] sm:max-w-[622px]">
 				{coreValues.map((value) => {
 					return (
 						<CarouselItem key={value.id} id={value.id.toString()}>
@@ -33,7 +37,7 @@ export function CoreValuesCarousel() {
 								<div className="space-y-2 flex-1 overflow-y-auto sm:space-y-3">
 									{value.items.map((item, index) => (
 										<div key={`core-value-${value.id}-item-${index}`} className="flex items-start">
-											<div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 mr-3 flex-shrink-0 sm:w-2 sm:h-2 sm:mt-2 sm:mr-4" />
+											<div className="size-1.5 bg-primary rounded-full mt-1.5 mr-3 flex-shrink-0 sm:size-2 sm:mt-2 sm:mr-4" />
 											<p className="text-xs text-foreground leading-relaxed sm:text-sm">{item}</p>
 										</div>
 									))}
@@ -47,11 +51,11 @@ export function CoreValuesCarousel() {
 			<div className="flex items-center justify-between mt-4 sm:mt-6">
 				<CarouselPrevButton className="flex items-center gap-2">
 					<ChevronLeft className="size-4" />
-					Trước
+					{dictionary.about.coreValues.carousel.previous}
 				</CarouselPrevButton>
 				<CarouselDots />
 				<CarouselNextButton className="flex items-center gap-2">
-					Sau
+					{dictionary.about.coreValues.carousel.next}
 					<ChevronRight className="size-4" />
 				</CarouselNextButton>
 			</div>

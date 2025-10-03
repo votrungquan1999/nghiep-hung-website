@@ -38,16 +38,16 @@ export default function FeatureCard({
 					</CardContent>
 				</Card>
 			</DialogTrigger>
-			<DialogContent className="sm:max-w-2xl bg-white">
-				<DialogHeader>
-					<DialogTitle className="flex items-center gap-3 text-2xl font-serif">
-						<div className="inline-flex items-center justify-center size-12 bg-primary/10 rounded-full">
-							<Icon className="size-6 text-primary" />
+			<DialogContent className="sm:max-w-2xl bg-white p-4 sm:p-6 max-w-[calc(100vw-2rem)]">
+				<DialogHeader className="mb-4">
+					<DialogTitle className="flex items-center gap-3 text-xl sm:text-2xl font-serif">
+						<div className="inline-flex items-center justify-center size-10 sm:size-12 bg-primary/10 rounded-full">
+							<Icon className="size-5 sm:size-6 text-primary" />
 						</div>
 						{title}
 					</DialogTitle>
 				</DialogHeader>
-				<div className="mt-6">
+				<div className="mt-2">
 					{customDialogContent || (
 						<p className="text-muted-foreground leading-relaxed text-base">{description}</p>
 					)}
