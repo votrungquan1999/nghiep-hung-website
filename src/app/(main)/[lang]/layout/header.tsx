@@ -2,25 +2,30 @@ import { Mail, Phone } from "lucide-react";
 import { unstable_cacheTag as cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
+import { LanguageSwitcher } from "src/components/language-toggle";
 import { CACHE_TAGS } from "src/lib/cache-tags";
+import type { Locale } from "src/lib/i18n/config";
+import { getDictionary } from "src/lib/i18n/dictionaries";
 import { getContactInfo } from "src/server/contact";
 import { MobileHeader } from "./mobile-header";
 
 /**
  * Header component that renders desktop navigation, contact info, and mobile header
+ * @param locale - The current locale for internationalization
  */
-export default async function Header() {
+export default async function Header({ locale }: { locale: Locale }) {
 	"use cache";
 	cacheTag(CACHE_TAGS.CONTACT);
 	const contactInfo = await getContactInfo();
+	const dictionary = getDictionary(locale);
 
 	const navigation = [
-		{ name: "Trang chủ", href: "/" },
-		{ name: "Giới thiệu", href: "/about" },
-		{ name: "Sản phẩm", href: "/products" },
-		{ name: "Dịch vụ", href: "/services" },
-		{ name: "Dự án", href: "/projects" },
-		{ name: "Liên hệ", href: "/contact" },
+		{ name: dictionary.nav.home, href: `/${locale}` },
+		{ name: dictionary.nav.about, href: `/${locale}/about` },
+		{ name: dictionary.nav.products, href: `/${locale}/products` },
+		{ name: dictionary.nav.services, href: `/${locale}/services` },
+		{ name: dictionary.nav.projects, href: `/${locale}/projects` },
+		{ name: dictionary.nav.contact, href: `/${locale}/contact` },
 	];
 
 	return (
@@ -28,7 +33,7 @@ export default async function Header() {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
 					<div className="flex items-center">
-						<Link href="/">
+						<Link href={`/${locale}`}>
 							<Image
 								src="/nghiep_hung_logo_full.svg"
 								alt="Nghiệp Hưng"
@@ -53,7 +58,7 @@ export default async function Header() {
 						))}
 					</nav>
 
-					{/* Contact Info */}
+					{/* Contact Info and Language Switcher */}
 					<div className="hidden lg:flex items-center space-x-4">
 						{contactInfo.phone1 && (
 							<div className="flex items-center text-sm text-muted-foreground">
@@ -67,10 +72,12 @@ export default async function Header() {
 								<span>{contactInfo.email1}</span>
 							</div>
 						)}
+
+						<LanguageSwitcher currentLang={locale} />
 					</div>
 
 					{/* Mobile Header */}
-					<MobileHeader navigation={navigation} />
+					<MobileHeader navigation={navigation} locale={locale} />
 				</div>
 			</div>
 		</header>
