@@ -106,7 +106,7 @@ export function GalleryImage({ className = "", aspectRatio = "aspect-video" }: G
 
 	return (
 		<div className={`relative w-full bg-muted rounded-lg overflow-hidden ${className}`}>
-			<div className={`${aspectRatio} w-full`}>
+			<div className={`${aspectRatio} w-full relative`}>
 				{state.images.map((image, index) => (
 					<Image
 						key={`${image.src}-${index}`}
