@@ -58,11 +58,146 @@ export interface Dictionary {
 	footer: {
 		companyName: string;
 		description: string;
-		address: string;
-		phone: string;
-		email: string;
+		quickLinks: string;
+		contactInfo: string;
 		copyright: string;
-		allRightsReserved: string;
+	};
+
+	// About section
+	about: {
+		title: string;
+		companyName: string;
+		description: string;
+		imageAlt: string;
+		features: {
+			companyHistory: {
+				title: string;
+				description: string;
+			};
+			vision: {
+				title: string;
+				description: string;
+			};
+			mission: {
+				title: string;
+				description: string;
+			};
+			coreValues: {
+				title: string;
+				description: string;
+			};
+		};
+		commitment: {
+			title: string;
+			items: string[];
+			imageAlt: string;
+		};
+		timeline: {
+			events: Array<{
+				year: string;
+				title: string;
+				description: string;
+			}>;
+		};
+		coreValues: {
+			carousel: {
+				previous: string;
+				next: string;
+			};
+			values: Array<{
+				id: number;
+				title: string;
+				description: string;
+				items: string[];
+			}>;
+		};
+	};
+
+	// Products section
+	products: {
+		title: string;
+		subtitle: string;
+		description: string;
+		notFound: {
+			title: string;
+			description: string;
+		};
+	};
+
+	// Services section
+	services: {
+		title: string;
+		subtitle: string;
+		description: string;
+		notFound: {
+			title: string;
+			description: string;
+		};
+	};
+
+	// Projects section
+	projects: {
+		title: string;
+		subtitle: string;
+		description: string;
+		notFound: {
+			title: string;
+			description: string;
+		};
+		projectDescription: string;
+		technicalSpecs: string;
+		projectImages: string;
+		completionStatus: {
+			completed: string;
+			inProgress: string;
+			planning: string;
+		};
+	};
+
+	// Contact section
+	contact: {
+		title: string;
+		description: string;
+		contactInfo: {
+			title: string;
+			phone: string;
+			email: string;
+			address: string;
+			workingHours: string;
+		};
+		socialMedia: {
+			title: string;
+		};
+		form: {
+			title: string;
+			fields: {
+				name: {
+					label: string;
+					placeholder: string;
+				};
+				phone: {
+					label: string;
+					placeholder: string;
+					validation: string;
+				};
+				email: {
+					label: string;
+					placeholder: string;
+				};
+				subject: {
+					label: string;
+					placeholder: string;
+				};
+				message: {
+					label: string;
+					placeholder: string;
+				};
+			};
+			submit: string;
+		};
+		dialog: {
+			trigger: string;
+		};
 	};
 
 	// Meta information
