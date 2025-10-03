@@ -1,16 +1,23 @@
-import { Facebook, Linkedin, Mail, MapPin, Phone, Youtube } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { unstable_cacheTag as cacheTag } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "src/components/ui/button";
+import { getSocialMediaPlatform } from "src/app/admin/contact/social-media.config";
 import { CACHE_TAGS } from "src/lib/cache-tags";
+import type { Locale } from "src/lib/i18n/config";
+import { getDictionary } from "src/lib/i18n/dictionaries";
 import { getContactInfo } from "src/server/contact";
 
-export default async function Footer() {
+/**
+ * Footer component that displays company information, quick links, and contact details
+ * @param locale - The current locale for internationalization
+ */
+export default async function Footer({ locale }: { locale: Locale }) {
 	"use cache";
 	cacheTag(CACHE_TAGS.CONTACT);
 
 	const contactInfo = await getContactInfo();
+	const dictionary = getDictionary(locale);
 
 	return (
 		<footer className="bg-primary text-primary-foreground">
@@ -25,75 +32,85 @@ export default async function Footer() {
 							height={48}
 							className="h-12 w-auto mb-6"
 						/>
-						<h3 className="text-xl font-serif font-bold mb-4">{"Công ty TNHH Nghiệp Hưng"}</h3>
+						<h3 className="text-xl font-serif font-bold mb-4">{dictionary.footer.companyName}</h3>
 						<p className="text-primary-foreground/80 mb-6 leading-relaxed">
-							{
-								"Chuyên sản xuất và thi công hệ thống ống gió chất lượng cao. Với hơn 10 năm kinh nghiệm, chúng tôi cam kết mang đến những giải pháp tối ưu cho khách hàng."
-							}
+							{dictionary.footer.description}
 						</p>
-						<div className="flex space-x-4">
-							<Button variant="secondary" size="icon">
-								<Facebook className="h-5 w-5" />
-							</Button>
-							<Button variant="secondary" size="icon">
-								<Youtube className="h-5 w-5" />
-							</Button>
-							<Button variant="secondary" size="icon">
-								<Linkedin className="h-5 w-5" />
-							</Button>
-						</div>
+						{contactInfo.socialMedia.length > 0 && (
+							<div className="flex space-x-4">
+								{contactInfo.socialMedia.map((link) => {
+									const platform = getSocialMediaPlatform(link.platformId);
+									if (!platform) return null;
+
+									const Icon = platform.icon;
+
+									return (
+										<a
+											key={link.id}
+											href={link.url}
+											target="_blank"
+											rel="noopener noreferrer"
+											className="inline-flex items-center justify-center size-10 rounded-md border border-primary-foreground/20 bg-primary-foreground/10 hover:bg-primary-foreground/20 transition-colors"
+											aria-label={`Visit our ${platform.name} page`}
+										>
+											<Icon className="size-5" />
+										</a>
+									);
+								})}
+							</div>
+						)}
 					</div>
 
 					{/* Quick Links */}
 					<div>
-						<h4 className="text-lg font-serif font-bold mb-6">{"Liên kết nhanh"}</h4>
+						<h4 className="text-lg font-serif font-bold mb-6">{dictionary.footer.quickLinks}</h4>
 						<ul className="space-y-3">
 							<li>
 								<Link
-									href="/about"
+									href={`/${locale}/about`}
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
-									{"Giới thiệu"}
+									{dictionary.nav.about}
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/products"
+									href={`/${locale}/products`}
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
-									{"Sản phẩm"}
+									{dictionary.nav.products}
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/services"
+									href={`/${locale}/services`}
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
-									{"Dịch vụ"}
+									{dictionary.nav.services}
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/projects"
+									href={`/${locale}/projects`}
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
-									{"Dự án"}
+									{dictionary.nav.projects}
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/contact"
+									href={`/${locale}/contact`}
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
-									{"Liên hệ"}
+									{dictionary.nav.contact}
 								</Link>
 							</li>
 							<li>
 								<Link
-									href="/privacy-policy"
+									href={`/${locale}/privacy-policy`}
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
-									{"Chính sách Bảo mật"}
+									{dictionary.nav.privacyPolicy}
 								</Link>
 							</li>
 						</ul>
@@ -101,35 +118,35 @@ export default async function Footer() {
 
 					{/* Contact Info */}
 					<div>
-						<h4 className="text-lg font-serif font-bold mb-6">{"Thông tin liên hệ"}</h4>
+						<h4 className="text-lg font-serif font-bold mb-6">{dictionary.footer.contactInfo}</h4>
 						<div className="space-y-4">
 							{contactInfo.address && (
 								<div className="flex items-start">
-									<MapPin className="h-5 w-5 mt-1 mr-3 flex-shrink-0" />
+									<MapPin className="size-5 mt-1 mr-3 flex-shrink-0" />
 									<p className="text-primary-foreground/80 text-sm">{contactInfo.address}</p>
 								</div>
 							)}
 							{contactInfo.phone1 && (
 								<div className="flex items-center">
-									<Phone className="h-5 w-5 mr-3 flex-shrink-0" />
+									<Phone className="size-5 mr-3 flex-shrink-0" />
 									<p className="text-primary-foreground/80 text-sm">{contactInfo.phone1}</p>
 								</div>
 							)}
 							{contactInfo.phone2 && (
 								<div className="flex items-center">
-									<Phone className="h-5 w-5 mr-3 flex-shrink-0" />
+									<Phone className="size-5 mr-3 flex-shrink-0" />
 									<p className="text-primary-foreground/80 text-sm">{contactInfo.phone2}</p>
 								</div>
 							)}
 							{contactInfo.email1 && (
 								<div className="flex items-center">
-									<Mail className="h-5 w-5 mr-3 flex-shrink-0" />
+									<Mail className="size-5 mr-3 flex-shrink-0" />
 									<p className="text-primary-foreground/80 text-sm">{contactInfo.email1}</p>
 								</div>
 							)}
 							{contactInfo.email2 && (
 								<div className="flex items-center">
-									<Mail className="h-5 w-5 mr-3 flex-shrink-0" />
+									<Mail className="size-5 mr-3 flex-shrink-0" />
 									<p className="text-primary-foreground/80 text-sm">{contactInfo.email2}</p>
 								</div>
 							)}
@@ -138,9 +155,7 @@ export default async function Footer() {
 				</div>
 
 				<div className="border-t border-primary-foreground/20 mt-12 pt-8 text-center">
-					<p className="text-primary-foreground/60 text-sm">
-						{"© 2024 Công ty TNHH Nghiệp Hưng. Tất cả quyền được bảo lưu."}
-					</p>
+					<p className="text-primary-foreground/60 text-sm">{dictionary.footer.copyright}</p>
 				</div>
 			</div>
 		</footer>

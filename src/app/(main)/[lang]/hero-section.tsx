@@ -58,6 +58,7 @@ export default function HeroSection() {
 							width={600}
 							height={400}
 							className="rounded-lg shadow-2xl"
+							loading="eager"
 						/>
 						<div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-lg shadow-lg">
 							<div className="text-3xl font-bold">{"10+"}</div>

@@ -29,17 +29,17 @@ async function HomePageContent({ locale }: { locale: Locale }) {
 		<>
 			<HeroSection />
 
-			<AboutSection />
+			<AboutSection locale={locale} />
 
 			<Prefetch url={`/${locale}/products`} />
 			<Prefetch url={`/${locale}/services`} />
 			<Prefetch url={`/${locale}/projects`} />
 			<Prefetch url={`/${locale}/contact`} />
 
-			<ProductsSectionDatabase />
-			<ServicesSectionDatabase />
-			<ProjectsSectionDatabase />
-			<ContactSectionDatabase />
+			<ProductsSectionDatabase locale={locale} />
+			<ServicesSectionDatabase locale={locale} />
+			<ProjectsSectionDatabase locale={locale} />
+			<ContactSectionDatabase locale={locale} />
 		</>
 	);
 }

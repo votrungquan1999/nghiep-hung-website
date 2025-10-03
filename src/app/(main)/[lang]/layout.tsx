@@ -34,7 +34,7 @@ export default async function MainLayout({
 				</Suspense>
 				<main>{children}</main>
 				<Suspense fallback={<FooterLoading />}>
-					<Footer />
+					<Footer locale={locale} />
 				</Suspense>
 			</div>
 		</SplashScreenProvider>
