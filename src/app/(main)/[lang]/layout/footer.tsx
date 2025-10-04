@@ -1,8 +1,8 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import { unstable_cacheTag as cacheTag } from "next/cache";
 import Image from "next/image";
-import Link from "next/link";
 import { getSocialMediaPlatform } from "src/app/admin/contact/social-media.config";
+import LocaleLink from "src/components/behaviors/LocaleLink";
 import { CACHE_TAGS } from "src/lib/cache-tags";
 import type { Locale } from "src/lib/i18n/config";
 import { getDictionary } from "src/lib/i18n/dictionaries";
@@ -66,52 +66,52 @@ export default async function Footer({ locale }: { locale: Locale }) {
 						<h4 className="text-lg font-serif font-bold mb-6">{dictionary.footer.quickLinks}</h4>
 						<ul className="space-y-3">
 							<li>
-								<Link
-									href={`/${locale}/about`}
+								<LocaleLink
+									href="/about"
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
 									{dictionary.nav.about}
-								</Link>
+								</LocaleLink>
 							</li>
 							<li>
-								<Link
-									href={`/${locale}/products`}
+								<LocaleLink
+									href="/products"
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
 									{dictionary.nav.products}
-								</Link>
+								</LocaleLink>
 							</li>
 							<li>
-								<Link
-									href={`/${locale}/services`}
+								<LocaleLink
+									href="/services"
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
 									{dictionary.nav.services}
-								</Link>
+								</LocaleLink>
 							</li>
 							<li>
-								<Link
-									href={`/${locale}/projects`}
+								<LocaleLink
+									href="/projects"
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
 									{dictionary.nav.projects}
-								</Link>
+								</LocaleLink>
 							</li>
 							<li>
-								<Link
-									href={`/${locale}/contact`}
+								<LocaleLink
+									href="/contact"
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
 									{dictionary.nav.contact}
-								</Link>
+								</LocaleLink>
 							</li>
 							<li>
-								<Link
-									href={`/${locale}/privacy-policy`}
+								<LocaleLink
+									href="/privacy-policy"
 									className="text-primary-foreground/80 hover:text-primary-foreground transition-colors"
 								>
 									{dictionary.nav.privacyPolicy}
-								</Link>
+								</LocaleLink>
 							</li>
 						</ul>
 					</div>

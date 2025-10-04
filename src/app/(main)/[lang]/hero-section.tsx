@@ -1,5 +1,6 @@
 import { ArrowRight, CheckCircle } from "lucide-react";
 import Image from "next/image";
+import LocaleLink from "src/components/behaviors/LocaleLink";
 import { Button } from "src/components/ui/button";
 import type { Locale } from "src/lib/i18n/config";
 import { getDictionary } from "src/lib/i18n/dictionaries";
@@ -28,17 +29,17 @@ export default function HeroSection({ locale }: HeroSectionProps) {
 						</p>
 
 						<div className="flex flex-col sm:flex-row gap-4 mb-8">
-							<a href="/products" className="inline-block">
+							<LocaleLink href="/products" className="inline-block">
 								<Button size="lg" className="text-lg px-8 w-full">
 									{dictionary.hero.buttons.viewProducts}
 									<ArrowRight className="ml-2 h-5 w-5" />
 								</Button>
-							</a>
-							<a href="/contact" className="inline-block">
+							</LocaleLink>
+							<LocaleLink href="/contact" className="inline-block">
 								<Button variant="outline" size="lg" className="text-lg px-8 bg-transparent w-full">
 									{dictionary.hero.buttons.contactConsultation}
 								</Button>
-							</a>
+							</LocaleLink>
 						</div>
 
 						<div className="grid grid-cols-1 sm:grid-cols-3 gap-4">

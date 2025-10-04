@@ -1,8 +1,8 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
-import Link from "next/link";
 import { useState } from "react";
+import LocaleLink from "src/components/behaviors/LocaleLink";
 import { LanguageSwitcher } from "src/components/language-toggle";
 import { Button } from "src/components/ui/button";
 import type { Locale } from "src/lib/i18n/config";
@@ -52,14 +52,14 @@ export function MobileHeader({ navigation, locale }: MobileHeaderProps) {
 
 							<nav className="flex flex-col space-y-1">
 								{navigation.map((item) => (
-									<Link
+									<LocaleLink
 										key={item.name}
 										href={item.href}
 										className="text-foreground hover:text-primary transition-colors duration-200 py-3 px-4 rounded-md hover:bg-accent font-medium"
 										onClick={() => setIsMenuOpen(false)}
 									>
 										{item.name}
-									</Link>
+									</LocaleLink>
 								))}
 							</nav>
 						</div>

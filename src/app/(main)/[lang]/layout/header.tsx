@@ -1,7 +1,7 @@
 import { Mail, Phone } from "lucide-react";
 import { unstable_cacheTag as cacheTag } from "next/cache";
 import Image from "next/image";
-import Link from "next/link";
+import LocaleLink from "src/components/behaviors/LocaleLink";
 import { LanguageSwitcher } from "src/components/language-toggle";
 import { CACHE_TAGS } from "src/lib/cache-tags";
 import type { Locale } from "src/lib/i18n/config";
@@ -20,12 +20,12 @@ export default async function Header({ locale }: { locale: Locale }) {
 	const dictionary = getDictionary(locale);
 
 	const navigation = [
-		{ name: dictionary.nav.home, href: `/${locale}` },
-		{ name: dictionary.nav.about, href: `/${locale}/about` },
-		{ name: dictionary.nav.products, href: `/${locale}/products` },
-		{ name: dictionary.nav.services, href: `/${locale}/services` },
-		{ name: dictionary.nav.projects, href: `/${locale}/projects` },
-		{ name: dictionary.nav.contact, href: `/${locale}/contact` },
+		{ name: dictionary.nav.home, href: "/" },
+		{ name: dictionary.nav.about, href: "/about" },
+		{ name: dictionary.nav.products, href: "/products" },
+		{ name: dictionary.nav.services, href: "/services" },
+		{ name: dictionary.nav.projects, href: "/projects" },
+		{ name: dictionary.nav.contact, href: "/contact" },
 	];
 
 	return (
@@ -33,7 +33,7 @@ export default async function Header({ locale }: { locale: Locale }) {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="flex justify-between items-center h-16">
 					<div className="flex items-center">
-						<Link href={`/${locale}`}>
+						<LocaleLink href="/">
 							<Image
 								src="/nghiep_hung_logo_full.svg"
 								alt="Nghiệp Hưng"
@@ -41,20 +41,20 @@ export default async function Header({ locale }: { locale: Locale }) {
 								height={40}
 								className="h-10 w-auto cursor-pointer"
 							/>
-						</Link>
+						</LocaleLink>
 					</div>
 
 					{/* Desktop Navigation */}
 					<nav className="hidden md:flex space-x-8">
 						{navigation.map((item) => (
-							<Link
+							<LocaleLink
 								key={item.name}
 								href={item.href}
 								prefetch={true}
 								className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
 							>
 								{item.name}
-							</Link>
+							</LocaleLink>
 						))}
 					</nav>
 
