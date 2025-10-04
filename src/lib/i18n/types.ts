@@ -122,6 +122,11 @@ export interface Dictionary {
 			title: string;
 			description: string;
 		};
+		empty: {
+			title: string;
+			description: string;
+			action: string;
+		};
 	};
 
 	// Services section
@@ -133,6 +138,11 @@ export interface Dictionary {
 			title: string;
 			description: string;
 		};
+		empty: {
+			title: string;
+			description: string;
+			action: string;
+		};
 	};
 
 	// Projects section
@@ -143,6 +153,11 @@ export interface Dictionary {
 		notFound: {
 			title: string;
 			description: string;
+		};
+		empty: {
+			title: string;
+			description: string;
+			action: string;
 		};
 		projectDescription: string;
 		technicalSpecs: string;

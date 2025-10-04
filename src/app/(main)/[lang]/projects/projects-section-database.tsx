@@ -4,6 +4,12 @@
  */
 
 import { unstable_cacheTag as cacheTag } from "next/cache";
+import {
+	EmptyStateCard,
+	EmptyStateDescription,
+	EmptyStateIcon,
+	EmptyStateTitle,
+} from "src/components/empty-state";
 import { CACHE_TAGS } from "src/lib/cache-tags";
 import type { Locale } from "src/lib/i18n/config";
 import { getDictionary } from "src/lib/i18n/dictionaries";
@@ -40,11 +46,19 @@ export default async function ProjectsSectionDatabase({ locale }: ProjectsSectio
 					</p>
 				</div>
 
-				<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-					{projectIds.map((projectId) => (
-						<ProjectDialog key={projectId} projectId={projectId} locale={locale} />
-					))}
-				</div>
+				{projectIds.length > 0 ? (
+					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{projectIds.map((projectId) => (
+							<ProjectDialog key={projectId} projectId={projectId} locale={locale} />
+						))}
+					</div>
+				) : (
+					<EmptyStateCard>
+						<EmptyStateIcon>🏗️</EmptyStateIcon>
+						<EmptyStateTitle>{dictionary.projects.empty.title}</EmptyStateTitle>
+						<EmptyStateDescription>{dictionary.projects.empty.description}</EmptyStateDescription>
+					</EmptyStateCard>
+				)}
 			</div>
 		</section>
 	);

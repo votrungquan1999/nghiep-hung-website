@@ -230,6 +230,11 @@ export const dictionaries: DictionaryForLocale = {
 				title: "Không tìm thấy sản phẩm",
 				description: "Sản phẩm được yêu cầu không thể tìm thấy.",
 			},
+			empty: {
+				title: "Chưa có sản phẩm",
+				description: "Hiện tại chúng tôi chưa có sản phẩm nào để hiển thị. Vui lòng quay lại sau.",
+				action: "Liên hệ tư vấn",
+			},
 		},
 		services: {
 			title: "Dịch vụ",
@@ -240,6 +245,11 @@ export const dictionaries: DictionaryForLocale = {
 				title: "Không tìm thấy dịch vụ",
 				description: "Dịch vụ được yêu cầu không thể tìm thấy.",
 			},
+			empty: {
+				title: "Chưa có dịch vụ",
+				description: "Hiện tại chúng tôi chưa có dịch vụ nào để hiển thị. Vui lòng quay lại sau.",
+				action: "Liên hệ tư vấn",
+			},
 		},
 		projects: {
 			title: "Dự án",
@@ -249,6 +259,11 @@ export const dictionaries: DictionaryForLocale = {
 			notFound: {
 				title: "Không tìm thấy dự án",
 				description: "Dự án được yêu cầu không thể tìm thấy.",
+			},
+			empty: {
+				title: "Chưa có dự án",
+				description: "Hiện tại chúng tôi chưa có dự án nào để hiển thị. Vui lòng quay lại sau.",
+				action: "Liên hệ tư vấn",
 			},
 			projectDescription: "Mô tả dự án",
 			technicalSpecs: "Thông số kỹ thuật",
@@ -555,6 +570,11 @@ export const dictionaries: DictionaryForLocale = {
 				title: "Product Not Found",
 				description: "The requested product could not be found.",
 			},
+			empty: {
+				title: "No Products Available",
+				description: "We currently don't have any products to display. Please check back later.",
+				action: "Contact Consultation",
+			},
 		},
 		services: {
 			title: "Services",
@@ -565,6 +585,11 @@ export const dictionaries: DictionaryForLocale = {
 				title: "Service Not Found",
 				description: "The requested service could not be found.",
 			},
+			empty: {
+				title: "No Services Available",
+				description: "We currently don't have any services to display. Please check back later.",
+				action: "Contact Consultation",
+			},
 		},
 		projects: {
 			title: "Projects",
@@ -574,6 +599,11 @@ export const dictionaries: DictionaryForLocale = {
 			notFound: {
 				title: "Project Not Found",
 				description: "The requested project could not be found.",
+			},
+			empty: {
+				title: "No Projects Available",
+				description: "We currently don't have any projects to display. Please check back later.",
+				action: "Contact Consultation",
 			},
 			projectDescription: "Project Description",
 			technicalSpecs: "Technical Specifications",
