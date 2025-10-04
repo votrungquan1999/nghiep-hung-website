@@ -8,7 +8,6 @@ const montserrat = Montserrat({
 	display: "swap",
 	variable: "--font-montserrat",
 	weight: ["400", "600", "700"],
-	preload: true,
 });
 
 const openSans = Open_Sans({
@@ -16,7 +15,6 @@ const openSans = Open_Sans({
 	display: "swap",
 	variable: "--font-open-sans",
 	weight: ["400", "500", "600"],
-	preload: false,
 });
 
 const roboto = Roboto({
@@ -24,7 +22,6 @@ const roboto = Roboto({
 	display: "swap",
 	variable: "--font-roboto",
 	weight: ["400", "500", "700"],
-	preload: false,
 });
 
 export const metadata: Metadata = {
