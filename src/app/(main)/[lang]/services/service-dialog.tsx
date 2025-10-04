@@ -12,7 +12,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "src/components/ui/card
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -66,13 +65,10 @@ export default async function ServiceDialog({ serviceId, locale }: ServiceDialog
 							className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
 						/>
 					</div>
-					<CardHeader>
+					<CardContent className="pb-6">
 						<CardTitle className="text-xl font-serif font-bold text-foreground">
 							{serviceName}
 						</CardTitle>
-					</CardHeader>
-					<CardContent>
-						<p className="text-muted-foreground mb-4 leading-relaxed">{serviceDescription}</p>
 					</CardContent>
 				</Card>
 			</DialogTrigger>
@@ -81,12 +77,9 @@ export default async function ServiceDialog({ serviceId, locale }: ServiceDialog
 					<DialogTitle className="text-2xl font-serif font-bold text-foreground pr-8">
 						{serviceName}
 					</DialogTitle>
-					<DialogDescription className="text-muted-foreground">
-						{serviceDescription}
-					</DialogDescription>
 				</DialogHeader>
 
-				<div className="px-6 pb-6">
+				<div className="px-6 pb-6 space-y-6">
 					<GalleryRoot images={convertedImages}>
 						<div className="relative">
 							<GalleryImage className="mb-6" />
@@ -99,6 +92,13 @@ export default async function ServiceDialog({ serviceId, locale }: ServiceDialog
 						</div>
 						<GalleryThumbnails />
 					</GalleryRoot>
+
+					<div className="border border-border rounded-lg p-6 bg-muted/30">
+						<h4 className="font-serif font-bold text-xl mb-4 text-foreground">Description</h4>
+						<div className="text-foreground text-lg leading-relaxed whitespace-pre-line">
+							{serviceDescription}
+						</div>
+					</div>
 				</div>
 			</DialogContent>
 		</Dialog>
@@ -124,11 +124,6 @@ function NotFoundServiceDialog({ locale }: { locale: Locale }) {
 					{dictionary.services.notFound.title}
 				</CardTitle>
 			</CardHeader>
-			<CardContent>
-				<p className="text-muted-foreground mb-4 leading-relaxed">
-					{dictionary.services.notFound.description}
-				</p>
-			</CardContent>
 		</Card>
 	);
 }

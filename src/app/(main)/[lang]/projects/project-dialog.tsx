@@ -9,11 +9,10 @@ import {
 	GalleryThumbnails,
 } from "src/components/image-gallery/image-gallery";
 import { Badge } from "src/components/ui/badge";
-import { Card, CardContent } from "src/components/ui/card";
+import { Card, CardContent, CardTitle } from "src/components/ui/card";
 import {
 	Dialog,
 	DialogContent,
-	DialogDescription,
 	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
@@ -68,32 +67,22 @@ export default async function ProjectDialog({ projectId, locale }: ProjectDialog
 							className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
 						/>
 					</div>
-					<CardContent className="p-6">
-						<div className="flex items-center justify-between mb-3">
-							<Badge variant="secondary">{projectCategory}</Badge>
-							<span className="text-sm text-muted-foreground">{project.year}</span>
-						</div>
-						<h3 className="text-xl font-serif font-bold text-foreground mb-2">{projectName}</h3>
-						<div className="flex items-center text-sm text-muted-foreground mb-3">
-							<MapPin className="h-4 w-4 mr-1" />
-							{project.location}
-						</div>
-						<p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-							{projectDescription}
-						</p>
+					<CardContent className="pb-6">
+						<CardTitle className="text-xl font-serif font-bold text-foreground">
+							{projectName}
+						</CardTitle>
 					</CardContent>
 				</Card>
 			</DialogTrigger>
 
-			<DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-				<DialogHeader className="p-6 pb-0">
-					<DialogTitle className="text-2xl font-serif font-bold">{projectName}</DialogTitle>
-					<DialogDescription className="text-muted-foreground">
-						{projectDescription}
-					</DialogDescription>
+			<DialogContent className="max-w-4xl w-[95vw] max-h-[95vh] overflow-y-auto p-0">
+				<DialogHeader className="p-6 pb-0 sticky top-0 bg-background z-10">
+					<DialogTitle className="text-2xl font-serif font-bold text-foreground pr-8">
+						{projectName}
+					</DialogTitle>
 				</DialogHeader>
 
-				<div className="space-y-6 px-6 pb-6">
+				<div className="px-6 pb-6 space-y-6">
 					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
 						<div className="flex items-center">
 							<Building className="size-4 mr-2 text-primary" />
@@ -121,13 +110,6 @@ export default async function ProjectDialog({ projectId, locale }: ProjectDialog
 									? dictionary.projects.completionStatus.inProgress
 									: dictionary.projects.completionStatus.planning}
 						</Badge>
-					</div>
-
-					<div>
-						<h4 className="font-serif font-bold text-lg mb-3">
-							{dictionary.projects.projectDescription}
-						</h4>
-						<p className="text-muted-foreground leading-relaxed">{projectDescription}</p>
 					</div>
 
 					<div>
@@ -161,6 +143,15 @@ export default async function ProjectDialog({ projectId, locale }: ProjectDialog
 							<GalleryThumbnails />
 						</GalleryRoot>
 					</div>
+
+					<div className="border border-border rounded-lg p-6 bg-muted/30">
+						<h4 className="font-serif font-bold text-xl mb-4 text-foreground">
+							{dictionary.projects.projectDescription}
+						</h4>
+						<div className="text-foreground text-lg leading-relaxed whitespace-pre-line">
+							{projectDescription}
+						</div>
+					</div>
 				</div>
 			</DialogContent>
 		</Dialog>
@@ -188,20 +179,9 @@ function NotFoundProjectDialog({ locale }: { locale: Locale }) {
 				/>
 			</div>
 			<CardContent className="p-6">
-				<div className="flex items-center justify-between mb-3">
-					<Badge variant="secondary">{dictionary.projects.notFound.title}</Badge>
-					<span className="text-sm text-muted-foreground">-</span>
-				</div>
-				<h3 className="text-xl font-serif font-bold text-foreground mb-2">
+				<h3 className="text-xl font-serif font-bold text-foreground">
 					{dictionary.projects.notFound.title}
 				</h3>
-				<div className="flex items-center text-sm text-muted-foreground mb-3">
-					<MapPin className="h-4 w-4 mr-1" />
-					Unknown
-				</div>
-				<p className="text-muted-foreground text-sm leading-relaxed line-clamp-3">
-					{dictionary.projects.notFound.description}
-				</p>
 			</CardContent>
 		</Card>
 	);
