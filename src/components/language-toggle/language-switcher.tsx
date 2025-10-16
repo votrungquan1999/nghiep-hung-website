@@ -16,7 +16,7 @@ import {
 	DropdownMenuTrigger,
 } from "src/components/ui/dropdown-menu";
 import type { Locale } from "../../lib/i18n/config";
-import { localeFlags, localeNames, locales } from "../../lib/i18n/config";
+import { localeNames, locales } from "../../lib/i18n/config";
 import { cn } from "../../lib/utils";
 
 /**
@@ -51,7 +51,6 @@ export function LanguageSwitcher({ currentLang, className }: LanguageSwitcherPro
 						className,
 					)}
 				>
-					<span className="text-lg">{localeFlags[currentLang]}</span>
 					<span className="font-medium">{currentLang.toUpperCase()}</span>
 				</Button>
 			</DropdownMenuTrigger>
@@ -66,7 +65,6 @@ export function LanguageSwitcher({ currentLang, className }: LanguageSwitcherPro
 								href={href}
 								className="flex items-center space-x-2 px-2 py-1 cursor-pointer hover:bg-accent"
 							>
-								<span className="text-lg">{localeFlags[locale]}</span>
 								<span className="flex-1 font-medium">{localeNames[locale]}</span>
 								{isActive && <Check className="h-4 w-4 text-foreground" />}
 							</Link>

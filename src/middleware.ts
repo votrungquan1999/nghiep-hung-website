@@ -61,11 +61,31 @@ export function middleware(request: NextRequest) {
 	const pathname = request.nextUrl.pathname;
 
 	// Skip processing for static assets and specific files
-	const staticExtensions = [".png", ".jpg", ".jpeg", ".gif", ".svg", ".ico", ".webp", ".avif"];
+	const staticExtensions = [
+		".png",
+		".jpg",
+		".jpeg",
+		".gif",
+		".svg",
+		".ico",
+		".webp",
+		".avif",
+		".css",
+		".js",
+		".map",
+	];
 	const isStaticAsset = staticExtensions.some((ext) => pathname.endsWith(ext));
 
-	// Skip favicon.ico specifically
-	if (pathname === "/favicon.ico" || isStaticAsset) {
+	// Skip specific static files and patterns
+	if (
+		pathname === "/favicon.ico" ||
+		isStaticAsset ||
+		pathname.startsWith("/_next/") ||
+		pathname.startsWith("/api/") ||
+		pathname.startsWith("/admin") ||
+		pathname.startsWith("/login") ||
+		pathname.startsWith("/unauthorized")
+	) {
 		return NextResponse.next();
 	}
 
@@ -75,7 +95,14 @@ export function middleware(request: NextRequest) {
 	);
 
 	if (pathnameHasLocale) {
-		return NextResponse.next();
+		// Extract the locale from the pathname to validate it
+		const pathnameLocale = pathname.split("/")[1];
+		if (pathnameLocale && isLocale(pathnameLocale)) {
+			return NextResponse.next();
+		}
+		// If pathname has a locale-like segment but it's not valid, redirect to /vi
+		request.nextUrl.pathname = `/vi${pathname}`;
+		return NextResponse.redirect(request.nextUrl);
 	}
 
 	// Redirect if there is no locale

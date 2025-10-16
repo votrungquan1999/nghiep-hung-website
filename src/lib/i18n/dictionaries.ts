@@ -695,13 +695,19 @@ export const dictionaries: DictionaryForLocale = {
  * @returns Dictionary object for the locale
  */
 export function getDictionary(locale: keyof typeof dictionaries) {
-	const dictionary = dictionaries[locale];
-	if (!dictionary) {
-		console.error(`Dictionary not found for locale: ${locale}`);
+	// Check if the locale is a valid key in our dictionaries
+	if (!(locale in dictionaries)) {
+		// Only log error if it's not a static asset (image files, etc.)
+		const isStaticAsset = /\.(png|jpg|jpeg|gif|svg|ico|webp|avif|css|js|map)$/i.test(locale);
+		if (!isStaticAsset) {
+			console.error(
+				`Dictionary not found for locale: ${locale}. This should be handled by middleware.`,
+			);
+		}
 		// Fallback to default locale if dictionary not found
 		return dictionaries.vi;
 	}
-	return dictionary;
+	return dictionaries[locale];
 }
 
 /**

@@ -13,11 +13,6 @@ export const localeNames: Record<Locale, string> = {
 	en: "English",
 };
 
-export const localeFlags: Record<Locale, string> = {
-	vi: "🇻🇳",
-	en: "🇬🇧",
-};
-
 /**
  * Language detection configuration
  */
