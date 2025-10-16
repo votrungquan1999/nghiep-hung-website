@@ -11,6 +11,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ locale }: HeroSectionProps) {
 	const dictionary = getDictionary(locale);
+
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
 		<section
@@ -20,7 +21,7 @@ export default function HeroSection({ locale }: HeroSectionProps) {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="grid lg:grid-cols-2 gap-12 items-center">
 					<div>
-						<h1 className="text-4xl lg:text-6xl font-serif font-black text-foreground mb-6 leading-tight">
+						<h1 className="text-4xl lg:text-6xl font-raleway font-black text-foreground mb-6 leading-tight">
 							{dictionary.hero.title}{" "}
 							<span className="text-primary">{dictionary.hero.titleHighlight}</span>
 						</h1>

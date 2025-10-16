@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Open_Sans, Roboto } from "next/font/google";
+import { Montserrat, Open_Sans, Raleway, Roboto } from "next/font/google";
 import type React from "react";
 import "./globals.css";
 
@@ -24,6 +24,13 @@ const roboto = Roboto({
 	weight: ["400", "500", "700"],
 });
 
+const raleway = Raleway({
+	subsets: ["latin"],
+	display: "swap",
+	variable: "--font-raleway",
+	weight: ["400", "500", "600", "700", "800", "900"],
+});
+
 export const metadata: Metadata = {
 	title: "Công ty TNHH Nghiệp Hưng - Hệ thống ống gió chuyên nghiệp",
 	description:
@@ -44,7 +51,7 @@ export default function RootLayout({
 	return (
 		<html
 			lang="vi"
-			className={`${montserrat.variable} ${openSans.variable} ${roboto.variable} antialiased`}
+			className={`${montserrat.variable} ${openSans.variable} ${roboto.variable} ${raleway.variable} antialiased`}
 		>
 			<body className="font-sans">{children}</body>
 		</html>

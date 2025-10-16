@@ -28,6 +28,7 @@
 	--font-open-sans: "Open Sans", sans-serif;
 	--font-montserrat: "Montserrat", serif;
 	--font-roboto: "Roboto", sans-serif;
+	--font-raleway: "Raleway", sans-serif;
 
 	/* Layout */
 	--radius: 0.5rem;
@@ -109,6 +110,7 @@
 	--font-sans: var(--font-open-sans);
 	--font-serif: var(--font-montserrat);
 	--font-roboto: var(--font-roboto);
+	--font-raleway: var(--font-raleway);
 	--font-mono:
 		ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New",
 		monospace;
