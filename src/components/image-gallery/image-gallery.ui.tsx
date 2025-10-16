@@ -2,29 +2,63 @@
 
 import { Slot } from "@radix-ui/react-slot";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import { Button } from "src/components/ui/button";
 import {
 	ImageGalleryProvider,
 	useImageGalleryDispatch,
 	useImageGalleryState,
 } from "./image-gallery.state";
-import type { ImageGalleryImage } from "./image-gallery.type";
+import type { AutoCycleConfig, ImageGalleryImage } from "./image-gallery.type";
 import { ImageGalleryActionType } from "./image-gallery.type";
 
 interface GalleryRootProps {
 	images: ImageGalleryImage[];
 	children: React.ReactNode;
+	autoCycle?: AutoCycleConfig;
 }
 
 /**
  * Gallery root component that provides context and manages images
  */
-export function GalleryRoot({ images, children }: GalleryRootProps) {
+export function GalleryRoot({ images, children, autoCycle }: GalleryRootProps) {
 	return (
 		<ImageGalleryProvider imageCount={images.length} images={images}>
+			<AutoCycleManager autoCycle={autoCycle} />
 			{children}
 		</ImageGalleryProvider>
 	);
+}
+
+/**
+ * Auto-cycle manager component that handles automatic image cycling
+ */
+function AutoCycleManager({ autoCycle }: { autoCycle?: AutoCycleConfig }) {
+	const state = useImageGalleryState();
+	const dispatch = useImageGalleryDispatch();
+	const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+	useEffect(() => {
+		if (!autoCycle || state.images.length <= 1) return;
+
+		intervalRef.current = setInterval(() => {
+			dispatch({
+				type: ImageGalleryActionType.CycleNext,
+				payload: {
+					timestamp: Date.now(),
+					intervalMs: autoCycle.intervalMs,
+				},
+			});
+		}, autoCycle.intervalMs);
+
+		return () => {
+			if (intervalRef.current) {
+				clearInterval(intervalRef.current);
+			}
+		};
+	}, [autoCycle, state.images.length, dispatch]);
+
+	return null;
 }
 
 interface GalleryButtonProps {
@@ -45,7 +79,7 @@ export function GalleryNextButton({ children, asChild = false, className }: Gall
 	if (!hasMultipleImages) return null;
 
 	const handleClick = () => {
-		dispatch({ type: ImageGalleryActionType.NextImage });
+		dispatch({ type: ImageGalleryActionType.UserNext, payload: Date.now() });
 	};
 
 	if (asChild) {
@@ -75,7 +109,7 @@ export function GalleryBackButton({ children, asChild = false, className }: Gall
 	if (!hasMultipleImages) return null;
 
 	const handleClick = () => {
-		dispatch({ type: ImageGalleryActionType.PrevImage });
+		dispatch({ type: ImageGalleryActionType.UserPrev, payload: Date.now() });
 	};
 
 	if (asChild) {
@@ -93,7 +127,8 @@ export function GalleryBackButton({ children, asChild = false, className }: Gall
 	);
 }
 
-interface GalleryImageProps {
+interface GalleryImageProps
+	extends Omit<React.ComponentProps<typeof Image>, "src" | "alt" | "fill"> {
 	className?: string;
 	aspectRatio?: string;
 }
@@ -101,7 +136,11 @@ interface GalleryImageProps {
 /**
  * Gallery image component that renders all images and hides non-current ones
  */
-export function GalleryImage({ className = "", aspectRatio = "aspect-video" }: GalleryImageProps) {
+export function GalleryImage({
+	className = "",
+	aspectRatio = "aspect-video",
+	...imageProps
+}: GalleryImageProps) {
 	const state = useImageGalleryState();
 
 	return (
@@ -116,6 +155,7 @@ export function GalleryImage({ className = "", aspectRatio = "aspect-video" }: G
 						className={`object-contain transition-opacity duration-300 ${
 							index === state.currentIndex ? "opacity-100" : "opacity-0 absolute"
 						}`}
+						{...imageProps}
 					/>
 				))}
 			</div>
@@ -138,6 +178,13 @@ export function GalleryThumbnails({ className = "" }: GalleryThumbnailsProps) {
 
 	if (!hasMultipleImages) return null;
 
+	const handleThumbnailClick = (index: number) => {
+		dispatch({
+			type: ImageGalleryActionType.UserSetIndex,
+			payload: { index, timestamp: Date.now() },
+		});
+	};
+
 	return (
 		<div className={`flex justify-center space-x-2 ${className}`}>
 			{state.images.map((_, index) => (
@@ -145,7 +192,7 @@ export function GalleryThumbnails({ className = "" }: GalleryThumbnailsProps) {
 					// biome-ignore lint/suspicious/noArrayIndexKey: this is ok since we have no plan to change the image's order
 					key={index}
 					type="button"
-					onClick={() => dispatch({ type: ImageGalleryActionType.SetIndex, payload: index })}
+					onClick={() => handleThumbnailClick(index)}
 					className={`w-3 h-3 rounded-full transition-colors ${
 						index === state.currentIndex ? "bg-primary" : "bg-muted-foreground/30"
 					}`}
