@@ -1,5 +1,11 @@
-import { Award, Target, Users, Wrench } from "lucide-react";
+import { ArrowLeft, ArrowRight, Award, Target, Users, Wrench } from "lucide-react";
 import Image from "next/image";
+import {
+	GalleryBackButton,
+	GalleryImage,
+	GalleryNextButton,
+	GalleryRoot,
+} from "src/components/image-gallery";
 import type { Locale } from "src/lib/i18n/config";
 import { getDictionary } from "src/lib/i18n/dictionaries";
 import { CompanyHistoryTimeline } from "./company-history-timeline";
@@ -13,6 +19,26 @@ import FeatureCard from "./feature-card.ui";
  */
 export default function AboutSection({ locale }: { locale: Locale }) {
 	const dictionary = getDictionary(locale);
+
+	// About gallery images array with 4 images
+	const aboutImages = [
+		{
+			src: "/about-image.png",
+			alt: dictionary.about.imageAlt,
+		},
+		{
+			src: "/about-gallery-1.jpg",
+			alt: dictionary.about.imageAlt,
+		},
+		{
+			src: "/about-gallery-2.jpg",
+			alt: dictionary.about.imageAlt,
+		},
+		{
+			src: "/about-gallery-3.jpg",
+			alt: dictionary.about.imageAlt,
+		},
+	];
 
 	const features = [
 		{
@@ -42,16 +68,23 @@ export default function AboutSection({ locale }: { locale: Locale }) {
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
 		<section id="about" className="bg-muted/30">
-			{/* About image - full width */}
-			<div>
-				<Image
-					src="/about-image.png"
-					alt={dictionary.about.imageAlt}
-					width={1200}
-					height={600}
-					className="w-full h-64 lg:h-80 object-cover rounded-lg"
-					priority={false}
-				/>
+			{/* About image gallery - full width */}
+			<div className="relative">
+				<GalleryRoot images={aboutImages} autoCycle={{ intervalMs: 3000 }}>
+					<GalleryImage
+						className="w-full h-64 lg:h-[400px] object-cover rounded-lg"
+						aspectRatio="aspect-[16/9]"
+						priority={true}
+					/>
+
+					{/* Navigation buttons */}
+					<GalleryBackButton className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white">
+						<ArrowLeft className="h-4 w-4" />
+					</GalleryBackButton>
+					<GalleryNextButton className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white">
+						<ArrowRight className="h-4 w-4" />
+					</GalleryNextButton>
+				</GalleryRoot>
 			</div>
 
 			<div className="max-w-7xl mx-auto px-4 py-20 sm:px-6 lg:px-8">
