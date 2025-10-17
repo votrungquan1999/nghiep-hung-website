@@ -68,7 +68,8 @@ export default function AboutSection({ locale }: { locale: Locale }) {
 			<div className="relative">
 				<GalleryRoot images={aboutImages} autoCycle={{ intervalMs: 3000 }}>
 					<GalleryImage
-						className="w-full h-64 lg:h-[400px] object-cover rounded-lg"
+						containerClassName="w-full h-64 lg:h-[400px] rounded-lg"
+						imageClassName="object-cover"
 						aspectRatio="aspect-[16/9]"
 						priority={true}
 					/>
