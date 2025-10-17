@@ -4,6 +4,7 @@ import { Slot } from "@radix-ui/react-slot";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
 import { Button } from "src/components/ui/button";
+import { cn } from "src/lib/utils";
 import {
 	ImageGalleryProvider,
 	useImageGalleryDispatch,
@@ -129,7 +130,8 @@ export function GalleryBackButton({ children, asChild = false, className }: Gall
 
 interface GalleryImageProps
 	extends Omit<React.ComponentProps<typeof Image>, "src" | "alt" | "fill"> {
-	className?: string;
+	containerClassName?: string;
+	imageClassName?: string;
 	aspectRatio?: string;
 }
 
@@ -137,14 +139,15 @@ interface GalleryImageProps
  * Gallery image component that renders all images and hides non-current ones
  */
 export function GalleryImage({
-	className = "",
+	containerClassName = "",
+	imageClassName = "",
 	aspectRatio = "aspect-video",
 	...imageProps
 }: GalleryImageProps) {
 	const state = useImageGalleryState();
 
 	return (
-		<div className={`relative w-full bg-muted rounded-lg overflow-hidden ${className}`}>
+		<div className={cn("relative w-full bg-muted rounded-lg overflow-hidden", containerClassName)}>
 			<div className={`${aspectRatio} w-full relative`}>
 				{state.images.map((image, index) => (
 					<Image
@@ -152,9 +155,11 @@ export function GalleryImage({
 						src={image.src || "/placeholder.svg"}
 						alt={image.alt || "Gallery image"}
 						fill
-						className={`object-contain transition-opacity duration-300 ${
-							index === state.currentIndex ? "opacity-100" : "opacity-0 absolute"
-						}`}
+						className={cn(
+							"object-contain transition-opacity duration-300",
+							index === state.currentIndex ? "opacity-100" : "opacity-0 absolute",
+							imageClassName,
+						)}
 						{...imageProps}
 					/>
 				))}
