@@ -20,12 +20,8 @@ import FeatureCard from "./feature-card.ui";
 export default function AboutSection({ locale }: { locale: Locale }) {
 	const dictionary = getDictionary(locale);
 
-	// About gallery images array with 4 images
+	// About gallery images array with 3 images
 	const aboutImages = [
-		{
-			src: "/about-image.png",
-			alt: dictionary.about.imageAlt,
-		},
 		{
 			src: "/about-gallery-1.jpg",
 			alt: dictionary.about.imageAlt,
@@ -35,7 +31,7 @@ export default function AboutSection({ locale }: { locale: Locale }) {
 			alt: dictionary.about.imageAlt,
 		},
 		{
-			src: "/about-gallery-3.jpg",
+			src: "/about-gallery-3.png",
 			alt: dictionary.about.imageAlt,
 		},
 	];
