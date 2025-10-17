@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { Montserrat, Open_Sans, Raleway, Roboto } from "next/font/google";
 import type React from "react";
@@ -53,7 +54,10 @@ export default function RootLayout({
 			lang="vi"
 			className={`${montserrat.variable} ${openSans.variable} ${roboto.variable} ${raleway.variable} antialiased`}
 		>
-			<body className="font-sans">{children}</body>
+			<body className="font-sans">
+				{children}
+				<Analytics />
+			</body>
 		</html>
 	);
 }
