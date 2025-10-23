@@ -47,11 +47,39 @@ export default function AboutSection({ locale }: { locale: Locale }) {
 			icon: Target,
 			title: dictionary.about.features.vision.title,
 			description: dictionary.about.features.vision.description,
+			customDialogContent: (
+				<div className="space-y-4">
+					<Image
+						src="/vision.png"
+						alt={dictionary.about.features.vision.title}
+						width={600}
+						height={400}
+						className="rounded-lg w-full h-auto"
+					/>
+					<p className="text-muted-foreground leading-relaxed text-base">
+						{dictionary.about.features.vision.description}
+					</p>
+				</div>
+			),
 		},
 		{
 			icon: Award,
 			title: dictionary.about.features.mission.title,
 			description: dictionary.about.features.mission.description,
+			customDialogContent: (
+				<div className="space-y-4">
+					<Image
+						src="/mission.png"
+						alt={dictionary.about.features.mission.title}
+						width={600}
+						height={400}
+						className="rounded-lg w-full h-auto"
+					/>
+					<p className="text-muted-foreground leading-relaxed text-base">
+						{dictionary.about.features.mission.description}
+					</p>
+				</div>
+			),
 		},
 		{
 			icon: Wrench,

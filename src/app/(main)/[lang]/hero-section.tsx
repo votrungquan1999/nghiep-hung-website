@@ -21,9 +21,17 @@ export default function HeroSection({ locale }: HeroSectionProps) {
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div className="grid lg:grid-cols-2 gap-12 items-center">
 					<div>
-						<h1 className="text-4xl lg:text-6xl font-raleway font-black text-foreground mb-6 leading-tight">
-							{dictionary.hero.title}{" "}
-							<span className="text-primary">{dictionary.hero.titleHighlight}</span>
+						<h1
+							className="text-4xl lg:text-6xl font-raleway font-black text-foreground mb-6 leading-tight "
+							// need to make the text fatter without changing the font
+							style={{
+								fontStretch: "expanded",
+								textShadow: "0.5px 0 0 currentColor, -0.5px 0 0 currentColor",
+								transform: "scaleX(1.05)",
+								transformOrigin: "left",
+							}}
+						>
+							{dictionary.hero.title}
 						</h1>
 						<p className="text-xl text-muted-foreground mb-8 leading-relaxed">
 							{dictionary.hero.description}

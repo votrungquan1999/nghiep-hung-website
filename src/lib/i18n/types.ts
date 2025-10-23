@@ -218,7 +218,6 @@ export interface Dictionary {
 	// Hero section
 	hero: {
 		title: string;
-		titleHighlight: string;
 		description: string;
 		buttons: {
 			viewProducts: string;

@@ -321,8 +321,7 @@ export const dictionaries: DictionaryForLocale = {
 			},
 		},
 		hero: {
-			title: "Hệ thống ống gió",
-			titleHighlight: "chuyên nghiệp",
+			title: "Hệ thống ống gió chuyên nghiệp",
 			description:
 				"Với hơn 10 năm kinh nghiệm, chúng tôi chuyên sản xuất và thi công các hệ thống ống gió chất lượng cao cho các dự án công nghiệp và dân dụng.",
 			buttons: {
@@ -661,8 +660,7 @@ export const dictionaries: DictionaryForLocale = {
 			},
 		},
 		hero: {
-			title: "Professional",
-			titleHighlight: "ductwork systems",
+			title: "Professional ductwork systems",
 			description:
 				"With over 10 years of experience, we specialize in manufacturing and installing high-quality ductwork systems for industrial and residential projects.",
 			buttons: {
