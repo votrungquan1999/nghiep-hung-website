@@ -15,9 +15,7 @@
 		"format": "biome format . --write",
 		"lint:biome": "biome lint .",
 		"db:start": "docker-compose up -d mongodb",
-		"test": "vitest",
-		"test:run": "vitest run",
-		"test:coverage": "vitest --coverage"
+		"test": "vitest"
 	},
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.888.0",
