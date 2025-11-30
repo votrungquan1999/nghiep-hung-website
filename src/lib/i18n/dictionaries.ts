@@ -273,6 +273,10 @@ export const dictionaries: DictionaryForLocale = {
 				inProgress: "Đang thực hiện",
 				planning: "Đang lên kế hoạch",
 			},
+			filter: {
+				all: "Tất cả",
+				viewAll: "Xem tất cả dự án",
+			},
 		},
 		contact: {
 			title: "Liên hệ với chúng tôi",
@@ -611,6 +615,10 @@ export const dictionaries: DictionaryForLocale = {
 				completed: "Completed",
 				inProgress: "In Progress",
 				planning: "Planning",
+			},
+			filter: {
+				all: "All",
+				viewAll: "View all projects",
 			},
 		},
 		contact: {

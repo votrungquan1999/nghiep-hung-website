@@ -167,6 +167,10 @@ export interface Dictionary {
 			inProgress: string;
 			planning: string;
 		};
+		filter: {
+			all: string;
+			viewAll: string;
+		};
 	};
 
 	// Contact section

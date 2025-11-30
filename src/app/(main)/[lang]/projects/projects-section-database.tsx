@@ -1,35 +1,61 @@
 /**
  * Server component that fetches projects from database and renders the projects section
- * Has the same structure as the static projects-section.tsx
+ * Supports filtering by category with row limiting (controlled by client)
  */
 
 import { unstable_cacheTag as cacheTag } from "next/cache";
+import Link from "next/link";
+import { Suspense } from "react";
 import {
 	EmptyStateCard,
 	EmptyStateDescription,
 	EmptyStateIcon,
 	EmptyStateTitle,
 } from "src/components/empty-state";
+import { Button } from "src/components/ui/button";
 import { CACHE_TAGS } from "src/lib/cache-tags";
 import type { Locale } from "src/lib/i18n/config";
 import { getDictionary } from "src/lib/i18n/dictionaries";
-import { getActiveProjectIds } from "src/server/projects";
-import ProjectDialog from "./project-dialog";
+import { getActiveProjectIds, getProjectById } from "src/server/projects";
+import { ProjectCardContent } from "./project-card-content";
+import { ProjectCardSkeleton } from "./project-card-skeleton";
+import { ProjectCardWrapper } from "./project-card-wrapper";
+import { ProjectFilterButtons, ProjectFilterProvider } from "./project-filter";
+import { ProjectGridController, ViewAllButton } from "./project-visibility";
 
 interface ProjectsSectionDatabaseProps {
 	locale: Locale;
+	showViewAll?: boolean;
 }
 
 /**
- * Server component that fetches projects from database
- * Has the exact same structure as the static projects-section.tsx
- * @param locale - The current locale for internationalization
+ * Async component that fetches and renders a single project card
  */
-export default async function ProjectsSectionDatabase({ locale }: ProjectsSectionDatabaseProps) {
+async function ProjectCard({ id, locale }: { id: string; locale: Locale }) {
+	const project = await getProjectById(id);
+	if (!project) return null;
+
+	return (
+		<ProjectCardWrapper id={project.id} categoryEn={project.category.en}>
+			<ProjectCardContent project={project} locale={locale} />
+		</ProjectCardWrapper>
+	);
+}
+
+/**
+ * Server component that fetches project IDs from database
+ * Each project card loads its own data via Suspense for fast initial render
+ * @param locale - The current locale for internationalization
+ * @param showViewAll - Whether to show "View All" link (optional, for homepage)
+ */
+export default async function ProjectsSectionDatabase({
+	locale,
+	showViewAll,
+}: ProjectsSectionDatabaseProps) {
 	"use cache";
 	cacheTag(CACHE_TAGS.PROJECTS);
 
-	const projectIds: string[] = await getActiveProjectIds();
+	const projectIds = await getActiveProjectIds();
 	const dictionary = getDictionary(locale);
 
 	return (
@@ -47,11 +73,25 @@ export default async function ProjectsSectionDatabase({ locale }: ProjectsSectio
 				</div>
 
 				{projectIds.length > 0 ? (
-					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-						{projectIds.map((projectId) => (
-							<ProjectDialog key={projectId} projectId={projectId} locale={locale} />
-						))}
-					</div>
+					<ProjectFilterProvider>
+						<ProjectFilterButtons locale={locale} />
+						<ProjectGridController projectIds={projectIds}>
+							<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+								{projectIds.map((id) => (
+									<Suspense key={id} fallback={<ProjectCardSkeleton />}>
+										<ProjectCard id={id} locale={locale} />
+									</Suspense>
+								))}
+							</div>
+							{showViewAll && (
+								<ViewAllButton>
+									<Button asChild variant="outline" size="lg">
+										<Link href={`/${locale}/projects`}>{dictionary.projects.filter.viewAll}</Link>
+									</Button>
+								</ViewAllButton>
+							)}
+						</ProjectGridController>
+					</ProjectFilterProvider>
 				) : (
 					<EmptyStateCard>
 						<EmptyStateIcon>🏗️</EmptyStateIcon>

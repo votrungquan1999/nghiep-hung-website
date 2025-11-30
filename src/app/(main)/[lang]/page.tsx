@@ -38,7 +38,7 @@ async function HomePageContent({ locale }: { locale: Locale }) {
 
 			<ProductsSectionDatabase locale={locale} />
 			<ServicesSectionDatabase locale={locale} />
-			<ProjectsSectionDatabase locale={locale} />
+			<ProjectsSectionDatabase locale={locale} showViewAll />
 			<ContactSectionDatabase locale={locale} />
 		</>
 	);
