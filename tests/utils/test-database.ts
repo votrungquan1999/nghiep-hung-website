@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { type Db, MongoClient } from "mongodb";
+import type { ProductDocument } from "src/server/products/product.type";
 import type { ProjectDocument } from "src/server/projects/project.type";
+import type { ServiceDocument } from "src/server/services/service.type";
 
 const TEST_DB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017";
 const TEST_DB_PREFIX = "nghiep-hung-test";
@@ -62,6 +64,30 @@ export class TestDatabase {
 
 		if (projects.length > 0) {
 			await collection.insertMany(projects);
+		}
+	}
+
+	/**
+	 * Seed products collection with test data
+	 */
+	async seedProducts(products: ProductDocument[]): Promise<void> {
+		const database = await this.connect();
+		const collection = database.collection<ProductDocument>("products");
+
+		if (products.length > 0) {
+			await collection.insertMany(products);
+		}
+	}
+
+	/**
+	 * Seed services collection with test data
+	 */
+	async seedServices(services: ServiceDocument[]): Promise<void> {
+		const database = await this.connect();
+		const collection = database.collection<ServiceDocument>("services");
+
+		if (services.length > 0) {
+			await collection.insertMany(services);
 		}
 	}
 

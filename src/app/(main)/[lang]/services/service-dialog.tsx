@@ -55,7 +55,10 @@ export default async function ServiceDialog({ serviceId, locale }: ServiceDialog
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Card className="group hover:shadow-xl transition-all duration-300 py-0 hover:-translate-y-1 cursor-pointer">
+				<Card
+					data-testid="service-card"
+					className="group hover:shadow-xl transition-all duration-300 py-0 hover:-translate-y-1 cursor-pointer"
+				>
 					<div className="aspect-video overflow-hidden rounded-t-lg px-0">
 						<Image
 							src={mainImage?.url || "/placeholder.svg"}

@@ -50,7 +50,7 @@ describe("Projects Row Limiting", () => {
 		});
 
 		it("shows View All link when there are more projects than limit", async () => {
-			await renderAsync(<ProjectsSectionDatabase locale="en" showViewAll />);
+			await renderAsync(<ProjectsSectionDatabase locale="en" />);
 
 			await waitFor(() => {
 				const viewAllLink = screen.getByRole("link", { name: /view all/i });
@@ -59,15 +59,16 @@ describe("Projects Row Limiting", () => {
 			});
 		});
 
-		it("does not show View All when showViewAll is false", async () => {
-			await renderAsync(<ProjectsSectionDatabase locale="en" />);
+		it("does not show View All when viewAll is true", async () => {
+			await renderAsync(<ProjectsSectionDatabase locale="en" viewAll />);
 
 			await waitFor(() => {
 				const projectCards = screen.getAllByTestId("project-card");
-				expect(projectCards).toHaveLength(6);
+				// Should show all 7 projects when viewAll is true
+				expect(projectCards).toHaveLength(7);
 			});
 
-			// View All should not appear since showViewAll is not set
+			// View All should not appear when viewAll is true
 			expect(screen.queryByRole("link", { name: /view all/i })).not.toBeInTheDocument();
 		});
 	});
@@ -111,7 +112,7 @@ describe("Projects Row Limiting", () => {
 
 		it("applies row limit to filtered results", async () => {
 			const user = userEvent.setup();
-			await renderAsync(<ProjectsSectionDatabase locale="en" showViewAll />);
+			await renderAsync(<ProjectsSectionDatabase locale="en" />);
 
 			// Initially limited to 6 (2 rows × 3 columns), hasMore = true
 			await waitFor(() => {
