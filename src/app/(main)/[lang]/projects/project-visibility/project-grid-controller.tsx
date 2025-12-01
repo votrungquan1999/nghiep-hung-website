@@ -18,6 +18,7 @@ function getColumns(width: number): number {
 
 interface ProjectGridControllerProps {
 	projectIds: string[];
+	limitRows?: boolean;
 	children: React.ReactNode;
 }
 
@@ -25,11 +26,18 @@ interface ProjectGridControllerProps {
  * Client component that manages project visibility based on:
  * - Filter state (selected category)
  * - Window width (columns)
- * - Row limit (MAX_ROWS)
+ * - Row limit (MAX_ROWS, only applied if limitRows is true)
  *
  * Cards register themselves when they load, and visibility is recalculated.
+ * @param projectIds - Array of project IDs to manage
+ * @param limitRows - Whether to apply row limiting (default: true)
+ * @param children - Child components to render
  */
-export function ProjectGridController({ projectIds, children }: ProjectGridControllerProps) {
+export function ProjectGridController({
+	projectIds,
+	limitRows = true,
+	children,
+}: ProjectGridControllerProps) {
 	const { selectedCategory } = useProjectFilterState();
 	const [columns, setColumns] = useState(3);
 	const [isReady, setIsReady] = useState(false);
@@ -62,6 +70,15 @@ export function ProjectGridController({ projectIds, children }: ProjectGridContr
 			return !selectedCategory || category === selectedCategory;
 		});
 
+		// If limitRows is false, show all filtered items
+		if (!limitRows) {
+			return {
+				visibleIds: new Set(filtered),
+				hasMore: false,
+			};
+		}
+
+		// Apply row limiting
 		const maxItems = MAX_ROWS * columns;
 		const visible = new Set(filtered.slice(0, maxItems));
 
@@ -69,7 +86,7 @@ export function ProjectGridController({ projectIds, children }: ProjectGridContr
 			visibleIds: visible,
 			hasMore: filtered.length > maxItems,
 		};
-	}, [projectIds, loadedProjects, selectedCategory, columns]);
+	}, [projectIds, loadedProjects, selectedCategory, columns, limitRows]);
 
 	const isVisible = useCallback((id: string) => visibleIds.has(id), [visibleIds]);
 
