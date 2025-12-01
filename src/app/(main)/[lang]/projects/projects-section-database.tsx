@@ -25,7 +25,7 @@ import { ProjectGridController, ViewAllButton } from "./project-visibility";
 
 interface ProjectsSectionDatabaseProps {
 	locale: Locale;
-	showViewAll?: boolean;
+	viewAll?: boolean;
 }
 
 /**
@@ -46,11 +46,11 @@ async function ProjectCard({ id, locale }: { id: string; locale: Locale }) {
  * Server component that fetches project IDs from database
  * Each project card loads its own data via Suspense for fast initial render
  * @param locale - The current locale for internationalization
- * @param showViewAll - Whether to show "View All" link (optional, for homepage)
+ * @param viewAll - Whether to view all items without row limiting (optional, for dedicated pages)
  */
 export default async function ProjectsSectionDatabase({
 	locale,
-	showViewAll,
+	viewAll,
 }: ProjectsSectionDatabaseProps) {
 	"use cache";
 	cacheTag(CACHE_TAGS.PROJECTS);
@@ -75,7 +75,7 @@ export default async function ProjectsSectionDatabase({
 				{projectIds.length > 0 ? (
 					<ProjectFilterProvider>
 						<ProjectFilterButtons locale={locale} />
-						<ProjectGridController projectIds={projectIds}>
+						<ProjectGridController projectIds={projectIds} limitRows={!viewAll}>
 							<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 								{projectIds.map((id) => (
 									<Suspense key={id} fallback={<ProjectCardSkeleton />}>
@@ -83,7 +83,7 @@ export default async function ProjectsSectionDatabase({
 									</Suspense>
 								))}
 							</div>
-							{showViewAll && (
+							{!viewAll && (
 								<ViewAllButton>
 									<Button asChild variant="outline" size="lg">
 										<Link href={`/${locale}/projects`}>{dictionary.projects.filter.viewAll}</Link>

@@ -4,12 +4,19 @@
  */
 
 import { unstable_cacheTag as cacheTag } from "next/cache";
+import Link from "next/link";
 import {
 	EmptyStateCard,
 	EmptyStateDescription,
 	EmptyStateIcon,
 	EmptyStateTitle,
 } from "src/components/empty-state";
+import { Button } from "src/components/ui/button";
+import {
+	ItemWrapper,
+	StandardGridVisibilityController,
+	ViewAllButton,
+} from "src/components/visibility";
 import { CACHE_TAGS } from "src/lib/cache-tags";
 import type { Locale } from "src/lib/i18n/config";
 import { getDictionary } from "src/lib/i18n/dictionaries";
@@ -18,14 +25,19 @@ import ServiceDialog from "./service-dialog";
 
 interface ServicesSectionDatabaseProps {
 	locale: Locale;
+	viewAll?: boolean;
 }
 
 /**
  * Server component that fetches services from database
- * Has the exact same structure as the static services-section.tsx
+ * Supports row limiting with "View All" button on homepage
  * @param locale - The current locale for internationalization
+ * @param viewAll - Whether to view all items without row limiting (optional, for dedicated pages)
  */
-export default async function ServicesSectionDatabase({ locale }: ServicesSectionDatabaseProps) {
+export default async function ServicesSectionDatabase({
+	locale,
+	viewAll,
+}: ServicesSectionDatabaseProps) {
 	"use cache";
 	cacheTag(CACHE_TAGS.SERVICES);
 
@@ -47,11 +59,22 @@ export default async function ServicesSectionDatabase({ locale }: ServicesSectio
 				</div>
 
 				{serviceIds.length > 0 ? (
-					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-						{serviceIds.map((serviceId) => (
-							<ServiceDialog key={serviceId} serviceId={serviceId} locale={locale} />
-						))}
-					</div>
+					<StandardGridVisibilityController itemIds={serviceIds} limitRows={!viewAll}>
+						<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+							{serviceIds.map((serviceId) => (
+								<ItemWrapper key={serviceId} id={serviceId}>
+									<ServiceDialog serviceId={serviceId} locale={locale} />
+								</ItemWrapper>
+							))}
+						</div>
+						{!viewAll && (
+							<ViewAllButton>
+								<Button asChild variant="outline" size="lg">
+									<Link href={`/${locale}/services`}>{dictionary.services.viewAll}</Link>
+								</Button>
+							</ViewAllButton>
+						)}
+					</StandardGridVisibilityController>
 				) : (
 					<EmptyStateCard>
 						<EmptyStateIcon>🔧</EmptyStateIcon>

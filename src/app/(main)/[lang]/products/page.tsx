@@ -28,7 +28,7 @@ async function ProductsPage({ params }: ProductsPageProps) {
 	return (
 		<>
 			<ScrollToTopHandler />
-			<ProductsSectionDatabase locale={locale} />
+			<ProductsSectionDatabase locale={locale} viewAll />
 			<div className="text-center mb-12">
 				<ContactDialog locale={locale} />
 			</div>
