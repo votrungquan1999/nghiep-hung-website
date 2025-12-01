@@ -11,10 +11,12 @@ npm run build        # Build for production
 npm run start        # Start production server
 
 # Code Quality (uses Biome)
-npm run biome:check  # Run Biome checks
-npm run biome:format # Format code with Biome
-npm run biome:fix    # Fix code issues with Biome (--write --unsafe)
-npm run lint         # Run Next.js ESLint
+npm run biome:check          # Run Biome checks
+npm run biome:format         # Format all code with Biome
+npm run biome:format:changed # Format only changed files (vs default branch)
+npm run biome:format:staged  # Format only staged files
+npm run biome:fix            # Fix code issues with Biome (--write --unsafe)
+npm run lint                 # Run Next.js ESLint
 
 # Database
 npm run db:start     # Start MongoDB via docker-compose
@@ -57,6 +59,9 @@ Complex components follow this structure:
 Use `src/*` for imports (configured in tsconfig.json).
 
 ## Code Style Rules
+
+### File Editing
+- **Always format files after editing**: After making changes to any file, run `npm run biome:format:changed` to format only the changed files according to project standards
 
 ### TypeScript
 - Use `interface` over `type` (except for unions/mapped types)

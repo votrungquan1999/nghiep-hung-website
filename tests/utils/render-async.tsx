@@ -1,11 +1,5 @@
-import { render, type RenderResult } from "@testing-library/react";
-import {
-	type ReactElement,
-	type ReactNode,
-	isValidElement,
-	cloneElement,
-	Children,
-} from "react";
+import { type RenderResult, render } from "@testing-library/react";
+import { Children, cloneElement, isValidElement, type ReactElement, type ReactNode } from "react";
 
 /**
  * Check if a function is async
@@ -32,9 +26,7 @@ async function resolveAsyncComponents(element: ReactNode): Promise<ReactNode> {
 	// If it's an async function component (Server Component), await it
 	if (typeof elementType === "function" && isAsyncFunction(elementType)) {
 		// Await the async component to get its rendered output
-		const result = await (elementType as (props: unknown) => Promise<ReactNode>)(
-			element.props,
-		);
+		const result = await (elementType as (props: unknown) => Promise<ReactNode>)(element.props);
 		// Recursively resolve the result (it may contain more async components)
 		return resolveAsyncComponents(result);
 	}

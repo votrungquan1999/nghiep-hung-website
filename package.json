@@ -10,6 +10,8 @@
 		"start": "next start",
 		"biome:check": "biome check .",
 		"biome:format": "biome format . --write",
+		"biome:format:changed": "biome format --changed --write",
+		"biome:format:staged": "biome format --staged --write",
 		"biome:lint": "biome lint .",
 		"biome:fix": "biome check . --write --unsafe",
 		"format": "biome format . --write",

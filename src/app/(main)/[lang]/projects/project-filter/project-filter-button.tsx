@@ -20,9 +20,7 @@ export function ActiveFilterButton({ id, children }: FilterButtonSlotProps) {
 
 	if (selectedCategory !== id) return null;
 
-	return (
-		<Slot onClick={id === null ? selectAll : () => selectCategory(id)}>{children}</Slot>
-	);
+	return <Slot onClick={id === null ? selectAll : () => selectCategory(id)}>{children}</Slot>;
 }
 
 /**
@@ -37,7 +35,5 @@ export function InactiveFilterButton({ id, children }: FilterButtonSlotProps) {
 
 	if (selectedCategory === id) return null;
 
-	return (
-		<Slot onClick={id === null ? selectAll : () => selectCategory(id)}>{children}</Slot>
-	);
+	return <Slot onClick={id === null ? selectAll : () => selectCategory(id)}>{children}</Slot>;
 }
