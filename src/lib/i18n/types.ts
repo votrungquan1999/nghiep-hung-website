@@ -127,6 +127,7 @@ export interface Dictionary {
 			description: string;
 			action: string;
 		};
+		viewAll: string;
 	};
 
 	// Services section
@@ -143,6 +144,7 @@ export interface Dictionary {
 			description: string;
 			action: string;
 		};
+		viewAll: string;
 	};
 
 	// Projects section

@@ -235,6 +235,7 @@ export const dictionaries: DictionaryForLocale = {
 				description: "Hiện tại chúng tôi chưa có sản phẩm nào để hiển thị. Vui lòng quay lại sau.",
 				action: "Liên hệ tư vấn",
 			},
+			viewAll: "Xem tất cả sản phẩm",
 		},
 		services: {
 			title: "Dịch vụ",
@@ -250,6 +251,7 @@ export const dictionaries: DictionaryForLocale = {
 				description: "Hiện tại chúng tôi chưa có dịch vụ nào để hiển thị. Vui lòng quay lại sau.",
 				action: "Liên hệ tư vấn",
 			},
+			viewAll: "Xem tất cả dịch vụ",
 		},
 		projects: {
 			title: "Dự án",
@@ -578,6 +580,7 @@ export const dictionaries: DictionaryForLocale = {
 				description: "We currently don't have any products to display. Please check back later.",
 				action: "Contact Consultation",
 			},
+			viewAll: "View all products",
 		},
 		services: {
 			title: "Services",
@@ -593,6 +596,7 @@ export const dictionaries: DictionaryForLocale = {
 				description: "We currently don't have any services to display. Please check back later.",
 				action: "Contact Consultation",
 			},
+			viewAll: "View all services",
 		},
 		projects: {
 			title: "Projects",
