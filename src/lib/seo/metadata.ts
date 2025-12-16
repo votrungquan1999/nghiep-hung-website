@@ -7,6 +7,16 @@ import type { Locale } from "src/lib/i18n/config";
 const baseUrl = process.env.NEXT_PUBLIC_BETTER_AUTH_URL || "https://nghiephung.com";
 
 /**
+ * Default OG image configuration
+ */
+const defaultOgImage = {
+	url: "/construction_placeholder.png",
+	width: 1200,
+	height: 630,
+	alt: "Nghiệp Hưng - Hệ thống ống gió chuyên nghiệp",
+};
+
+/**
  * Generate metadata for homepage
  * @param locale - The current locale
  * @returns Metadata object
@@ -34,6 +44,7 @@ export function generateHomeMetadata(locale: Locale): Metadata {
 			description: isVietnamese
 				? "Chuyên sản xuất và thi công hệ thống ống gió chất lượng cao"
 				: "Professional air duct manufacturing and installation services",
+			images: [defaultOgImage],
 		},
 	};
 }
@@ -61,6 +72,7 @@ export function generateAboutMetadata(locale: Locale): Metadata {
 		openGraph: {
 			url: `${baseUrl}/${locale}/about`,
 			title: isVietnamese ? "Về chúng tôi - Nghiệp Hưng" : "About Us - Nghiep Hung",
+			images: [defaultOgImage],
 		},
 	};
 }
@@ -88,6 +100,7 @@ export function generateProductsMetadata(locale: Locale): Metadata {
 		openGraph: {
 			url: `${baseUrl}/${locale}/products`,
 			title: isVietnamese ? "Sản phẩm - Nghiệp Hưng" : "Products - Nghiep Hung",
+			images: [defaultOgImage],
 		},
 	};
 }
@@ -115,6 +128,7 @@ export function generateServicesMetadata(locale: Locale): Metadata {
 		openGraph: {
 			url: `${baseUrl}/${locale}/services`,
 			title: isVietnamese ? "Dịch vụ - Nghiệp Hưng" : "Services - Nghiep Hung",
+			images: [defaultOgImage],
 		},
 	};
 }
@@ -142,6 +156,7 @@ export function generateProjectsMetadata(locale: Locale): Metadata {
 		openGraph: {
 			url: `${baseUrl}/${locale}/projects`,
 			title: isVietnamese ? "Dự án - Nghiệp Hưng" : "Projects - Nghiep Hung",
+			images: [defaultOgImage],
 		},
 	};
 }
@@ -169,6 +184,7 @@ export function generateContactMetadata(locale: Locale): Metadata {
 		openGraph: {
 			url: `${baseUrl}/${locale}/contact`,
 			title: isVietnamese ? "Liên hệ - Nghiệp Hưng" : "Contact Us - Nghiep Hung",
+			images: [defaultOgImage],
 		},
 	};
 }
@@ -196,6 +212,7 @@ export function generatePrivacyPolicyMetadata(locale: Locale): Metadata {
 		openGraph: {
 			url: `${baseUrl}/${locale}/privacy-policy`,
 			title: isVietnamese ? "Chính sách bảo mật - Nghiệp Hưng" : "Privacy Policy - Nghiep Hung",
+			images: [defaultOgImage],
 		},
 		robots: {
 			index: false,
