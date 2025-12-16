@@ -28,18 +28,20 @@ export default async function MainLayout({
 	const { lang: locale } = await params;
 
 	return (
-		<SplashScreenProvider>
+		<>
 			<OrganizationSchema locale={locale} />
 			<WebsiteSchema locale={locale} />
-			<div className="min-h-screen">
-				<Suspense fallback={<HeaderLoading />}>
-					<Header locale={locale} />
-				</Suspense>
-				<main>{children}</main>
-				<Suspense fallback={<FooterLoading />}>
-					<Footer locale={locale} />
-				</Suspense>
-			</div>
-		</SplashScreenProvider>
+			<SplashScreenProvider>
+				<div className="min-h-screen">
+					<Suspense fallback={<HeaderLoading />}>
+						<Header locale={locale} />
+					</Suspense>
+					<main>{children}</main>
+					<Suspense fallback={<FooterLoading />}>
+						<Footer locale={locale} />
+					</Suspense>
+				</div>
+			</SplashScreenProvider>
+		</>
 	);
 }
