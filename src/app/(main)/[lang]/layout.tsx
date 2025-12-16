@@ -1,5 +1,6 @@
 import type React from "react";
 import { Suspense } from "react";
+import { OrganizationSchema, WebsiteSchema } from "src/components/seo/json-ld";
 import type { Locale } from "src/lib/i18n/config";
 import SplashScreenProvider from "../../splash-screen-provider";
 import Footer from "./layout/footer";
@@ -28,6 +29,8 @@ export default async function MainLayout({
 
 	return (
 		<SplashScreenProvider>
+			<OrganizationSchema locale={locale} />
+			<WebsiteSchema locale={locale} />
 			<div className="min-h-screen">
 				<Suspense fallback={<HeaderLoading />}>
 					<Header locale={locale} />
