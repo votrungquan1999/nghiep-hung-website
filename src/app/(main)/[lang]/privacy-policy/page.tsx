@@ -1,9 +1,20 @@
 import type { Metadata } from "next";
+import type { Locale } from "src/lib/i18n/config";
+import { generatePrivacyPolicyMetadata } from "src/lib/seo/metadata";
 
-export const metadata: Metadata = {
-	title: "Privacy Policy | Nghiep Hung",
-	description: "Privacy policy and personal data processing of Nghiep Hung Co., Ltd.",
-};
+/**
+ * Generate metadata for privacy policy page
+ * @param params - Route parameters including locale
+ * @returns Metadata object
+ */
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+	const { lang: locale } = await params;
+	return generatePrivacyPolicyMetadata(locale);
+}
 
 export default function PrivacyPolicyPage() {
 	return (

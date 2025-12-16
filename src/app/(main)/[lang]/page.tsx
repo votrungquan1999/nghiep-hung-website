@@ -1,13 +1,29 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import HomepageLoading from "src/app/(main)/[lang]/homepage-loading";
 import Prefetch from "src/components/behaviors/prefetch";
 import type { Locale } from "src/lib/i18n/config";
+import { generateHomeMetadata } from "src/lib/seo/metadata";
 import AboutSection from "./about/about-section";
 import ContactSectionDatabase from "./contact/contact-section-database";
 import HeroSection from "./hero-section";
 import ProductsSectionDatabase from "./products/products-section-database";
 import ProjectsSectionDatabase from "./projects/projects-section-database";
 import ServicesSectionDatabase from "./services/services-section-database";
+
+/**
+ * Generate metadata for homepage
+ * @param params - Route parameters including locale
+ * @returns Metadata object
+ */
+export async function generateMetadata({
+	params,
+}: {
+	params: Promise<{ lang: Locale }>;
+}): Promise<Metadata> {
+	const { lang: locale } = await params;
+	return generateHomeMetadata(locale);
+}
 
 /**
  * Main homepage component that displays database content for covered sections
