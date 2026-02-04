@@ -2,6 +2,21 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 📚 Repository Knowledge Base
+
+**For comprehensive documentation, see the [repo_knowledge](./repo_knowledge/) folder.**
+
+Quick links to key documentation:
+- **[Architecture Overview](./repo_knowledge/01-architecture.md)** - System design and tech stack
+- **[Data Patterns](./repo_knowledge/02-data-patterns.md)** - Database queries and mutations
+- **[Auth Patterns](./repo_knowledge/03-auth-patterns.md)** - Authentication and authorization
+- **[File Upload](./repo_knowledge/04-file-upload.md)** - S3 storage and image handling
+- **[i18n Patterns](./repo_knowledge/05-i18n-patterns.md)** - Internationalization
+- **[Component Patterns](./repo_knowledge/06-component-patterns.md)** - Component architecture
+- **[Coding Conventions](./repo_knowledge/07-coding-conventions.md)** - Code style guide
+
+Start with the [repo_knowledge README](./repo_knowledge/README.md) for a complete guide.
+
 ## Commands
 
 ```bash
