@@ -39,8 +39,8 @@ export function generateHomeMetadata(locale: Locale): Metadata {
 		openGraph: {
 			url: `${baseUrl}/${locale}`,
 			title: isVietnamese
-				? "Công ty TNHH Nghiệp Hưng - Hệ thống ống gió chuyên nghiệp"
-				: "Nghiep Hung Co., Ltd - Professional Air Duct Systems",
+				? "Công ty TNHH Nghiệp Hưng - Giải pháp thông gió chuyên nghiệp"
+				: "Nghiep Hung Co., Ltd - Professional Ventilation Solutions",
 			description: isVietnamese
 				? "Chuyên sản xuất và thi công hệ thống ống gió chất lượng cao"
 				: "Professional air duct manufacturing and installation services",

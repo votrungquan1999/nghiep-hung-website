@@ -327,9 +327,9 @@ export const dictionaries: DictionaryForLocale = {
 			},
 		},
 		hero: {
-			title: "Hệ thống ống gió chuyên nghiệp",
+			title: "Giải pháp thông gió chuyên nghiệp",
 			description:
-				"Với hơn 10 năm kinh nghiệm, chúng tôi chuyên sản xuất và thi công các hệ thống ống gió chất lượng cao cho các dự án công nghiệp và dân dụng.",
+				"Công ty TNHH Nghiệp Hưng chuyên sản xuất và thi công hệ thống ống gió, ống gió chống cháy, phụ kiện ống gió cho lĩnh vực điều hòa không khí. Công ty sở hữu nhà xưởng 2.000 m² tại Biên Hòa – Đồng Nai, được trang bị máy móc hiện đại, từng thực hiện nhiều dự án cho cơ quan hành chính, resort, khách sạn, trung tâm thương mại, văn phòng, căn hộ và nhà máy. Nghiệp Hưng cam kết cung cấp giải pháp thi công đạt chuẩn kỹ thuật, đúng tiến độ và hỗ trợ khách hàng hiệu quả trên toàn khu vực.",
 			buttons: {
 				viewProducts: "Xem sản phẩm",
 				contactConsultation: "Liên hệ tư vấn",
@@ -672,9 +672,9 @@ export const dictionaries: DictionaryForLocale = {
 			},
 		},
 		hero: {
-			title: "Professional ductwork systems",
+			title: "Professional Ventilation Solutions",
 			description:
-				"With over 10 years of experience, we specialize in manufacturing and installing high-quality ductwork systems for industrial and residential projects.",
+				"Nghiep Hung Co., Ltd specializes in manufacturing and installing air duct systems, fire-resistant ducts, and duct accessories for the air conditioning sector. We own a 2,000 m² factory in Bien Hoa – Dong Nai equipped with modern machinery and have executed numerous projects for administrative agencies, resorts, hotels, commercial centers, offices, apartments, and factories. Nghiep Hung is committed to providing construction solutions that meet technical standards, ensure timely delivery, and offer effective customer support throughout the region.",
 			buttons: {
 				viewProducts: "View Products",
 				contactConsultation: "Contact Consultation",

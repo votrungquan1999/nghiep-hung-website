@@ -35,6 +35,21 @@ const envVars = validateEnvVars();
 // Construct redirect URI
 const redirectURI = new URL("/api/auth/callback/google", envVars.BETTER_AUTH_URL).toString();
 
+// Configure trusted origins
+const trustedOrigins = [envVars.BETTER_AUTH_URL];
+
+// Add Vercel-specific domains to trusted origins
+if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+	trustedOrigins.push(`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`);
+}
+if (process.env.VERCEL_URL) {
+	trustedOrigins.push(`https://${process.env.VERCEL_URL}`);
+}
+// Add any manually specified trusted origins
+if (process.env.TRUSTED_ORIGINS) {
+	trustedOrigins.push(...process.env.TRUSTED_ORIGINS.split(",").map((o) => o.trim()));
+}
+
 /**
  * Better Auth configuration for the application
  * Configures Google OAuth-only authentication for admin access
@@ -52,7 +67,7 @@ export const auth = betterAuth({
 		expiresIn: 60 * 60 * 24 * 7, // 1 week
 		updateAge: 60 * 60 * 24, // 1 day
 	},
-	trustedOrigins: [envVars.BETTER_AUTH_URL],
+	trustedOrigins,
 });
 
 export type Session = typeof auth.$Infer.Session;
