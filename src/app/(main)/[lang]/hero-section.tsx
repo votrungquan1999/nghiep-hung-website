@@ -1,6 +1,11 @@
-import { ArrowRight, CheckCircle } from "lucide-react";
-import Image from "next/image";
+import { ArrowLeft, ArrowRight, CheckCircle } from "lucide-react";
 import LocaleLink from "src/components/behaviors/LocaleLink";
+import {
+	GalleryBackButton,
+	GalleryImage,
+	GalleryNextButton,
+	GalleryRoot,
+} from "src/components/image-gallery";
 import { Button } from "src/components/ui/button";
 import type { Locale } from "src/lib/i18n/config";
 import { getDictionary } from "src/lib/i18n/dictionaries";
@@ -11,6 +16,14 @@ interface HeroSectionProps {
 
 export default function HeroSection({ locale }: HeroSectionProps) {
 	const dictionary = getDictionary(locale);
+
+	const heroImages = [
+		{ src: "/Hero-Image.png", alt: dictionary.hero.imageAlt },
+		{ src: "/about-gallery-1.jpg", alt: dictionary.hero.imageAlt },
+		{ src: "/about-gallery-2.jpg", alt: dictionary.hero.imageAlt },
+		{ src: "/about-gallery-3.png", alt: dictionary.hero.imageAlt },
+		{ src: "/duct-installation-team.png", alt: dictionary.hero.imageAlt },
+	];
 
 	return (
 		// biome-ignore lint/correctness/useUniqueElementIds: Fixed ID needed for navigation anchor links
@@ -69,16 +82,23 @@ export default function HeroSection({ locale }: HeroSectionProps) {
 						</div>
 					</div>
 
-					<div className="relative">
-						<Image
-							src="/Hero-Image.png"
-							alt={dictionary.hero.imageAlt}
-							width={600}
-							height={400}
-							className="rounded-lg shadow-2xl"
-							loading="eager"
-						/>
-						<div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-lg shadow-lg">
+					<div className="relative group">
+						<GalleryRoot images={heroImages} autoCycle={{ intervalMs: 5000 }}>
+							<div className="rounded-lg shadow-2xl overflow-hidden">
+								<GalleryImage
+									aspectRatio="aspect-[3/2]"
+									imageClassName="object-cover"
+									priority={true}
+								/>
+								<GalleryBackButton className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+									<ArrowLeft className="h-4 w-4" />
+								</GalleryBackButton>
+								<GalleryNextButton className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+									<ArrowRight className="h-4 w-4" />
+								</GalleryNextButton>
+							</div>
+						</GalleryRoot>
+						<div className="absolute -bottom-6 -left-6 bg-primary text-primary-foreground p-6 rounded-lg shadow-lg z-10">
 							<div className="text-3xl font-bold">{dictionary.hero.experience.years}</div>
 							<div className="text-sm">{dictionary.hero.experience.label}</div>
 						</div>
