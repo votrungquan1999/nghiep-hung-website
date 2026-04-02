@@ -83,6 +83,14 @@ export default async function ProductDialog({ productId, locale }: ProductDialog
 				</DialogHeader>
 
 				<div className="px-6 pb-6 space-y-6">
+					{product.category && (
+						<p
+							data-testid="product-category-label"
+							className="text-sm font-medium text-primary bg-primary/10 rounded-full px-3 py-1 inline-block"
+						>
+							{product.category[locale]}
+						</p>
+					)}
 					<GalleryRoot images={convertedImages}>
 						<div className="relative">
 							<GalleryImage className="mb-6" />
