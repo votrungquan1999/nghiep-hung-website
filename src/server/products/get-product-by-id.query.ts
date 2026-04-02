@@ -23,6 +23,7 @@ export const getProductById = cache(async (id: string): Promise<Product | null> 
 		return {
 			id: product.id,
 			name: product.name,
+			category: product.category,
 			description: product.description,
 			status: product.status as ProductStatus,
 			gallery: product.gallery,
