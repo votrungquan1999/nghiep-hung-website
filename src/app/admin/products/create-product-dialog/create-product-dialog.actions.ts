@@ -39,6 +39,8 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 		const productDescriptionEn = formData.get("productDescriptionEn") as string;
 		const productDescriptionVi = formData.get("productDescriptionVi") as string;
 		const productStatus = formData.get("productStatus") as string;
+		const productCategoryEn = (formData.get("productCategoryEn") as string) || "";
+		const productCategoryVi = (formData.get("productCategoryVi") as string) || "";
 		const productImages = formData.getAll("productImages") as File[];
 		const selectedImageIndex = formData.get("selectedImageIndex") as string;
 
@@ -143,6 +145,10 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 				en: productNameEn,
 				vi: productNameVi,
 			},
+			// Only include category if at least one language value is provided
+			...(productCategoryEn || productCategoryVi
+				? { category: { en: productCategoryEn, vi: productCategoryVi } }
+				: {}),
 			description: {
 				en: productDescriptionEn,
 				vi: productDescriptionVi,
@@ -165,7 +171,7 @@ export async function createProduct(formData: FormData): Promise<FormResult> {
 		}
 
 		// Revalidate products cache
-		revalidateTag(CACHE_TAGS.PRODUCTS);
+		revalidateTag(CACHE_TAGS.PRODUCTS, "max");
 		revalidatePath("/admin/products");
 
 		return {

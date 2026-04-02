@@ -21,6 +21,8 @@ export async function updateProduct(formData: FormData): Promise<FormResult> {
 		const productDescriptionEn = formData.get("productDescriptionEn") as string;
 		const productDescriptionVi = formData.get("productDescriptionVi") as string;
 		const productStatus = formData.get("productStatus") as string;
+		const productCategoryEn = (formData.get("productCategoryEn") as string) || "";
+		const productCategoryVi = (formData.get("productCategoryVi") as string) || "";
 
 		// Validation phase
 		if (!productId) {
@@ -67,6 +69,10 @@ export async function updateProduct(formData: FormData): Promise<FormResult> {
 				en: productNameEn,
 				vi: productNameVi,
 			},
+			// Only include category in $set if a value was provided
+			...(productCategoryEn || productCategoryVi
+				? { category: { en: productCategoryEn, vi: productCategoryVi } }
+				: {}),
 			description: {
 				en: productDescriptionEn,
 				vi: productDescriptionVi,
@@ -75,11 +81,18 @@ export async function updateProduct(formData: FormData): Promise<FormResult> {
 			updatedAt: new Date(),
 		};
 
-		// Update in MongoDB
+		// Update in MongoDB — set category if provided, unset if cleared
+		const hasCategory = productCategoryEn || productCategoryVi;
 		const db = await getDatabase();
 		const result = await db
 			.collection<ProductDocument>("products")
-			.updateOne({ id: productId }, { $set: updatedProduct });
+			.updateOne(
+				{ id: productId },
+				{
+					$set: updatedProduct,
+					...(hasCategory ? {} : { $unset: { category: "" } }),
+				},
+			);
 
 		if (result.matchedCount === 0) {
 			return {
@@ -89,7 +102,7 @@ export async function updateProduct(formData: FormData): Promise<FormResult> {
 		}
 
 		// Revalidate products cache
-		revalidateTag(CACHE_TAGS.PRODUCTS);
+		revalidateTag(CACHE_TAGS.PRODUCTS, "max");
 		revalidatePath("/admin/products");
 
 		return {
