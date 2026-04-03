@@ -61,9 +61,7 @@ describe("Step 7: Address field preserves newlines on render", () => {
 		// Then: all parts of the address text are present in the DOM
 		await waitFor(() => {
 			const allPs = document.querySelectorAll("p.whitespace-pre-line");
-			const addressEl = Array.from(allPs).find((el) =>
-				el.textContent?.includes("123 ABC Street"),
-			);
+			const addressEl = Array.from(allPs).find((el) => el.textContent?.includes("123 ABC Street"));
 			expect(addressEl).toBeDefined();
 			// All three lines are in the text content
 			expect(addressEl?.textContent).toContain("Ward 5, District 1");

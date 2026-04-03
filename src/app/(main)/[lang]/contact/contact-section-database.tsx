@@ -78,7 +78,9 @@ export default async function ContactSectionDatabase({ locale }: ContactSectionD
 										<div>
 											<p className="font-medium">{dictionary.contact.contactInfo.address}</p>
 											{contactInfo.address && (
-												<p className="text-muted-foreground whitespace-pre-line">{contactInfo.address}</p>
+												<p className="text-muted-foreground whitespace-pre-line">
+													{contactInfo.address}
+												</p>
 											)}
 										</div>
 									</div>

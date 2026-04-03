@@ -104,7 +104,9 @@ export default async function ContactDialog({ locale }: ContactDialogProps) {
 												<p className="font-medium text-sm">
 													{dictionary.contact.contactInfo.address}
 												</p>
-												<p className="text-muted-foreground text-sm whitespace-pre-line">{contactInfo.address}</p>
+												<p className="text-muted-foreground text-sm whitespace-pre-line">
+													{contactInfo.address}
+												</p>
 											</div>
 										</div>
 									)}
