@@ -39,7 +39,7 @@ export function ContactSectionPreview() {
 						<MapPin className="size-5 text-primary mt-1 mr-3" />
 						<div>
 							<p className="font-medium">{"Địa chỉ"}</p>
-							<p className="text-muted-foreground">{contactInfo.address}</p>
+							<p className="text-muted-foreground whitespace-pre-line">{contactInfo.address}</p>
 						</div>
 					</div>
 					<div className="flex items-start">
@@ -90,7 +90,9 @@ export function FooterPreview() {
 				<div className="space-y-4">
 					<div className="flex items-start">
 						<MapPin className="size-5 mt-1 mr-3 flex-shrink-0" />
-						<p className="text-primary-foreground/80 text-sm">{contactInfo.address}</p>
+						<p className="text-primary-foreground/80 text-sm whitespace-pre-line">
+							{contactInfo.address}
+						</p>
 					</div>
 					<div className="flex items-center">
 						<Phone className="size-5 mr-3 flex-shrink-0" />

@@ -123,7 +123,9 @@ export default async function Footer({ locale }: { locale: Locale }) {
 							{contactInfo.address && (
 								<div className="flex items-start">
 									<MapPin className="size-5 mt-1 mr-3 flex-shrink-0" />
-									<p className="text-primary-foreground/80 text-sm">{contactInfo.address}</p>
+									<p className="text-primary-foreground/80 text-sm whitespace-pre-line">
+										{contactInfo.address}
+									</p>
 								</div>
 							)}
 							{contactInfo.phone1 && (

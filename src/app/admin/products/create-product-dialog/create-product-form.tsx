@@ -108,6 +108,41 @@ export function CreateProductForm() {
 				</div>
 			</div>
 
+			{/* Product Category - Optional, Multilingual */}
+			<div className="space-y-4">
+				<FormField>
+					<FormLabel>
+						Product Category <span className="text-muted-foreground font-normal">(optional)</span>
+					</FormLabel>
+					<VisualTabs defaultValue="en" className="w-full">
+						<VisualTabsList className="grid w-full grid-cols-2">
+							<VisualTabsTrigger value="en">English</VisualTabsTrigger>
+							<VisualTabsTrigger value="vi">Tiếng Việt</VisualTabsTrigger>
+						</VisualTabsList>
+						<VisualTabsContent value="en">
+							<FormField
+								fieldId="productCategoryEn"
+								name="productCategoryEn"
+								placeholder="e.g. Ventilation Ducts"
+							>
+								<FormInput />
+								<FieldError />
+							</FormField>
+						</VisualTabsContent>
+						<VisualTabsContent value="vi">
+							<FormField
+								fieldId="productCategoryVi"
+								name="productCategoryVi"
+								placeholder="vd. Ống gió thông gió"
+							>
+								<FormInput />
+								<FieldError />
+							</FormField>
+						</VisualTabsContent>
+					</VisualTabs>
+				</FormField>
+			</div>
+
 			{/* Image Upload Section */}
 			<div className="space-y-4">
 				<div className="space-y-2">

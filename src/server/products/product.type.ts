@@ -3,13 +3,9 @@
  * Used by both client and server components
  */
 
-/**
- * Multilingual text content for products
- */
-export interface MultilingualText {
-	en: string;
-	vi: string;
-}
+import type { MultilingualText } from "src/lib/types/common.type";
+
+export type { MultilingualText };
 
 /**
  * Database document type for products stored in MongoDB
@@ -18,6 +14,7 @@ export interface MultilingualText {
 export interface ProductDocument {
 	id: string;
 	name: MultilingualText;
+	category?: MultilingualText;
 	description: MultilingualText;
 	status: ProductStatus;
 	gallery: ProductImageDocument[];
@@ -43,6 +40,7 @@ export interface ProductImageDocument {
 export interface Product {
 	id: string;
 	name: MultilingualText;
+	category?: MultilingualText;
 	description: MultilingualText;
 	status: ProductStatus;
 	gallery: ProductImage[];
@@ -65,6 +63,7 @@ export enum ProductStatus {
 
 export interface CreateProductData {
 	name: MultilingualText;
+	category?: MultilingualText;
 	description: MultilingualText;
 	status: ProductStatus;
 	images: File[];
