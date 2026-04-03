@@ -84,15 +84,13 @@ export async function updateProduct(formData: FormData): Promise<FormResult> {
 		// Update in MongoDB — set category if provided, unset if cleared
 		const hasCategory = productCategoryEn || productCategoryVi;
 		const db = await getDatabase();
-		const result = await db
-			.collection<ProductDocument>("products")
-			.updateOne(
-				{ id: productId },
-				{
-					$set: updatedProduct,
-					...(hasCategory ? {} : { $unset: { category: "" } }),
-				},
-			);
+		const result = await db.collection<ProductDocument>("products").updateOne(
+			{ id: productId },
+			{
+				$set: updatedProduct,
+				...(hasCategory ? {} : { $unset: { category: "" } }),
+			},
+		);
 
 		if (result.matchedCount === 0) {
 			return {

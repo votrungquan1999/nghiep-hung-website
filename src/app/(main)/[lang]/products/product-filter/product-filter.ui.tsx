@@ -15,11 +15,19 @@ interface ProductFilterButtonsProps {
 /**
  * Server component that renders filter buttons for product categories.
  * Fetches unique categories from DB; optionally adds an "Other" button
- * for uncategorized products.
+ * for uncategorized products (only when named categories also exist).
+ *
+ * Returns null when no products have a category — no filter bar is shown.
  */
-export async function ProductFilterButtons({ locale, hasUncategorized }: ProductFilterButtonsProps) {
+export async function ProductFilterButtons({
+	locale,
+	hasUncategorized,
+}: ProductFilterButtonsProps) {
 	const categories = await getActiveProductCategories();
 	const dictionary = getDictionary(locale);
+
+	// Don't render filter bar at all when no products have a category
+	if (categories.length === 0) return null;
 
 	return (
 		<div className="flex flex-wrap justify-center gap-2 mb-8">
@@ -51,7 +59,7 @@ export async function ProductFilterButtons({ locale, hasUncategorized }: Product
 				</Fragment>
 			))}
 
-			{/* "Other" button for uncategorized products */}
+			{/* "Other" button — only when there are named categories AND uncategorized products */}
 			{hasUncategorized && (
 				<Fragment key={PRODUCT_OTHER_ID}>
 					<ActiveFilterButton id={PRODUCT_OTHER_ID}>
